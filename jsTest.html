@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+    <style type="text/css">
+      .red{
+        color:red;
+      }
+      .center{
+        text-align: center;
+      }
+    </style>
+	</head>
+	<body>
+    <p id="p1">p1</p>
+    <p class="red center" name="pName">p2</p>
+    <p class="red">p3</p>
+    <script>
+      /**
+       * 访问HTML元素
+       */
+      var p1 = document.getElementById('p1'); //HTMLElement
+      console.log(p1);
+      var pTag = document.getElementsByTagName('p'); //NodeList(HTMLElementCollection)
+      console.log(pTag);
+      var pClass = document.getElementsByClassName('red'); //NodeList(HTMLElementCollection)
+      console.log(pClass);
+      var pName = document.getElementsByName('pName'); //NodeList(HTMLElementCollection)
+      console.log(pName);
+      var body = document.getElementsByTagName('body'); //NodeList(HTMLElementCollection)
+      console.log(body);
+      //document.body相当于document.getElementsByTagName('body')[0]
+      console.log(document.body === document.getElementsByTagName('body')[0]); //true
+      /**
+       * 添加和删除节点
+       */
+      //添加节点
+      var pNew = document.createElement('p');
+      pNew.innerText='三秒后移除';
+      pNew.style.fontSize = '40px';
+      pNew.id = 'pNew';
+      document.body.appendChild(pNew);
+      //移除节点
+      setTimeout(function(){
+        document.body.removeChild(document.getElementById('pNew'));
+      },3000);
+      
+    </script>
+	</body>
+</html>

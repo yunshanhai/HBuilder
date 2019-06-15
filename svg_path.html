@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <!--路径 
+    大写：绝对坐标，小写：相对坐标
+    路径格式：字母与坐标间加不加空格都可以，数字之间使用空格、逗号都可以，例如：
+      M 30 30 L 100 30
+      M 30,30 L 100,30
+      M30 30 L100 30
+      M30,30 L100,30
+      M30,30L100,30
+    移动类：
+    M = moveto 将画笔移动到指定坐标
+    直线类：
+    L = lineto 画直线到指定坐标
+    H = horizontal lineto 画水平直线到指定坐标
+    V = vertical lineto 画垂直直线到指定坐标
+    曲线类：
+    C = curveto 画三次贝塞尔曲线经【两个指定控制点】到达终点坐标
+    S = smooth curveto 与前一条三次贝塞尔曲线相连，
+      第一个控制点为前一条曲线第二个控制点的对称点，
+      只需输入第二个控制点和终点，即可绘制一个三次贝塞尔曲线
+    Q = quadratic Bézier curve 画二次贝塞尔曲线经【一个指定控制点】到达终点坐标
+    T = smooth quadratic Bézier curveto 与前一条二次贝塞尔曲线相连，
+      控制点为前一条二次贝塞尔曲线控制点的对称点，
+      只需输入终点，即可绘制一个二次贝塞尔曲线
+    弧线类：
+    A = elliptical Arc 画椭圆曲线到指定坐标，
+      格式A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+      rx 椭圆x方向半轴大小
+      ry 椭圆y方向半轴大小
+      x-axis-rotation 椭圆的x轴与水平轴顺时针方向的夹角
+      large-arc-flag 有两个值（1：大角度弧线，0：小角度弧线）
+      sweep-flag 有两个值（1：顺时针至终点，0：逆时针至终点）
+      x 终点x坐标
+      y 终点y坐标
+    闭合类：
+    Z = closepath 绘制一条直线连接终点和起点，用来封闭图形
+    -->
+    <svg width="130" height="210" stroke="black" stroke-width="1" style="border: solid 1px black;">
+      <!--以下格式都能正确解析-->
+      <path d="M 30 30 L 100 30"/>
+      <path d="M30 120 L100 120"/>
+      <path d="M30 180L100 180"/>
+      <path d="M 30,60 L 100,60"/>
+      <path d="M30,90 L100,90"/>
+      <path d="M30,150L100,150"/>
+    </svg>
+    <svg width="500" height="500">
+      <path d="M30,100 L270,300 M30,100 H270 M30,100 V300" stroke="black" stroke-width="1"/>
+      <!-- <path d="M 30 100L 270,300, M 30 100 H270 M30 100 V300" stroke="black" stroke-width="1"/> -->
+      <g fill="red">
+        <circle cx="30" cy="100" r="2"></circle>
+        <circle cx="270" cy="300" r="2"></circle>
+        <circle cx="270" cy="100" r="2"></circle>
+        <circle cx="30" cy="300" r="2"></circle>
+      </g>
+      
+      <path d="M270,300 V100
+               M270,300 H30" stroke="blue" stroke-width="1" />
+    </svg>
+    <svg width="500" height="500">
+      <path d="M30,100 C100,20 190,20 270,100 S400,180 450,100" stroke="black" stroke-width="1" fill="white"/>
+      <!-- <path d="M30,100 C100,20 190,20 270,100 C340,20 430,20 510,100" stroke="green" stroke-width="1" fill="white"/> -->
+      <g fill="red">
+        <circle cx="30" cy="100" r="2" ></circle>
+        <circle cx="100" cy="20" r="2" ></circle>
+        <circle cx="190" cy="20" r="2" ></circle>
+        <circle cx="270" cy="100" r="2" ></circle>
+        <circle cx="350" cy="180" r="5" stroke="black" stroke-width="1" stroke-dasharray="3,3" fill="none"></circle>
+        <circle cx="400" cy="180" r="2" ></circle>
+        <circle cx="450" cy="100" r="2" ></circle>
+      </g>
+    </svg>
+    <svg width="500" height="500">
+      <path d="M30,100 Q190,20 270,100 T450,100" stroke="black" stroke-width="1" fill="white" />
+      <polyline points="30,100 190,20 270,100 350,180 450,100" stroke="black" stroke-width="1" 
+        stroke-dasharray="3,3" fill="none" />
+      <g fill="red">
+        <circle cx="30" cy="100" r="2" ></circle>
+        <circle cx="190" cy="20" r="2" ></circle>
+        <circle cx="270" cy="100" r="2" ></circle>
+        <circle cx="350" cy="180" r="5" stroke="black" stroke-width="1" stroke-dasharray="3,3" fill="none" ></circle>
+        <circle cx="450" cy="100" r="2" ></circle>
+      </g>
+    </svg>
+    <svg width="500" height="500">
+      <path d="M50 200 a200 150 0 1 0 150 -150 Z" fill="grey" stroke="blue" stroke-width="4" />
+    </svg>
+	</body>
+</html>

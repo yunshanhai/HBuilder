@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <p id="p1">1</p>
+    <p id="p2">2</p>
+    <span id="span1">span1</span>
+    <span id="span2">span2</span>
+    <label id="label1">label1</label>
+    <label id="label2">label2</label>
+    <script src="js/d3.v5.js"></script>
+    <script>
+      //选中body中所有p标签,并赋值,并返回所有的p标签
+      var body = d3.select('body');
+      var p = body.selectAll("p").text('Hello d3');
+      //修改所有选中p标签样式
+      p.style('color', 'blue').style('font-size', '22px');
+      //在body的末尾添加一个p标签
+      var p3 = body.append('p').text('p3').style('color', 'red').style('font-size', '22px');
+      //在id为p1的后面追加一个p标签
+      body.select('#p1').append('p').text('#p1 append');
+      //在body下的id为p1的标签前插入一个p标签
+      var p0 = body.insert('p', '#p1').text('p0').style('color', 'yellow').style('font-size', '22px');
+      //末尾插入一个标签,id设为p4，然后三秒钟后移除
+      var p4 = body.append('p').text('3秒后我被移除').attr('id', 'p4').style('color', 'green').style('font-size', '22px');
+      setTimeout(function(){
+        //方式1
+        p4.remove();
+        //方式2
+        // body.select('#p4').remove();
+      }, 3000);
+      //绑定一个数据到选择集
+      var span = body.selectAll('span');
+      span.datum('-span-');//一个数据
+      span.text(function(d,i){
+        //d为数据,i为索引
+        return '第'+i+':'+d;
+      });
+      //绑定一组数据到选择集
+      var labels = body.selectAll('label');
+      labels.data(['我是label1', '我是label2']).text(function(d, i){
+        return d + '----' + i;
+      })
+    </script>
+	</body>
+</html>

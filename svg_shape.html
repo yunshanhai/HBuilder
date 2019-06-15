@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body style="background-color:#272822">
+    <div style="width:22cm; margin: 0 auto; padding: 0.5cm; box-sizing: border-box;">
+      <svg width="21cm" height="27cm" style="background-color: white;">
+        <image x="0" y="0" width="100%" height="100%" xlink:href="images/b1.png"></image>
+        <image x="120" y="120" width="10cm" xlink:href="images/renwu1.jpg" stroke="black" strock-width="2" fill="red"></image>
+        <svg>
+          <!--
+          svg预定义七种形状
+          rect：矩形
+          circle：圆
+          ellipse：椭圆[ɪ'lɪps]
+          line：线段
+          polyline：折线
+          polygon：多边形['pɑlɪɡɑn]
+          path：路径
+          -->
+          <!--
+          stroke：定义线条颜色
+          stroke-width：定义线条宽度
+          stroke-opacity：定义线条不透明度
+          stroke-linecap：定义线条两头的样式，
+            butt：（默认）正常，
+            round：两头半圆（半圆超出线条长度），
+            square：两头正方形（相当于实际线条长度两端各增加线宽的长度）
+          stroke-dasharray：定义线条的虚线样式，按照：“实线长，空隙长，实线长，空隙长……”的格式来定义
+          fill：定义包围区域填充颜色
+          -->
+          <!--
+          opacity：定义整体不透明度，从0（透明）到1（不透明）逐渐过渡
+          stroke-opacity：定义线条不透明度
+          fill-opacity：定义填充不透明度
+          -->
+          <!--
+          矩形
+          x：矩形左上角x坐标
+          y：矩形左上角y坐标
+          width：宽度
+          height：高度
+          rx：对于圆角矩形，指定椭圆在x方向的半径
+          ry：对于圆角矩形，指定椭圆在y方向的半径
+          -->
+          <rect x="50" y="20" width="120" height="120" style="fill:blue; fill-opacity:0.5; stroke-width:5; stroke:pink; stroke-opacity:0.9;"/>
+          <rect x="180" y="20" rx="20" ry="20" width="120" height="120" style="fill:red;stroke:black;stroke-width:5;opacity:0.5"/>
+          <rect x="310" y="20" rx="20" ry="60" width="120" height="120" style="fill:red;stroke:black;stroke-width:5;opacity:0.5"/>
+          <!--
+            圆
+            cx、cy：定义圆心的xy坐标，不加默认0,0 
+            r：定义半径
+          -->
+          <circle cx="100" cy="900" r="50" stroke="black" stroke-width="2" fill="red" />
+          
+          <!--椭圆
+          cx和cy定义圆心的xy坐标
+          rx定义横向半径，ry定义纵向半径
+          -->
+          <ellipse cx="300" cy="900" rx="100" ry="50" style="fill:yellow; stroke:purple; stroke-width:2"/>
+          <!--直线
+          x1和y1定义起点坐标
+          x2和y2定义终点坐标-->
+          <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0); stroke-width:2; opacity: 0;"/>
+          <!--折线
+          points定义路径
+          -->
+          <polyline points="20,20 40,25 60,40 80,120 120,140 200,180" style="fill:none; stroke:black; stroke-width:3" />
+          <polyline points="0,40 40,40 40,80 80,80 80,120 120,120 120,160" style="fill:none; stroke:red; stroke-width:4" />
+          <!--多边形
+          points定义每个角的x和y坐标
+          -->
+          <polygon points="100,600 300,600 200,400" style="fill:lime; stroke:purple; stroke-width:5"/>
+          <line x1="200" y1="600" x2="200" y2="400" style="stroke:purple; stroke-width:5"/>
+          <line x1="250" y1="500" x2="100" y2="600" style="stroke:purple; stroke-width:5"/>
+          <line x1="150" y1="500" x2="300" y2="600" style="stroke:purple; stroke-width:5"/>
+          <polygon points="300,190 240,360 390,240 210,240 360,360" style="fill:lime; stroke:purple; stroke-width:5; fill-rule:nonzero;" />
+          <polygon points="100,190 40,360 190,240 10,240 160,360" style="fill:lime; stroke:purple; stroke-width:5; fill-rule: evenodd;" />
+          <!--路径 
+          大写：绝对坐标，小写：相对坐标
+          移动类：
+          M = moveto 将画笔移动到指定坐标
+          直线类：
+          L = lineto 画直线到指定坐标
+          H = horizontal lineto 画水平直线到指定坐标
+          V = vertical lineto 画垂直直线到指定坐标
+          曲线类：
+          C = curveto 画三次贝塞尔曲线经【两个指定控制点】到达终点坐标
+          S = smooth curveto 与前一条三次贝塞尔曲线相连，
+            第一个控制点为前一条曲线第二个控制点的对称点，
+            只需输入第二个控制点和终点，即可绘制一个三次贝塞尔曲线
+          Q = quadratic Bézier curve 画二次贝塞尔曲线经【一个指定控制点】到达终点坐标
+          T = smooth quadratic Bézier curveto 与前一条二次贝塞尔曲线相连，
+            控制点为前一条二次贝塞尔曲线控制点的对称点，
+            只需输入终点，即可绘制一个二次贝塞尔曲线
+          弧线类：
+          A = elliptical Arc 画椭圆曲线到指定坐标
+          闭合类：
+          Z = closepath 绘制一条直线连接终点和起点，用来封闭图形
+          -->
+          <path d="M 100 800 L 300 800 L 200 600 Z" />
+          <!--文本 
+          x 文字位置的x坐标
+          y 文字位置的y坐标
+          dx 相对于当前位置在x方向上平移的距离（正往右，负往左）
+          dy 相对于当前位置在y方向上平移的距离（正往下，负往上）
+          textLength 文字的显示长度（不足则拉长，足则压缩）
+          rotate 旋转角度（顺时针为正，逆时针为负）
+          font-size有效值从1开始到无限大-->
+          <text x="200" y="55" fill="red" font-size="45">I love SVG</text>
+          <text x="300" y="15" fill="red" transform="rotate(30 20,40)">I love SVG</text>
+          <defs>
+            <!--定义路径-->
+            <path id="path1" d="M 75,20 A 1,1 0 0,0 100,0" />
+          </defs>
+          <text x="10" y="100" style="fill:red;">
+            <!--使用路径-->
+            <textPath xlink:href="#path1">I love SVG I love SVG</textPath>
+          </text>
+          <!--文字换行-->
+          <text x="600" y="620" style="fill:red;">Several lines:
+            <tspan x="600" y="645" fill="green">First line</tspan>
+            <tspan x="600" y="670" fill="blue">Second line</tspan>
+          </text>
+          <!--超链接文字-->
+          <a xlink:href="http://www.w3schools.com/svg/" target="_blank">
+            <text x="600" y="580" fill="red">link to w3schools</text>
+          </a>
+          <!--线的两头样式-->
+          <g fill="none" stroke="black" stroke-width="6">
+            <path stroke-linecap="butt" d="M 505 420 l 205 0" />
+            <path stroke="red" stroke-opacity="0.5" d="M 505 420 l 205 0" />
+            <path stroke-linecap="round" d="M 505 440 l 205 0" />
+            <path stroke="red" stroke-opacity="0.5" d="M 505 440 l 205 0" />
+            <path stroke-linecap="square" d="M 505 460 l 205 0" />
+            <path stroke="red" stroke-opacity="0.5" d="M 505 460 l 205 0" />
+          </g>
+          <!--虚线-->
+          <g stroke="black" stroke-width="2">
+            <path stroke-dasharray="2,2" d="M 505 300 l 605 0" />
+            <path stroke-dasharray="2,2,6,2" d="M 505 310 l 605 0" />
+            <path stroke-dasharray="1,2" d="M 505 320 l 605 0" />
+            <path stroke-dasharray="1,2" d="M 505 330 l 605 0" stroke-width="1" />
+            <path stroke-dasharray="1,3" d="M 505 340 l 605 0" stroke-width="1" />
+            <path stroke-dasharray="1,4" d="M 505 350 l 605 0" stroke-width="1" />
+          </g>
+          <!--模糊-->
+          <defs>
+            <!--所有互联网的SVG滤镜定义在<defs>元素中-->
+            <filter id="f1" x="0" y="0">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
+            </filter>
+          </defs>
+          <rect x="500" y="20" width="90" height="90" stroke="green" stroke-width="3" fill="yellow" filter="url(#f1)" />
+          <!--阴影-->
+          <defs>
+            <filter id="f2" x="0" y="0" width="200%" height="200%">
+              <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+              <feGaussianBlur result="blurOut" in="offOut" stdDeviation="10" />
+              <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+            </filter>
+          </defs>
+          <rect x="500" y="130" width="90" height="90" stroke="green" stroke-width="3" fill="yellow" filter="url(#f2)" />
+          
+        </svg>
+      </svg>
+    </div>
+	</body>
+</html>
