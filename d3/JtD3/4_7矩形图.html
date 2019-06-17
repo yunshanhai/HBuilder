@@ -31,8 +31,9 @@
       var enterRect = updateRect.enter();
       //获取数据的exit部分
       var exitRect = updateRect.exit();
-      
-      updateRect.attr('fill', 'steelblue')
+      //数据绘制
+      var drawRect = function(rect){
+        rect.attr('fill', 'steelblue')
         .classed('myrect', true)
         .attr('x', function(d,i){
           return padding.left + (rectWidth + gap) * i;
@@ -44,21 +45,9 @@
         .attr('height', function(d,i){
           return d;
         });
-      
-      enterRect.append('rect')
-        .classed('myrect', true)
-        .attr('fill', 'steelblue')
-        .attr('x', function(d,i){
-          return padding.left + (rectWidth + gap) * i;
-        })
-        .attr('y', function(d,i){
-          return height - padding.bottom - d;
-        })
-        .attr('width', rectWidth)
-        .attr('height', function(d,i){
-          return d;
-        });
-      
+      }
+      updateRect.call(drawRect);
+      enterRect.append('rect').call(drawRect);
       exitRect.remove();
       
       //获取文字的更新部分
@@ -67,49 +56,31 @@
       var enterText = updateText.enter();
       //获取文字的exit部分
       var exitText = updateText.exit();
-      
-      updateText.attr('fill', 'white')
-      .classed('mytext', true)
-      .attr('font-size', '14px')
-      /**
-       * text-anchor:
-       * start 文字第一个字位于起始位置的左侧
-       * middle 文字的中心位于其实位置上
-       * end 文字的最后一个字符靠近起始位置
-       */
-      .attr('text-anchor', 'middle') 
-      .attr('x', function(d,i){
-        return padding.left + (rectWidth + gap) * i;
-      })
-      .attr('y', function(d,i){
-        return height - padding.bottom - d;
-      })
-      .attr('dx', rectWidth/2)
-      .attr('dy', '1em');
-      
-      enterText.append('text')
-        .classed('mytext', true)
-        .attr('fill', 'white')
-        .attr('font-size', '14px')
-        /**
-         * text-anchor:
-         * start 文字第一个字位于起始位置的左侧
-         * middle 文字的中心位于其实位置上
-         * end 文字的最后一个字符靠近起始位置
-         */
-        .attr('text-anchor', 'middle') 
-        .attr('x', function(d,i){
-          return padding.left + (rectWidth + gap) * i;
-        })
-        .attr('y', function(d,i){
-          return height - padding.bottom - d;
-        })
-        .attr('dx', rectWidth/2)
-        .attr('dy', '1em')
-        .text(function(d){
-          return d;
-        });
-      
+      var drawText = function(text){
+        text.attr('fill', 'white')
+          .classed('mytext', true)
+          .attr('font-size', '14px')
+          /**
+           * text-anchor:
+           * start 文字第一个字位于起始位置的左侧
+           * middle 文字的中心位于其实位置上
+           * end 文字的最后一个字符靠近起始位置
+           */
+          .attr('text-anchor', 'middle') 
+          .attr('x', function(d,i){
+            return padding.left + (rectWidth + gap) * i;
+          })
+          .attr('y', function(d,i){
+            return height - padding.bottom - d;
+          })
+          .attr('dx', rectWidth/2)
+          .attr('dy', '1em')
+          .text(function(d){
+            return d;
+          });
+      }
+      updateText.call(drawText);
+      enterText.append('text').call(drawText);
       exitText.remove();
     }
     draw();
@@ -121,46 +92,6 @@
       dataset.push(Math.floor(Math.random() * 100));
       draw();
     }
-    // svg.selectAll('.myrect')
-    //   .data(dataset)
-    //   .enter()
-    //   .append('rect')
-    //   .attr('fill', 'steelblue')
-    //   .attr('x', function(d,i){
-    //     return padding.left + (rectWidth + gap) * i;
-    //   })
-    //   .attr('y', function(d,i){
-    //     return height - padding.bottom - d;
-    //   })
-    //   .attr('width', rectWidth)
-    //   .attr('height', function(d,i){
-    //     return d;
-    //   });
-    // 
-    // var text = svg.selectAll('.mytext')
-    //   .data(dataset)
-    //   .enter()
-    //   .append('text')
-    //   .attr('fill', 'white')
-    //   .attr('font-size', '14px')
-    //   /**
-    //    * text-anchor:
-    //    * start 文字第一个字位于起始位置的左侧
-    //    * middle 文字的中心位于其实位置上
-    //    * end 文字的最后一个字符靠近起始位置
-    //    */
-    //   .attr('text-anchor', 'middle') 
-    //   .attr('x', function(d,i){
-    //     return padding.left + (rectWidth + gap) * i;
-    //   })
-    //   .attr('y', function(d,i){
-    //     return height - padding.bottom - d;
-    //   })
-    //   .attr('dx', rectWidth/2)
-    //   .attr('dy', '1em')
-    //   .text(function(d){
-    //     return d;
-    //   });
   </script>
 	</body>
 </html>
