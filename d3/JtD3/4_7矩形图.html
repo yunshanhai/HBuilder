@@ -1,97 +1,103 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-	</head>
-	<body>
-  <button type="button" onclick="mysort()">排序</button>
-  <button type="button" onclick="myadd()">增加数据</button>
-  <script src="../js/d3.v3.js"></script>
-  <script>
-    
-    var 
-      width = 400, //svg宽
-      height = 400, //svg高
-      padding = { top:20, right:20, bottom:20, left:20 }, //svg边距
-      rectWidth = 30, //柱形宽
-      gap = 5;  //柱形间隔
-    
-    var svg = d3.select('body')
-      .append('svg')
-      .attr('width', width)
-      .attr('height', height);
-    
-    var dataset = [50, 43, 120, 87, 99, 167, 142];
-    
-    function draw(){
-      //获取数据的update部分
-      var updateRect = svg.selectAll('.myrect').data(dataset);
-      //获取数据的enter部分
-      var enterRect = updateRect.enter();
-      //获取数据的exit部分
-      var exitRect = updateRect.exit();
-      //数据绘制
-      var drawRect = function(rect){
-        rect.attr('fill', 'steelblue')
-        .classed('myrect', true)
-        .attr('x', function(d,i){
-          return padding.left + (rectWidth + gap) * i;
-        })
-        .attr('y', function(d,i){
-          return height - padding.bottom - d;
-        })
-        .attr('width', rectWidth)
-        .attr('height', function(d,i){
-          return d;
-        });
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <button type="button" onclick="mysort()">排序</button>
+    <button type="button" onclick="myadd()">增加数据</button>
+    <script src="../js/d3.v3.js"></script>
+    <script>
+      var
+        width = 400, //svg宽
+        height = 400, //svg高
+        padding = {
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20
+        }, //svg边距
+        rectWidth = 30, //柱形宽
+        gap = 5; //柱形间隔
+
+      var svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+      var dataset = [50, 43, 120, 87, 99, 167, 142];
+
+      function draw() {
+        //获取数据的update部分
+        var updateRect = svg.selectAll('.myrect').data(dataset);
+        //获取数据的enter部分
+        var enterRect = updateRect.enter();
+        //获取数据的exit部分
+        var exitRect = updateRect.exit();
+        //数据绘制
+        var drawRect = function(rect) {
+          rect.attr('fill', 'steelblue')
+            .classed('myrect', true)
+            .attr('x', function(d, i) {
+              return padding.left + (rectWidth + gap) * i;
+            })
+            .attr('y', function(d, i) {
+              return height - padding.bottom - d;
+            })
+            .attr('width', rectWidth)
+            .attr('height', function(d, i) {
+              return d;
+            });
+        }
+        updateRect.call(drawRect);
+        enterRect.append('rect').call(drawRect);
+        exitRect.remove();
+
+        //获取文字的更新部分
+        var updateText = svg.selectAll('.mytext').data(dataset);
+        //获取文字的enter部分
+        var enterText = updateText.enter();
+        //获取文字的exit部分
+        var exitText = updateText.exit();
+        var drawText = function(text) {
+          text.attr('fill', 'white')
+            .classed('mytext', true)
+            .attr('font-size', '14px')
+            /**
+             * text-anchor:
+             * start 文字第一个字位于起始位置的左侧
+             * middle 文字的中心位于其实位置上
+             * end 文字的最后一个字符靠近起始位置
+             */
+            .attr('text-anchor', 'middle')
+            .attr('x', function(d, i) {
+              return padding.left + (rectWidth + gap) * i;
+            })
+            .attr('y', function(d, i) {
+              return height - padding.bottom - d;
+            })
+            .attr('dx', rectWidth / 2)
+            .attr('dy', '1em')
+            .text(function(d) {
+              return d;
+            });
+        }
+        updateText.call(drawText);
+        enterText.append('text').call(drawText);
+        exitText.remove();
       }
-      updateRect.call(drawRect);
-      enterRect.append('rect').call(drawRect);
-      exitRect.remove();
-      
-      //获取文字的更新部分
-      var updateText = svg.selectAll('.mytext').data(dataset);
-      //获取文字的enter部分
-      var enterText = updateText.enter();
-      //获取文字的exit部分
-      var exitText = updateText.exit();
-      var drawText = function(text){
-        text.attr('fill', 'white')
-          .classed('mytext', true)
-          .attr('font-size', '14px')
-          /**
-           * text-anchor:
-           * start 文字第一个字位于起始位置的左侧
-           * middle 文字的中心位于其实位置上
-           * end 文字的最后一个字符靠近起始位置
-           */
-          .attr('text-anchor', 'middle') 
-          .attr('x', function(d,i){
-            return padding.left + (rectWidth + gap) * i;
-          })
-          .attr('y', function(d,i){
-            return height - padding.bottom - d;
-          })
-          .attr('dx', rectWidth/2)
-          .attr('dy', '1em')
-          .text(function(d){
-            return d;
-          });
+      draw();
+
+      function mysort() {
+        dataset.sort(d3.ascending);
+        draw();
       }
-      updateText.call(drawText);
-      enterText.append('text').call(drawText);
-      exitText.remove();
-    }
-    draw();
-    function mysort(){
-      dataset.sort(d3.ascending);
-      draw();
-    }
-    function myadd(){
-      dataset.push(Math.floor(Math.random() * 100));
-      draw();
-    }
-  </script>
-	</body>
+
+      function myadd() {
+        dataset.push(Math.floor(Math.random() * 100));
+        draw();
+      }
+    </script>
+  </body>
 </html>
