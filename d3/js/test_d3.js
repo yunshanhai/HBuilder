@@ -67,5 +67,5 @@ function test_svg2(){
 }
 
 function test_drag1(){
-  d3.select("#p1").call(d3.drag().on("start", started));
+  // d3.select("#p1").call(d3.drag().on("start", started));
 }

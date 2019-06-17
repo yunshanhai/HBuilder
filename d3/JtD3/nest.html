@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Nest 嵌套结构</title>
+	</head>
+	<body>
+    <script src="../js/d3.v5.js"></script>
+    <script>
+      /**
+       * 嵌套结构
+       */
+      var persons = [
+        {id:100, name:'赵某某', year:1989, hometown:'北京', sex:'男', age:48},
+        {id:101, name:'钱某某', year:1987, hometown:'北京', sex:'男', age:42},
+        {id:102, name:'孙某某', year:1988, hometown:'上海', sex:'男', age:45},
+        {id:103, name:'李某某', year:1987, hometown:'广州', sex:'女', age:33},
+        {id:104, name:'周某某', year:1989, hometown:'上海', sex:'女', age:31}
+      ];
+      // console.log(persons);
+      var nest = d3.nest()
+        .key(function(d){ return d.year})
+        // .sortKeys(d3.descending) //按键进行排序
+        .key(function(d){ return d.hometown})
+        .entries(persons);
+      console.log(nest);
+      
+      var nest2 = d3.nest()
+        .key(function(d){ return d.sex; })
+        //按值进行排序
+        .sortValues(function(a, b){
+          return d3.descending(a.age, b.age);
+        })
+        .entries(persons);
+      console.log(nest2);
+      
+      var nest3 = d3.nest()
+        .key(function(d){ return d.sex})
+        //使用rollup()将分组的数组元素变成元素长度
+        .rollup(function(values){ return values.length; })
+        .entries(persons);
+      console.log(nest3);
+      
+      var map = d3.nest()
+        .key(function(d){ return d.sex; })
+        .map(persons, d3.map);
+      console.log(map);
+    </script>
+	</body>
+</html>
