@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>序数比例尺</title>
+	</head>
+	<body>
+    <script src="../js/d3.v3.js"></script>
+    <script>
+      var ordinal = d3.scale.ordinal()
+        .domain([1,2,3,4,5])  //设置定义域
+        .range([10,20,30,40,50]); //设置值域
+      console.log(ordinal(1));
+      console.log(ordinal(3));
+      console.log(ordinal(5));
+      console.log(ordinal(8));//不在定义域范围内
+      
+      console.log('------------d3.scale.ordinal.rangePoints-------------');
+      /**
+       * rangePoints(interval[,padding]) interval是区间的意思[start, end]；padding可选，解释见下方
+       */
+      var ordinal = d3.scale.ordinal()
+        .domain([1,2,3,4,5])  //设置定义域
+        .rangePoints([0,100]);  //设置值域的起始点
+      
+      console.log(ordinal.range());//根据定义域和值域起始点自动生成值域
+      console.log(ordinal(1));
+      console.log(ordinal(3));
+      console.log(ordinal(5));
+      
+      /**
+       * rangePoints的第二个参数padding的解释
+       * 定义域domain([1,2,3,4,5])设置了5个数，rangePoints的第一个参数为[0,100]，
+       * 则生成的值域为[0,25,50,75,100]共五个数，将这五个数从0到100画一条线段，则
+       * 五个点切割了等宽的四条线段，每个线段的长度称为step，100分为4个step时，每个step=25.
+       * padding的单位就是以这个ste为准，当padding设为1时，1 padding（ = 1 step）+ 4 step = 5 step，
+       * 则step = 100 / 5 = 20。值域会把padding平分到线段的两侧，每侧都为padding/2
+       * 最终的线段就变成了6个：1/2step,step,step,step,step,1/2step，
+       * 设置padding后返回的值域也发生了变化，不设padding时返回的是4个线段的五个点（包含首尾）
+       * 设置padding时返回的是6个线段的五个点（不包含首尾）
+       */
+      ordinal.rangePoints([0,100],1);
+      console.log(ordinal.range());
+      /**
+       * 关于step的解释
+       * ordinal.range()返回等差值数组[0,25,50,75,100]，这个等差25就是step
+       * 未设置padding时，0-25为1个step，25-50为1个step，0-100共4个step
+       */
+      
+      var svg = d3.select('body').append('svg').attr('width', 400).attr('height', 400);
+      svg.append('path').attr('d', 'M10,10h'+(100*2)).attr('stroke', 'black').attr('stroke-width', 1);
+      svg.selectAll('.line').data(ordinal.range()).enter()
+        .append('line').attr('stroke', 'black').attr('stroke-width', 1)
+        .attr('x1', function(d){
+          return d*2+10;
+        })
+        .attr('x2', function(d){
+          return d*2+10
+        })
+        .attr('y1', 10)
+        .attr('y2', 15);
+      
+      console.log('------------d3.scale.ordinal.rangeBands-------------');
+      /**
+       * rangeBands(interval[,padding[,outerPadding]]) interval值域区间，padding和outerPadding都可选
+       */
+      var bands = d3.scale.ordinal()
+        .domain([1,2,3,4,5])
+        .rangeBands([0,100]);
+      
+      //返回波段宽度
+      console.log(bands.rangeBand());
+      //返回每个波段的起始点
+      console.log(bands.range());
+      
+      bands.rangeBands([0,100], 0.5, 0.2);
+      //返回波段宽度
+      var bandWidth = bands.rangeBand();
+      console.log(bandWidth);
+      //返回每个波段的起始点
+      console.log(bands.range());
+      
+      svg.append('path').attr('d', 'M10,30h'+(100*2)).attr('stroke', 'green').attr('stroke-width', 1);
+      svg.selectAll('.line').data(bands.range()).enter()
+        .append('line').attr('stroke', 'red').attr('stroke-width', 1)
+        .attr('x1', function(d){
+          return d*2+10;
+        })
+        .attr('x2', function(d){
+          return d*2+10 + bandWidth*2
+        })
+        .attr('y1', 30)
+        .attr('y2', 30);
+    </script>
+	</body>
+</html>

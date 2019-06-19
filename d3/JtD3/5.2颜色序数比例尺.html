@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <script src="../js/d3.v3.js"></script>
+    <script>
+      function draw(colorArray){
+        //svg边缘padding
+        var r = 10; //圆半径
+        var d = r * 2; //圆直径
+        var padding = {top:r, right:r, bottom:r, left:r, circle:d};
+        
+        var column = colorArray.length; //颜色数量
+        var row = parseInt(column / 10);
+        var width = padding.left + (d + padding.circle) * column - padding.circle + padding.right;
+        var height = padding.top + (d + padding.circle) * row - padding.circle + padding.top;
+        console.log('svg width:'+width+',height:'+height);
+        var svg = d3.select('body').append('svg')
+          .attr('width', width)
+          .attr('height', height);
+        svg.selectAll('circle').data(colorArray)
+          .enter().append('circle')
+          .attr('cx', function(dd,i){
+            var cx = padding.left + r + (d + padding.circle) * (i % 10);
+            // console.log('cx'+ i + ':' + cx);
+            return cx;
+          })
+          .attr('cy', function(dd,i){
+            var curRow = parseInt(i / 10); 
+            var cy = padding.top + r + (d + padding.circle) * (curRow) + padding.bottom;
+            // console.log('cy'+ i + ':' + cy);
+            return cy;
+          })
+          .attr('r', r)
+          .attr('fill', function(d,i){
+            return d;
+          });
+      }
+      
+      var color10 = d3.scale.category10().range();
+      //通过比例尺的range函数设定或者获取值域
+      // draw(color10.range());
+      var color20 = d3.scale.category20().range();
+      // draw(color20.range());
+      var color20b = d3.scale.category20b().range();
+      // draw(color20b.range());
+      var color20c = d3.scale.category20c().range();
+      // draw(color20c.range());
+      var colors = d3.merge([color10,color20,color20b,color20c]);//合并数组
+      d3.shuffle(colors);//随机排列
+      console.log(colors);
+      draw(colors);
+      
+    </script>
+  </body>
+</html>

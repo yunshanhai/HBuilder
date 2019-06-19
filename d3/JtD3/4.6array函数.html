@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <script src="../js/d3.v3.js"></script>
+    <script>
+      /**
+       * d3.range([start,] stop [, step]); stop不包括，比如要生成0-4，需要设置stop为5
+       */
+      //生成0-4 stop:5
+      var dataset = d3.range(5);
+      console.log(dataset);
+      //生成1-5 start:1,stop:6
+      dataset = d3.range(1,6);
+      console.log(dataset);
+      //生成2,4,6,8,10 start:2,stop:11或12都可,step:2
+      dataset = d3.range(2,11,2);
+      console.log(dataset);
+      
+      /**
+       * d3.merge([array1, array2, ...]) 合并数组，数量不限
+       */
+      var dataset = d3.merge([[1,2], [3,4], [5,6]]);
+      console.log(dataset);
+    </script>
+	</body>
+</html>
