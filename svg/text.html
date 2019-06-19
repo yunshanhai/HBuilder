@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <svg width="100%" height="300">
+      <!--文本 
+      x 文字位置的x坐标
+      y 文字位置的y坐标
+      dx 相对于当前位置在x方向上平移的距离（正往右，负往左）
+      dy 相对于当前位置在y方向上平移的距离（正往下，负往上）
+      textLength 文字的显示长度（不足则拉长，足则压缩）
+      rotate 旋转角度，transform="rotate(angle x y)" angle是旋转的角度，正为顺时针，负为逆时针，x和y是基坐标
+      font-size有效值从1开始到无限大-->
+      <text x="10" y="55" fill="red" font-size="45">I love SVG</text>
+      <text x="300" y="15" fill="green" transform="rotate(10 300 15)">文字角度旋转</text>
+      <defs>
+        <!--定义路径-->
+        <path id="path1" d="M 150,150 C 180,260 220,160 300,150" />
+      </defs>
+      <!--感觉文字用了路径就不要再用xy坐标了，容易出乱七八糟的问题，试试给下面设置x="150" y="150"-->
+      <text style="fill:red;">
+        <!--使用路径-->
+        <textPath xlink:href="#path1">I love SVG I love SVG</textPath>
+      </text>
+      <!--文字换行-->
+      <text x="10" y="120" style="fill:red;">文字换行:
+        <tspan x="10" y="140" fill="green">First line</tspan>
+        <tspan x="10" y="160" fill="blue">Second line</tspan>
+      </text>
+      <!--超链接文字-->
+      <a xlink:href="http://www.w3schools.com/svg/" target="_blank">
+        <text x="10" y="100" fill="blue">链接到w3schools</text>
+      </a>
+    </svg>
+	</body>
+</html>
