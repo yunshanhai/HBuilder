@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>线性比例尺</title>
+	</head>
+	<body>
+    <script src="../js/d3.v3.js"></script>
+    <script>
+      var linear = d3.scale.linear()
+        .domain([0, 20]) //设置定义域
+        .range([0, 100]);//设置值域
+      
+      //获取定义域(domain()传array则为设置，不传则为获取)
+      console.log('定义域：' + linear.domain());
+      //获取值域(range()传array则为设置，不传则为获取）
+      console.log('值域：' + linear.range());
+      //输出一个在定义域范围内的值对应的值域值
+      console.log('linear(10):' + linear(10));
+      //输出一个在值域内的值对应的定义域的值
+      console.log('linear.invert(90):' + linear.invert(90));
+      //rangeRound测试报错,不知道怎么用
+      // console.log(linear.range([0,200.123]).rangeRound());
+      //输出一个超出定义域范围的值(默认可以输出定义域范围外的值）
+      console.log('超出定义域的值21：' + linear(21));
+      //设置linear.clamp(true),则超出范围外的值被返回值域最大值或最小值
+      linear.clamp(true);//默认false,clamp有固定的意思,默认不固定值域,值域外的也返回
+      //21超出定义域,返回值域上限值100
+      console.log('超出定义域的值21：' + linear(21));
+      //linear.ticks([count])自动返回具有代表性的定义域的值,默认返回10个
+      console.log(linear.ticks());
+      console.log(linear.ticks(5));
+    </script>
+	</body>
+</html>
