@@ -19,8 +19,17 @@
       console.log('linear(10):' + linear(10));
       //输出一个在值域内的值对应的定义域的值
       console.log('linear.invert(90):' + linear.invert(90));
-      //rangeRound测试报错,不知道怎么用
-      // console.log(linear.range([0,200.123]).rangeRound());
+      //rangeRound 使用range设置值域,使用linear(n)可能会输出一个小数位数很多的数值
+      //使用rangeRound设置值域后,linear(n)返回的值会进行四舍五入到一个整数
+      console.log(linear(11.1));
+      linear.rangeRound([0, 100]);
+      console.log(linear(11.1));
+      //如果定义域中有无穷小数或者位数比较多的小数,可以使用nice()方法将定义域控制在一个比较工整的数值范围
+      //但是nice并不一定会四舍五入返回一个整数,视情况而定(貌似只有小数则保留一位，有整数则省略小数)
+      linear.domain([0.12300000, 0.4888888888]).nice();
+      console.log('nice():' + linear.domain());
+      linear.domain([33.611111, 45.97745]).nice();
+      console.log('nice():' + linear.domain());
       //输出一个超出定义域范围的值(默认可以输出定义域范围外的值）
       console.log('超出定义域的值21：' + linear(21));
       //设置linear.clamp(true),则超出范围外的值被返回值域最大值或最小值
@@ -30,6 +39,17 @@
       //linear.ticks([count])自动返回具有代表性的定义域的值,默认返回10个
       console.log(linear.ticks());
       console.log(linear.ticks(5));
+      //linear.tickFormat(count[,format]) 设置定义域内具有代表性值的表示形式(格式)
+      var linear = d3.scale.linear().domain([-20, 20]).range([0, 100]);
+      var ticks = linear.ticks(5);
+      console.log(ticks);
+      //感觉用的挺别扭,linear.tickFormat(count[,format])返回的是一个方法,还得遍历ticks应用到每一个tick
+      var tickFormat = linear.tickFormat(5, '+');
+      console.log(tickFormat);
+      for(var i=0; i<ticks.length; i++){
+        ticks[i] = tickFormat(ticks[i]);
+      }
+      console.log(ticks);
     </script>
 	</body>
 </html>
