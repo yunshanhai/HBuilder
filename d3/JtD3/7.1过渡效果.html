@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>过渡效果</title>
+	</head>
+	<body>
+    <script src="../js/d3.v3.js"></script>
+    <script>
+      var svg = d3.select('body').append('svg').attr('height', 400).attr('width', 400);
+      
+      svg.append('rect')
+        .attr('fill', 'steelblue')
+        .attr('x', 10)
+        .attr('y', 10)
+        .attr('width', 100)
+        .attr('height', 30)
+        .transition()//默认无延迟,持续时长250ms
+        .delay(1000) //延迟1秒执行
+        .duration(1000) //动画持续时间1000毫秒
+        //linear 线性变化,随时间增长稳定速度增加
+        //cubic 默认的方式,逐渐加快速度
+        //clastic 像弹簧似的接近终点
+        //back 先往回缩一点,再冲到终点
+        //bounce 在终点处弹跳几次
+        .ease('clastic') //动画过渡样式
+        .attr('width', 300)
+        .transition()//默认无延迟,持续时长250ms
+        // 实测,这里delay的执行感觉有bug,如果第一个动画设置了1000毫秒,持续时间1000毫秒,延迟+执行总共是2000毫秒
+        // 第二个动画的delay设置2000毫秒以内会有冲突,导致第一个动画不执行或者执行不完整,2000毫秒以上正常.如果
+        // 第二个动画不设置delay,则会依次执行第一个动画的delay|第一个动画|第二个动画,所以除第一个之外其他最好
+        // 别设置delay
+        // .delay(2000) //延迟1秒执行
+        .duration(1000) //动画持续时间1000毫秒
+        .ease('bounce') //动画过渡样式
+        .attr('height', 40)
+        .transition()
+        .duration(1000)
+        .ease('linear')
+        .attr('fill', 'red');
+      
+      var rect = svg.append('rect')
+        .attr('fill', 'steelblue')
+        .attr('x', 10)
+        .attr('y', 50)
+        .attr('width', 100)
+        .attr('height', 30);
+      
+      var rectTran = rect.transition()
+        .duration(2000)
+        //d是被绑定数据,i是索引号,a是width的初始值100
+        .attrTween('width', function(d, i, a){
+          //t的范围是[0,1],0表示变化的起始,1表示变化的结束
+          return function(t){
+            //返回 100 + [0,1] * 290
+            return Number(a) + t * 290;
+          }
+        });
+    </script>
+	</body>
+</html>
