@@ -29,48 +29,95 @@
       //用户坐标轴的线性比例尺
       var xScale = d3.scale.linear()
         .domain([0, 10])
-        .range([0, 300]);
+        .range([0, 300]);//值域的大小决定了图的实际大小
       
       //定义坐标轴
       var axisTop = d3.svg.axis()//创建一个新的坐标轴
         //axis.scale([scale])设定或获取坐标轴的比例尺
         .scale(xScale) //使用上面定义的比例尺
-        //axis.orient([orientation]) 设定或获取坐标轴的方向,有top向上/bottom向下/left向左/right向右四个值
-        .orient('top'); //刻度向下
+        //axis.orient([orientation]) 设定或获取坐标轴的刻度方向,有top向上/bottom向下/left向左/right向右四个值
+        .tickValues([1,2,3,7,8,9,11])//设定显示哪些刻度
+        
+        .orient('bottom'); //刻度向下
       //在gAxis中添加一个包含坐标轴各元素的g元素
       var gAxisTop = svg.append('g')
-        .attr('transform', 'translate(80,380)')//平移到80,80
+        .attr('transform', 'translate(80,80)')//平移到80,80
         .attr('class', 'axis');
       //在gAxis中绘制坐标
       axisTop(gAxisTop);//将此坐标轴应用到指定的选择集上,该选择集需要包含有svg或g元素
-      
-      //上方坐标轴,刻度朝下
+      //
+      console.log(axisTop.scale());
+      //获取坐标轴的刻度方向
+      console.log('刻度方向：' + axisTop.orient());
+      //获取坐标轴的分隔数,默认为10,刻度为11个,设定为5,则分隔数为5个,刻度为6个
+      console.log('刻度分隔数：' + axisTop.ticks());
+      //获取坐标轴显示哪些刻度
+      console.log('显示哪些刻度：' + axisTop.tickValues());
+
+      //下方坐标轴,刻度朝上
       var axisBottom = d3.svg.axis()
         .scale(xScale)
-        .orient('bottom');
+        //设定刻度长度
+        //如果设置一个值，则为全部刻度
+        //如果设置两个值，则第二个为两边刻度
+        .tickSize(4, 8)
+        // .innerTickSize(4) //单独设置内部刻度长度
+        // .outerTickSize(20)//单独设置两边刻度长度
+        .tickFormat(d3.format('$0.1f'))//需要使用d3.format()
+        // .tickFormat(function(value){return '$' + value;})
+        .orient('top');
       var gAxisBottom = svg.append('g')
-        .attr('transform', 'translate(80, 80)')
+        .attr('transform', 'translate(80, 420)')
         .attr('class', 'axis');
       axisBottom(gAxisBottom);
       
-      //右侧坐标轴,刻度向左
+      console.log(axisBottom.tickSize());
+      console.log('内部刻度长度：' + axisBottom.innerTickSize());
+      console.log('两边刻度长度：' + axisBottom.outerTickSize());
+      //返回的是方法
+      console.log(axisBottom.tickFormat());
+      
+      
+      //左侧坐标轴,刻度向右
       var axisLeft = d3.svg.axis()
         .scale(xScale)
-        .orient('left');
+        .orient('right');
       var gAxisLeft = svg.append('g')
-        .attr('transform', 'translate(380, 80)')
+        .attr('transform', 'translate(80, 80)')
         .attr('class', 'axis');
       axisLeft(gAxisLeft);
       
-      //左侧坐标轴,刻度向右
+      //右侧坐标轴,刻度向左
       var axisRight = d3.svg.axis()
         .scale(xScale)
-        .orient('right');
+        .orient('left');
       var gAxisRight = svg.append('g')
-        .attr('transform', 'translate(80,80)')
+        .attr('transform', 'translate(380,80)')
         .attr('class', 'axis');
       axisRight(gAxisRight);
       
+      var pow = d3.scale.pow()
+        .exponent(2)
+        .domain([1, 10])
+        .range([0, 500]);
+      var axis1 = d3.svg.axis()
+        .scale(pow)
+        .orient('top');
+      var gAxis1 = svg.append('g')
+        .attr('transform', 'translate(80,460)')
+        .attr('class', 'axis');
+      axis1(gAxis1);
+      
+      var log = d3.scale.log()
+        .domain([0.01, 1])
+        .range([0, 500]);
+      var axis2 = d3.svg.axis()
+        .scale(log)
+        .orient('top');
+      var gAxis2 = svg.append('g')
+        .attr('transform', 'translate(80, 500)')
+        .attr('class', 'axis');
+      axis2(gAxis2);
     </script>
 	</body>
 </html>

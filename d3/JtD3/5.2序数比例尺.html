@@ -10,12 +10,12 @@
       var ordinal = d3.scale.ordinal()
         .domain([1,2,3,4,5])  //设置定义域
         .range([10,20,30,40,50]); //设置值域
-      console.log(ordinal(1));
-      console.log(ordinal(3));
-      console.log(ordinal(5));
-      console.log(ordinal(8));//不在定义域范围内
+      console.log('1对应的值：' + ordinal(1));
+      console.log('3对应的值：' + ordinal(3));
+      console.log('5对应的值：' + ordinal(5));
+      console.log('8对应的值（定义域范围外）：' + ordinal(8));//不在定义域范围内
       
-      console.log('------------d3.scale.ordinal.rangePoints-------------');
+      console.log('------------d3.scale.ordinal.rangePoints 序数点值-------------');
       /**
        * rangePoints(interval[,padding]) interval是区间的意思[start, end]；padding可选，解释见下方
        */
@@ -47,8 +47,13 @@
        * 未设置padding时，0-25为1个step，25-50为1个step，0-100共4个step
        */
       
-      var svg = d3.select('body').append('svg').attr('width', 400).attr('height', 400);
-      svg.append('path').attr('d', 'M10,10h'+(100*2)).attr('stroke', 'black').attr('stroke-width', 1);
+      var svg = d3.select('body').append('svg')
+        .attr('width', 400)
+        .attr('height', 400);
+      svg.append('path')
+        .attr('d', 'M10,10h'+(100*2))
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1);
       svg.selectAll('.line').data(ordinal.range()).enter()
         .append('line').attr('stroke', 'black').attr('stroke-width', 1)
         .attr('x1', function(d){
@@ -60,9 +65,10 @@
         .attr('y1', 10)
         .attr('y2', 15);
       
-      console.log('------------d3.scale.ordinal.rangeBands-------------');
+      console.log('------------d3.scale.ordinal.rangeBands 序数波段-------------');
       /**
-       * rangeBands(interval[,padding[,outerPadding]]) interval值域区间，padding和outerPadding都可选
+       * rangeBands(interval[,padding[,outerPadding]])
+       * interval值域区间，padding和outerPadding都可选
        */
       var bands = d3.scale.ordinal()
         .domain([1,2,3,4,5])
