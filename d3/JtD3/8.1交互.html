@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>交互式入门</title>
+	</head>
+	<body>
+    <p id="para1">原生点击document.getElementById('xx').onclick=function(){...}</p>
+    <p id="para2">d3.select('xx').on('click', function(){...})</p>
+    <p id="para3">d3同一事件多个监听器click.first click.second click.xx...</p>
+    <p id="para4">d3移除监听器d3.select('xx').on('click',null)（点击一次后移除）</p>
+    <script src="../js/d3.v3.js"></script>
+    <script>
+      //原生添加点击事件
+      var para = document.getElementById('para1');
+      para.onclick = function(){
+        this.innerHTML = 'Thank you';
+      }
+      
+      //d3添加点击事件
+      d3.select('#para2').on('click', function(){
+        d3.select(this).text('Thank you');
+      })
+      
+      //d3同一事件添加多个监听器(事件.name name随便设)
+      d3.select('#para3').on('click', function(){
+        console.log('first click');
+      }).on('click.second', function(){
+        console.log('second click');
+      }).on('click.xx', function(){
+        console.log('click.xx');
+      })
+      
+      //移除监听器
+      d3.select('#para4').on('click', function(){
+        console.log('click then remove');
+        //移除
+        d3.select(this).on('click', null);
+      });
+      
+      //！！事件监听器要设置在transition()之前
+    </script>
+	</body>
+</html>
