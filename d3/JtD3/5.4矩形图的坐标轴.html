@@ -7,6 +7,16 @@
       svg{
         border: solid 1px gray;
       }
+      .axis path,
+      .axis line{
+        fill: none;
+        stroke: black;
+        shape-rendering: crispEdges;
+      }
+      .axis text{
+        font-family: sans-serif;
+        font-size: 11px;
+      }
     </style>
   </head>
   <body>
@@ -20,8 +30,8 @@
         padding = {
           top: 20,
           right: 20,
-          bottom: 20,
-          left: 20
+          bottom: 30,
+          left: 30
         }; //svg边距
         // rectWidth = 30, //柱形宽
         // gap = 5; //柱形间隔
@@ -30,6 +40,14 @@
         .append('svg')
         .attr('width', width)
         .attr('height', height);
+      
+      var gx = svg.append('g')
+        .attr('transform', 'translate('+padding.left+','+(height-padding.bottom)+')')
+        .attr('class', 'axis');
+      
+      var gy = svg.append('g')
+        .attr('transform', 'translate('+padding.left+','+(padding.top)+')')
+        .attr('class', 'axis');
 
       var dataset = [50, 43, 120, 87, 99, 167, 142];
 
@@ -108,6 +126,29 @@
         updateText.call(drawText);
         enterText.append('text').call(drawText);
         exitText.remove();
+        
+        //绘制x轴
+        var xAxis = d3.svg.axis()
+          .scale(xScale)
+          .orient('bottom');
+        // var gx = svg.append('g')
+        //   .attr('transform', 'translate('+padding.left+','+(height-padding.bottom)+')')
+        //   .attr('class', 'axis')
+        //   .call(xAxis);
+        gx.call(xAxis);
+        // xAxis(gx);
+        
+        //绘制y轴
+        yScale.range([yAxisWidth, 0]);
+        var yAxis = d3.svg.axis()
+          .scale(yScale)
+          .orient('left');
+        // var yg = svg.append('g')
+        //   .attr('transform', 'translate('+padding.left+','+(padding.top)+')')
+        //   .attr('class', 'axis')
+        //   .call(yAxis);
+        gy.call(yAxis);
+        // yAxis(yg);
       }
       draw();
 
