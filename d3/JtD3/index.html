@@ -1,21 +1,61 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>目录</title>
-	</head>
-	<body>
-    <ul>
-      <li><a href="4.6array函数.html">4.6 array函数</a></li>
-      <li><a href="4.6.6nest嵌套结构.html">4.6.6 nest嵌套结构</a></li>
-      <li><a href="4.7矩形图.html">4.7 矩形图</a></li>
-      <li><a href="5.1.3量子比例尺.html">5.1.3 量子比例尺</a></li>
-      <li><a href="5.2序数比例尺.html">5.2 序数比例尺</a></li>
-      <li><a href="5.2颜色序数比例尺.html">5.2 颜色序数比例尺</a></li>
-      <li><a href="5.3坐标轴.html">5.3 坐标轴</a></li>
-      <li><a href="5.4矩形图的坐标轴.html">5.4 矩形图坐标轴</a></li>
-      <li><a href="7.1过渡效果.html">7.1 过渡效果</a></li>
-      <li><a href="8.1交互.html">8.1 交互</a></li>
-    </ul>
-	</body>
+  <head>
+    <meta charset="utf-8">
+    <title>目录</title>
+    <!-- <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet"> -->
+    <!-- <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/default.min.css" rel="stylesheet"> -->
+    <link href="../../js/highlight/monokai_sublime.min.css" rel="stylesheet" />
+    <script src="../../js/highlight/highlight.min.js"></script>
+  </head>
+  <body>
+    <div id="mkContainer"></div>
+<textarea id="txtMk" style="display: none;">
+## D3.js代码demo
+---
+- [4.6 array函数](4.6array函数.html)
+- [4.6.6 nest嵌套结构](4.6.6nest嵌套结构.html)
+- [4.7 矩形图](4.7矩形图.html)
+- [5.1.3 量子序数比例尺](5.1.3量子比例尺.html)
+- [5.2 序数比例尺](5.2序数比例尺.html)
+- [5.2 颜色序数比例尺](5.2颜色序数比例尺.html)
+- [5.4 矩形图的坐标轴](5.4矩形图的坐标轴.html)
+- [7.1 过渡效果](7.1过渡效果.html)
+- [8.1 交互](8.1交互.html)
+
+## D3.js常用功能
+---
+```js
+
+```
+## Markdown语法
+---
+- 1.nihao
+   - 1.2hello
+- 2.adkdk
+   - lalal
+</textarea>
+
+    <script src="../js/d3.v3.js"></script>
+    <script src="../../js/marked.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+      marked.setOptions({
+        renderer: marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: false,
+        pedantic: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false,
+        highlight: function(code) {
+          return hljs.highlightAuto(code).value;
+        }
+      });
+
+      var html = marked(d3.select('#txtMk').text());
+      d3.select('#mkContainer').html(html);
+    </script>
+  </body>
 </html>
