@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>颜色计算</title>
+	</head>
+	<body>
+    <script src="../js/d3.v3.js"></script>
+    <script src="../js/common.js"></script>
+    <script>
+      var color1 = d3.rgb(255, 0, 0);
+      var color2 = d3.rgb('red');//颜色名称
+      var color3 = d3.rgb('rgb(244, 0, 0)');//RGB十进制
+      var color4 = d3.rgb('hsl(120,0.5,0.5)');//HSL十进制
+      var color5 = d3.rgb('#ff0000');//RGB十六进制
+      var color6 = d3.rgb('#f00');//RGB十六进制缩写
+      
+      cl(color1.toString());//以字符串形式返回颜色值,如#ffeeaa
+      cl(color2.toString());
+      cl(color3.toString());
+      cl(color4.toString());
+      cl(color5.toString());
+      cl(color6.toString());
+      
+      cl(color4);
+      cl(color4.r + ',' + color4.g + ',' + color4.b);
+      cl(color4.brighter());//颜色变亮
+      cl(color4.darker());//颜色变暗
+      
+      cl(color1.hsl());
+      var hsl = color1.hsl();
+      cl(hsl.h + ',' + hsl.s + ',' + hsl.l);
+      
+      //------------------------------------------
+      //d3.hsl(h,s,l) h:色相Hue,s:饱和度Saturation,l:明度Lightness
+      //h色相范围是0°-360°,0°或360°代表红色,120°代表绿色,240°代表蓝色
+      //s饱和度范围0-1,饱和度数值越大颜色越鲜艳,灰色越少
+      //l明度范围0-1,值越大越明亮，越接近白色；值越小越暗,越接近黑色
+      cl(d3.hsl(120,1.0,0.5));
+    </script>
+	</body>
+</html>

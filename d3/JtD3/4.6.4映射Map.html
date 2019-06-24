@@ -17,6 +17,9 @@
       //以数组dataset构建映射,并以其中各项的id作为键
       var map = d3.map(dataset, function(d){ return d.id; });
       
+      cl(map.size());//3
+      cl(map.empty());//false
+      
       cl(map.has(1000));//true
       cl(map.has(1003));//false
       
@@ -24,9 +27,22 @@
       cl(map.get(1003));//undefined
       
       cl(map.set(1003, {id:1003, color:'yellow'}));//{id: 1003, color: "yellow"}
-      //这样是错误的用法,这样做的结果是将{id:1003, color:'yellow'}转为string作为key,
-      //value是undefined,存到了map中
-      cl(map.set({id:1003, color:'yellow'}));
+      //下面这样是错误的用法,这样做的结果是将{id:1003, color:'yellow'}转为string作为key,
+      //value是undefined,存到了map中,map.set(key, value)必须使用这种方式
+      // cl(map.set({id:1003, color:'yellow'}));
+      
+      cl(map.remove(1002));//true
+      
+      cl(map.keys());//["1000", "1001", "1003"]
+      cl(map.values());//[{...},{...},...]
+      //返回所有键和值
+      cl(map.entries());//[{key:'1000', value:{...}},{key:'1001', value:{...}},...]
+      
+      //map的遍历
+      map.forEach(function(key, value){
+        cl(key);
+        cl(value);
+      });
     </script>
 	</body>
 </html>

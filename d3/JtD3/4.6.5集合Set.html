@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>集合Set</title>
+	</head>
+	<body>
+    <p></p>
+    <script src="../js/d3.v3.js"></script>
+    <script src="../js/common.js"></script>
+    <script>
+      var description = '集合中不允许出现相同的元素，如果有相同的元素，则只会保留一项';
+      //源数组
+      var dataset = ['tiger', 'dragon', 'snake', 'horse', 'sheep'];
+      //构建一个集合,将其保存在变量set中
+      var set = d3.set(dataset);
+      
+      cl(set.has('tiger'));//true
+      cl(set.add('monkey'));//添加monkey,并返回monkey
+      cl(set.remove('snake'));//true
+      cl(set.values());// ["tiger", "dragon", "horse", "sheep", "monkey"]
+      cl(set.size());//5
+      cl(set.empty());//false
+      
+      set.forEach(function(value){
+        cl(value);
+      });
+      
+      cl(description);
+      d3.select('p').text(description);
+    </script>
+	</body>
+</html>
