@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>线段生成器</title>
+	</head>
+	<body>
+    <script src="../js/d3.v3.js"></script>
+    <script src="../js/common.js"></script>
+    <script>
+      var svg = d3.select('body').append('svg').attr('width', 400).attr('height', 400);
+      
+      //线段的点数据,每一项都是一个点的x和y坐标
+      var points = [[80,80], [200,100], [200,200], [100,200]];
+      //创建线段生成器
+      var line = d3.svg.line();
+      
+      svg.append('path')
+         .attr('d', line(points)) //使用线段生成器生成路径数据
+         .attr('stroke', 'black')
+         .attr('stroke-width', '3px')
+         .attr('fill', 'none');
+    </script>
+	</body>
+</html>

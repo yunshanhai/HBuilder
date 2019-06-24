@@ -37,6 +37,37 @@
       //s饱和度范围0-1,饱和度数值越大颜色越鲜艳,灰色越少
       //l明度范围0-1,值越大越明亮，越接近白色；值越小越暗,越接近黑色
       cl(d3.hsl(120,1.0,0.5));
+      
+      //插值,取两个颜色中间的值
+      var a = d3.rgb(255, 0, 0);
+      var b = d3.rgb(0, 255, 0);
+      var compute = d3.interpolate(a, b);
+      cl(compute(0));
+      cl(compute(0.5));
+      cl(compute(1));
+      cl(compute(-1));//超出范围,返回左边界
+      cl(compute(2));//超出范围,返回右边界
+      
+      //插值用于处理数值
+      var a = 10;
+      var b = 20;
+      var compute = d3.interpolate(a, b);
+      cl(compute(0));
+      cl(compute(0.5));
+      cl(compute(1));
+      cl(compute(-1));//超出范围,数值型可正常返回范围外的值
+      cl(compute(2));//超出范围,数值型可正常返回范围外的值
+      
+      //插值用于字符串,不知道怎么用
+      var a = 'hijklmn';
+      var b = 'opqrst';
+      var compute = d3.interpolate(a, b);
+      cl(compute(0));
+      cl(compute(0.5));
+      cl(compute(1));
+      cl(compute(-1));
+      cl(compute(2));
+      
     </script>
 	</body>
 </html>
