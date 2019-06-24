@@ -17,6 +17,13 @@
         font-size: 11px;
       }
     </style>
+    <h1>坐标轴绘制步骤：</h1>
+    <p>1.确定比例尺（比例尺类型、定义域、值域）</p>
+    d3.scale.linear().domain().range()...
+    <p>2.生成坐标轴数据（使用比例尺，确定刻度方向）</p>
+    var axisData = d3.svg.axis().scale(比例尺).orient(刻度方向)
+    <p>3.svg添加g元素，设置样式，平移到起始点，应用坐标轴数据</p>
+    svg.append('g').attr('class', 'axis').attr('transform', 'translate(x,y)').call(axisData)
     <script src="../js/d3.v3.js"></script>
     <script src="../js/common.js"></script>
     <script>
@@ -119,6 +126,8 @@
         .attr('transform', 'translate(80, 500)')
         .attr('class', 'axis');
       axis2(gAxis2);
+      
+      
     </script>
 	</body>
 </html>
