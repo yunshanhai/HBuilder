@@ -6,6 +6,7 @@
 	</head>
 	<body>
     <script src="../js/d3.v5.js"></script>
+    <script src="../js/common.js"></script>
     <script>
       /**
        * 嵌套结构
@@ -17,13 +18,13 @@
         {id:103, name:'李某某', year:1987, hometown:'广州', sex:'女', age:33},
         {id:104, name:'周某某', year:1989, hometown:'上海', sex:'女', age:31}
       ];
-      // console.log(persons);
+      // cl(persons);
       var nest = d3.nest()
         .key(function(d){ return d.year})
         // .sortKeys(d3.descending) //按键进行排序
         .key(function(d){ return d.hometown})
         .entries(persons);
-      console.log(nest);
+      cl(nest);
       
       var nest2 = d3.nest()
         .key(function(d){ return d.sex; })
@@ -32,19 +33,19 @@
           return d3.descending(a.age, b.age);
         })
         .entries(persons);
-      console.log(nest2);
+      cl(nest2);
       
       var nest3 = d3.nest()
         .key(function(d){ return d.sex})
         //使用rollup()将分组的数组元素变成元素长度
         .rollup(function(values){ return values.length; })
         .entries(persons);
-      console.log(nest3);
+      cl(nest3);
       
       var map = d3.nest()
         .key(function(d){ return d.sex; })
         .map(persons, d3.map);
-      console.log(map);
+      cl(map);
     </script>
 	</body>
 </html>

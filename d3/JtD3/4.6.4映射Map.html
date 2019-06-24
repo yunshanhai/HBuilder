@@ -23,7 +23,9 @@
       cl(map.get(1000));//{id:1000, color:'red'}
       cl(map.get(1003));//undefined
       
-      cl(map.set(1003, {id:1003, color:'yellow'}));
+      cl(map.set(1003, {id:1003, color:'yellow'}));//{id: 1003, color: "yellow"}
+      //这样是错误的用法,这样做的结果是将{id:1003, color:'yellow'}转为string作为key,
+      //value是undefined,存到了map中
       cl(map.set({id:1003, color:'yellow'}));
     </script>
 	</body>
