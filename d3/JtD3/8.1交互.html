@@ -10,6 +10,7 @@
     <p id="para3">d3同一事件多个监听器click.first click.second click.xx...</p>
     <p id="para4">d3移除监听器d3.select('xx').on('click',null)（点击一次后移除）</p>
     <script src="../js/d3.v3.js"></script>
+    <script src="../js/common.js"></script>
     <script>
       //原生添加点击事件
       var para = document.getElementById('para1');
@@ -24,22 +25,22 @@
       
       //d3同一事件添加多个监听器(事件.name name随便设)
       d3.select('#para3').on('click', function(){
-        console.log('first click');
+        cl('first click');
       }).on('click.second', function(){
-        console.log('second click');
+        cl('second click');
       }).on('click.xx', function(){
-        console.log('click.xx');
+        cl('click.xx');
       })
       
       //移除监听器
       d3.select('#para4').on('click', function(){
-        console.log('click then remove');
+        cl('click then remove');
         //移除
         d3.select(this).on('click', null);
       });
       
       //！！事件监听器要设置在transition()之前
-      console.log(d3.ascending(2,2))
+      cl(d3.ascending(2,2))
     </script>
 	</body>
 </html>

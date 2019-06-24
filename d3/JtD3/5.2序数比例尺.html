@@ -6,16 +6,17 @@
 	</head>
 	<body>
     <script src="../js/d3.v3.js"></script>
+    <script src="../js/common.js"></script>
     <script>
       var ordinal = d3.scale.ordinal()
         .domain([1,2,3,4,5])  //设置定义域
         .range([10,20,30,40,50]); //设置值域
-      console.log('1对应的值：' + ordinal(1));
-      console.log('3对应的值：' + ordinal(3));
-      console.log('5对应的值：' + ordinal(5));
-      console.log('8对应的值（定义域范围外）：' + ordinal(8));//不在定义域范围内
+      cl('1对应的值：' + ordinal(1));
+      cl('3对应的值：' + ordinal(3));
+      cl('5对应的值：' + ordinal(5));
+      cl('8对应的值（定义域范围外）：' + ordinal(8));//不在定义域范围内
       
-      console.log('------------d3.scale.ordinal.rangePoints 序数点值-------------');
+      cl('------------d3.scale.ordinal.rangePoints 序数点值-------------');
       /**
        * rangePoints(interval[,padding]) interval是区间的意思[start, end]；padding可选，解释见下方
        */
@@ -23,10 +24,10 @@
         .domain([1,2,3,4,5])  //设置定义域
         .rangePoints([0,100]);  //设置值域的起始点
       
-      console.log(ordinal.range());//根据定义域和值域起始点自动生成值域
-      console.log(ordinal(1));
-      console.log(ordinal(3));
-      console.log(ordinal(5));
+      cl(ordinal.range());//根据定义域和值域起始点自动生成值域
+      cl(ordinal(1));
+      cl(ordinal(3));
+      cl(ordinal(5));
       
       /**
        * rangePoints的第二个参数padding的解释
@@ -40,7 +41,7 @@
        * 设置padding时返回的是6个线段的五个点（不包含首尾）
        */
       ordinal.rangePoints([0,100],1);
-      console.log(ordinal.range());
+      cl(ordinal.range());
       /**
        * 关于step的解释
        * ordinal.range()返回等差值数组[0,25,50,75,100]，这个等差25就是step
@@ -65,7 +66,7 @@
         .attr('y1', 10)
         .attr('y2', 15);
       
-      console.log('------------d3.scale.ordinal.rangeBands 序数波段-------------');
+      cl('------------d3.scale.ordinal.rangeBands 序数波段-------------');
       /**
        * rangeBands(interval[,padding[,outerPadding]])
        * interval值域区间，padding和outerPadding都可选
@@ -75,16 +76,16 @@
         .rangeBands([0,100]);
       
       //返回波段宽度
-      console.log(bands.rangeBand());
+      cl(bands.rangeBand());
       //返回每个波段的起始点
-      console.log(bands.range());
+      cl(bands.range());
       
       bands.rangeBands([0,100], 0.5, 0.2);
       //返回波段宽度
       var bandWidth = bands.rangeBand();
-      console.log(bandWidth);
+      cl(bandWidth);
       //返回每个波段的起始点
-      console.log(bands.range());
+      cl(bands.range());
       
       svg.append('path').attr('d', 'M10,30h'+(100*2)).attr('stroke', 'green').attr('stroke-width', 1);
       svg.selectAll('.line').data(bands.range()).enter()
