@@ -26,7 +26,32 @@
 # D3.js常用功能
 ---
 ```js
-
+d3.select()
+d3.selectAll()
+d3.ascending(a,b)
+d3.descending(a,b)
+d3.min(array[,accessor]) //accessor=function(d){return ...}
+d3.max(array[,accessor])
+d3.extent(array[,accessor])
+d3.sum(array[,accessor])
+d3.mean(array[,accessor])
+d3.median(array[,accessor])
+d3.quantile(numAscArray,p)//p：分位点，范围[0,1]，numArray需先递增排序
+d3.variance(array[,accessor])//求方差
+d3.deviation(array[,accessor])//求标准差
+d3.bisectLeft()
+d3.bisect()
+d3.bisectRight()
+d3.shuffle()//打乱数组
+d3.merge(array)//array必须是[array1,array2,...]这种数组格式，不能是array1,array2...
+d3.pairs(array)//返回邻接的数组对
+d3.range([start,]stop[,step])//生成数组
+d3.permute(array,indexArray)//根据指定的索引号数组返回排列后的数组
+d3.zip(arrays...)//用多个数组来制作新的数组
+d3.transpose(matrix)//求转置矩阵
+d3.map()
+d3.set()
+d3.nest()
 ```
 # Markdown语法
 ---
