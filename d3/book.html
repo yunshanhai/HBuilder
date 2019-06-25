@@ -6,11 +6,11 @@
 	</head>
 	<body>
     <div id="divBook" style="margin: 0 auto; border: solid 1px black;"></div>
-    <script src="../js/d3.v3.js"></script>
-    <script src="../js/common.js"></script>
+    <script src="js/d3.v3.js"></script>
+    <script src="js/common.js"></script>
     <script>
-      d3.json('/HBuilder/d3/JtD3/json/book.json',function(data){
-        // cl(data);
+      d3.json('/HBuilder/d3/json/book.json',function(data){
+        cl(data);
         initBook(data)
       });
       
