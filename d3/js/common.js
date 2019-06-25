@@ -32,3 +32,15 @@ String.prototype.format = function(args) {
   }
   return result;
 }
+
+function px2mm(px, dpi = 96) {
+  return px * 25.4 / dpi
+}
+
+function mm2px(mm, dpi = 96) {
+  return mm / 25.4 * dpi
+}
+
+function px2px(px, fromDpi = 300, toDpi = 96) {
+  return px * toDpi / fromDpi
+}

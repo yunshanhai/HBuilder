@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Book Editor</title>
+	</head>
+	<body>
+    <div id="divBook" style="margin: 0 auto; border: solid 1px black;"></div>
+    <script src="../js/d3.v3.js"></script>
+    <script src="../js/common.js"></script>
+    <script>
+      d3.json('/HBuilder/d3/JtD3/json/book.json',function(data){
+        // cl(data);
+        initBook(data)
+      });
+      
+      var book;
+      var pages;
+      function initBook(data){
+        book = data;
+        pages = d3.map(data.pages);
+        pageWidth = mm2px(book.size.width);
+        pageHeight = mm2px(book.size.height);
+        var divBook = d3.select('#divBook')
+          .style('width', pageWidth + 'px')
+          .style('height', pageHeight + 'px');
+        
+        var svgPage = divBook.append('svg')
+          .attr('width', pageWidth + 'px')
+          .attr('height', pageHeight + 'px');
+      }
+    </script>
+	</body>
+</html>

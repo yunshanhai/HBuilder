@@ -5,46 +5,15 @@
 		<title>区域生成器</title>
 	</head>
 	<body>
-    <img src="img/6.3.png" />
+    <img src="img/6.4.png" />
     <script src="../js/d3.v3.js"></script>
     <script src="../js/common.js"></script>
     <script>
       function demo1(interpolate, tension){
         var width = 600, height = 500;
-        var dataset = [80,120,130,70,60,90];
         var svg = d3.select('body').append('svg')
           .attr('width', width).attr('height', height);
         
-        var areaPath = d3.svg.area()
-          .x(function(d,i){return 50 + i * 80; })
-          .y0(function(d,i){return height/2; })
-          .y1(function(d,i){return height/2 -d});
-        
-        var text = '';
-        
-        if(arguments.length>0){
-          areaPath.interpolate(interpolate);
-          text += '插值方式：' + interpolate;
-        }
-        if(arguments.length>1){
-          areaPath.tension(tension);
-          text += '，张力系数：' + tension;
-        }
-        
-        if(text){
-          svg.append('text')
-            .attr('fill', 'black')
-            .attr('dy', '1em')
-            .text(text);
-        }
-        
-        svg.append('path')
-          .attr('d', areaPath(dataset))
-          .attr('stroke', 'black')
-          .attr('stroke-width', '3px')
-          .attr('fill', 'yellow');
-        
-        // cl(areaPath(dataset));
       }
       demo1('linear', 0);
       demo1('linear', 1);

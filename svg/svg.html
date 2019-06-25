@@ -9,8 +9,6 @@
 	<body style="background-color:#272822">
     <div style="width:22cm; margin: 0 auto; padding: 0.5cm; box-sizing: border-box;">
       <svg width="21cm" height="27cm" style="background-color: white;">
-        <image x="0" y="0" width="100%" height="100%" xlink:href="images/b1.png"></image>
-        <image x="120" y="120" width="10cm" xlink:href="images/renwu1.jpg" stroke="black" strock-width="2" fill="red"></image>
         <svg>
           <!--
           stroke：定义线条颜色
@@ -27,29 +25,6 @@
           opacity：定义整体不透明度，从0（透明）到1（不透明）逐渐过渡
           stroke-opacity：定义线条不透明度
           fill-opacity：定义填充不透明度
-          -->
-          
-          <!--路径 
-          大写：绝对坐标，小写：相对坐标
-          移动类：
-          M = moveto 将画笔移动到指定坐标
-          直线类：
-          L = lineto 画直线到指定坐标
-          H = horizontal lineto 画水平直线到指定坐标
-          V = vertical lineto 画垂直直线到指定坐标
-          曲线类：
-          C = curveto 画三次贝塞尔曲线经【两个指定控制点】到达终点坐标
-          S = smooth curveto 与前一条三次贝塞尔曲线相连，
-            第一个控制点为前一条曲线第二个控制点的对称点，
-            只需输入第二个控制点和终点，即可绘制一个三次贝塞尔曲线
-          Q = quadratic Bézier curve 画二次贝塞尔曲线经【一个指定控制点】到达终点坐标
-          T = smooth quadratic Bézier curveto 与前一条二次贝塞尔曲线相连，
-            控制点为前一条二次贝塞尔曲线控制点的对称点，
-            只需输入终点，即可绘制一个二次贝塞尔曲线
-          弧线类：
-          A = elliptical Arc 画椭圆曲线到指定坐标
-          闭合类：
-          Z = closepath 绘制一条直线连接终点和起点，用来封闭图形
           -->
           <path d="M 100 800 L 300 800 L 200 600 Z" />
           
