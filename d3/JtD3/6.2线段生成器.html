@@ -3,23 +3,115 @@
 	<head>
 		<meta charset="utf-8">
 		<title>线段生成器</title>
+    <style>
+      svg { border:solid 1px gray; margin-left: 3px;}
+    </style>
 	</head>
 	<body>
     <script src="../js/d3.v3.js"></script>
     <script src="../js/common.js"></script>
     <script>
-      var svg = d3.select('body').append('svg').attr('width', 400).attr('height', 400);
+      function demo1(){
+        var svg = d3.select('body').append('svg').attr('width', 300).attr('height', 200);
+        
+        //线段的点数据,每一项都是一个点的x和y坐标
+        var points = [[80,80], [200,100], [200,200], [100,200]];
+        //创建线段生成器
+        var line = d3.svg.line();
+        cl('x坐标默认访问器：' + line.x());//获取x坐标的访问器
+        cl('y坐标默认访问器：' + line.y());//设置y坐标的访问器
+        //设置x坐标的访问器,默认就是下面的方法
+        line.x(function(d){
+          return d[0];
+        });
+        //设置y坐标的访问器,默认就是下面的方法
+        line.y(function(d){
+          return d[1];
+        })
+        //设置或获取线段的插值模式,共有13种:
+        //linear,linear-closed,
+        //step,step-before,step-after
+        //basis,basis-open,basis-clased,
+        //bundle,
+        //cardinal,cardinal-open,cardinal-closed
+        //monotone
+        cl('插值模式：' + line.interpolate());//linear
+        //设置或获取张力系数,当插值模式为cardinal,cardinal-open,cardinal-closed的时候有效
+        cl('张力系数：' + line.tension());
+        //设置或获取一个访问器,用于确认数据是否被绘制,只有判定为存在的数据才会被绘制
+        cl('确认线段是否存在：' + line.defined());
+        // line.defined(true);//默认为true,全部数据都绘制
+        // line.defined(false);//设置为false,全部数据都不绘制
+        // line.defined(function(d){
+        //   if(d[0]>100){
+        //     return true;//绘制大于100的数据
+        //   }
+        //   return false;
+        // });
+        
+        svg.append('path')
+           .attr('d', line(points)) //使用线段生成器生成路径数据
+           .attr('stroke', 'black')
+           .attr('stroke-width', '3px')
+           .attr('fill', 'none');
+      }
+      demo1();
       
-      //线段的点数据,每一项都是一个点的x和y坐标
-      var points = [[80,80], [200,100], [200,200], [100,200]];
-      //创建线段生成器
-      var line = d3.svg.line();
+      function demo2(interpolate){
+        var points = [80,120,160,200,240,280];
+        var linePath = d3.svg.line()
+          .x(function(d){
+            return d;
+          })
+          .y(function(d,i){
+            return i%2==0 ? 40 : 120
+          })
+          .tension(1);
+        
+        var svg = d3.select('body').append('svg').attr('width', 300).attr('height', 200);
+        
+        if(arguments.length==1){
+          linePath.interpolate(interpolate);
+          svg.append('text')
+            .attr('fill', 'black')
+            .attr('dy', '1em')
+            .text(arguments[0] + ' 张力系数：' + linePath.tension())
+        }
+        
+        svg.append('path')
+          .attr('d', linePath(points))
+          .attr('stroke', 'black')
+          .attr('stroke-width', '3px')
+          .attr('fill', 'none');
+        
+        svg.selectAll('circle')
+          .data(points)
+          .enter()
+          .append('circle')
+          .attr('cx', function(d){
+            return d;
+          })
+          .attr('cy', function(d,i){
+            return i%2==0 ? 40 : 120
+          })
+          .attr('r', 3)
+          .attr('stroke', 'red')
+          .attr('stroke-width', 1)
+          .attr('fill', 'none');
+      }
+      //linear,linear-closed,
+      //step,step-before,step-after
+      //basis,basis-open,basis-clased,
+      //bundle,
+      //cardinal,cardinal-open,cardinal-closed
+      //monotone
+      demo2('linear');demo2('linear-closed');
+      demo2('step');demo2('step-before');demo2('step-after');
+      demo2('basis');demo2('basis-open');demo2('basis-closed');
+      demo2('bundle');
+      demo2('cardinal');demo2('cardinal-open');demo2('cardinal-closed');
+      demo2('monotone');
       
-      svg.append('path')
-         .attr('d', line(points)) //使用线段生成器生成路径数据
-         .attr('stroke', 'black')
-         .attr('stroke-width', '3px')
-         .attr('fill', 'none');
     </script>
 	</body>
 </html>
