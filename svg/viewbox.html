@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <svg viewbox="0 0 100 200" width="100px" height="200px" style="background:#889cee">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+    <svg viewbox="0 0 200 400" width="100px" height="200px" style="background:#889cee">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+    <svg viewbox="0 0 50 100" width="100px" height="200px" style="background:#889cee">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+    <p>svg有个特性，在默认情况下，会调整 viewBox 的大小，让 viewBox 正好能被放进 svg 里去。</p>
+    <!--没有viewbox-->
+    <svg width="100px" height="200px" style="background:#889cee">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+    <!--增加viewbox，位置默认preserveAspectRatio xMidyMid-->
+    <svg viewbox="0 0 100 100" width="100px" height="200px" style="background:#889cee">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+    <!--增加了preserveAspectRatio xMidyMid，和上面没有preserveAspectRatio是一样的-->
+    <svg viewbox="0 0 100 100" width="100px" height="200px" style="background:#889cee"
+      preserveAspectRatio="xMidYMid">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+    <svg viewbox="0 0 100 100" width="100px" height="200px" style="background:#889cee"
+      preserveAspectRatio="xMaxYMax">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+    <!---------------------------------------------------->
+    <svg width="200px" height="200px" style="background:#889cee">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+    <!--增加viewbox，位置默认preserveAspectRatio xMidyMid-->
+    <svg viewbox="0 0 100 100" width="200px" height="200px" style="background:#889cee">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+    <!--增加了preserveAspectRatio xMidyMid，和上面没有preserveAspectRatio是一样的-->
+    <svg viewbox="0 0 100 100" width="200px" height="200px" style="background:#889cee"
+      preserveAspectRatio="xMidYMid">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+    <svg viewbox="0 0 100 100" width="200px" height="200px" style="background:#889cee"
+      preserveAspectRatio="xMinYMin">
+      <circle cx="50" cy="50" r="50" fill="#cec"></circle>
+    </svg>
+<!--
+    xMinYMin,
+    xMinYMid,
+    xMinYMax,
+    xMidYMin,
+    xMidYMid,
+    xMidYMax,
+    xMaxYMin,
+    xMaxYMid,
+    xMaxYMax 
+-->
+  </body>
+</html>
