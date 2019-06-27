@@ -9,8 +9,8 @@
     <script src="../js/highlight/highlight.min.js"></script>
   </head>
   <body>
-    <div id="mkContainer"></div>
-<textarea id="txtMk" style="display: none;">
+    <div id="mkShow"></div>
+<textarea id="mkCode" style="display: none;">
 # D3.js代码demo
 ---
 - [4.6 数组的处理](4.6array函数.html)
@@ -88,8 +88,8 @@ d3.svg.line()//创建线段生成器
         }
       });
 
-      var html = marked(d3.select('#txtMk').text());
-      d3.select('#mkContainer').html(html);
+      var html = marked(d3.select('#mkCode').text());
+      d3.select('#mkShow').html(html);
     </script>
   </body>
 </html>

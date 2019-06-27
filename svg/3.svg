@@ -1,0 +1,17 @@
+<!--作为单独的svg文件，svg标签属性一定要加xmlns，如果有用到xlink:href，还需要加xmlns:xlink属性-->
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <style>
+    .theme1{
+      stroke: steelblue;
+      stroke-width: 50;
+    }
+  </style>
+  <defs>
+    <circle r="50" id="c1" />
+    <circle r="50" cx="150" cy="200" id="c2" />
+  </defs>
+  <!--use一个circle时，圆心cx，cy要写作x，y-->
+  <use x="100" y="100" xlink:href="#c1" class="theme1"  />
+  <use x="100" y="100" xlink:href="#c1" style="fill:red;opacity:0.2;" />
+  <use xlink:href="#c2" />
+</svg>
