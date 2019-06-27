@@ -44,3 +44,11 @@ function mm2px(mm, dpi = 96) {
 function px2px(px, fromDpi = 300, toDpi = 96) {
   return px * toDpi / fromDpi
 }
+
+!function (){
+  var wuyun = {
+    version: '1.0'
+  };
+  
+  this.wuyun = wuyun;
+}();
