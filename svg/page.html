@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <script src="../d3/js/d3.v3.js"></script>
+    <script src="../d3/js/common.js"></script>
+    <script>
+      var width = 210, height = 285;
+      var pxWidth = mm2px(width), pxHeight = mm2px(height);
+      var scale = 0.8;
+      cl(pxWidth);
+      cl(pxHeight);
+      // cl(mm2px(width) +',' + mm2px(height));
+      // cl(mm2px(width, 300) + ',' + mm2px(285, 300));
+      var svg = d3.select('body').append('svg')
+        .attr('width', pxWidth*scale)
+        .attr('height', pxHeight*scale)
+        //!!!注意,js设置viewBox时,'B'一定要大写,不然不起作用
+        .attr('viewBox', '0 0 ' + pxWidth + ' ' + pxHeight)
+        .style('background', 'steelblue');
+      
+      var bands = d3.scale.ordinal()
+        .domain([1])
+        .rangeBands([0, pxWidth], 0 , 0.1);
+      //返回波段宽度
+      var bandWidth = bands.rangeBand();
+      cl(bandWidth);
+      //返回每个波段的起始点
+      cl(bands.range());
+      
+      var rect1 = {x:bands.range()[0], y: 20, width: bandWidth, height: 300};
+      svg.append('rect')
+        .attr('x', rect1.x)
+        .attr('y', rect1.y)
+        .attr('width', rect1.width)
+        .attr('height', rect1.height)
+        .attr('fill', 'red');
+      
+    </script>
+	</body>
+</html>
