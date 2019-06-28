@@ -10,14 +10,18 @@
     </style>
 	</head>
 	<body>
+    <p>svg宽200，高300</p>
     <svg width="200" height="300">
       <image xlink:href="../images/200-300.jpeg" />
+      <text dy="1em" fill="white">未设置viewbox</text>
     </svg>
     <svg width="200" height="300" viewbox="0 0 200 300">
       <image xlink:href="../images/200-300.jpeg" />
+      <text dy="1em" fill="white">viewbox 0 0 200 300</text>
     </svg>
     <svg width="200" height="300" viewbox="100 0 200 300">
       <image xlink:href="../images/200-300.jpeg" />
+      <text dy="1em" x="100" fill="red">viewbox 100 0 200 300</text>
     </svg>
 	</body>
 </html>
