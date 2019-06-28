@@ -7,7 +7,13 @@
   <body>
     <p>作为单独的svg文件，svg标签属性一定要加xmlns，如果有用到xlink:href，还需要加xmlns:xlink属性</p>
     <img src="1.svg" style="width:100px; height: 100px;" />
+    <p>svg无限放大方式1：svg本身设置大小，svg内元素使用百分比设置宽、高，或者圆设置半径</p>
     <img src="2.svg" style="width:100px; height: 100px;" />
+    <img src="2.svg" style="width:50px; height: 50px;" />
+    <p>svg无线放大方式2：利用viewbox自动适应svg大小的特性，svg的宽高和viewbox的宽高设置为相同，viewbox的xy坐标设置为0，0</p>
+    <img src="4.svg" width="36" height="36" style="border:solid 1px black;" />
+    <img src="4.svg" width="64" height="64" style="border:solid 1px black;"/>
+    <br />
     <img src="3.svg" style="border: solid 1px black;"/>
   </body>
 </html>
