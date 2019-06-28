@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>线的样式</title>
+    <style>
+      svg {
+        border: solid 1px gray;
+      }
+    </style>
+  </head>
+  <body>
+    <p>线的两头样式stroke-linecap：butt无（默认），round圆头，square方头。</p>
+    <p>圆头和方头的两端各超出线实际宽度的一半</p>
+    <svg width="300" height="125">
+      <!--线的两头样式-->
+      <g fill="none" stroke="black" stroke-width="30">
+        <!--第一条黑色，线的两端样式为butt-->
+        <path stroke-linecap="butt" d="M 20 20 l 260 0" />
+        <!--黑色对比重叠线，未设置两端样式，不透明度0.5，得出结论：线两头样式默认为butt-->
+        <path stroke="red" stroke-opacity="0.5" d="M 20 20 l 260 0" />
+
+        <!--第二条黑色，线的两端样式为round（圆头）-->
+        <path stroke-linecap="round" d="M 20 60 l 260 0" />
+        <!--黑色对比重叠线，未设置两端样式，未设置两端样式-->
+        <path stroke="red" stroke-opacity="1" d="M 20 60 l 260 0" />
+
+        <!--第五条黑色，线的两端样式为square(方形)-->
+        <path stroke-linecap="square" d="M 20 100 l 260 0" />
+        <path stroke="red" stroke-opacity="1" d="M 20 100 l 260 0" />
+      </g>
+    </svg>
+    <p>虚线stroke-dasharray，按照：实线，空隙，实线，空隙...排列</p>
+    <p>如果值长度为奇数时，则自动将长度扩充一倍排列</p>
+    <svg>
+      <g stroke="black" stroke-width="2">
+        <path stroke-dasharray="1,1" d="M 10 10 l 280 0" />
+        <path stroke-dasharray="2,2" d="M 10 20 l 280 0" />
+        <path stroke-dasharray="5,10,20" d="M 10 30 l 280 0" stroke-width="1" />
+        <path stroke-dasharray="5,10,20,5" d="M 10 40 l 280 0" stroke-width="1" />
+        <path stroke-dasharray="2,2,6,2" d="M 10 50 l 280 0" />
+      </g>
+      <circle cx="150" cy="100" r="40" stroke="steelblue" stroke-width="10" stroke-dasharray="10,1"></circle>
+    </svg>
+
+  </body>
+</html>

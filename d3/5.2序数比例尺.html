@@ -85,7 +85,7 @@
       var bandWidth = bands.rangeBand();
       cl(bandWidth);
       //返回每个波段的起始点
-      cl(bands.range());
+      cl('每个波段起始点：' + bands.range());
       
       svg.append('path').attr('d', 'M10,30h'+(100*2)).attr('stroke', 'green').attr('stroke-width', 1);
       svg.selectAll('.line').data(bands.range()).enter()

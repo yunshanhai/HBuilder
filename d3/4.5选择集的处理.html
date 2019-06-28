@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>选择集的处理</title>
+	</head>
+	<body>
+    <button onclick="test()">test</button>
+    <script src="js/d3.v3.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+      // var dataset = ['red', 'green', 'blue'];
+      // var div = d3.select('body').selectAll('div');
+      // div.data(dataset).enter()
+      //   .append('div')
+      //   .each(function(d,i){
+      //     d3.select(this).append('p').text(d);
+      //     d3.select(this).append('span').text(d + ':' + i);
+      //   }).call(function(div){
+      //     console.log(div);
+      //   });
+        
+      var count = 0;
+      function test(){
+        count++;
+        var h1 = d3.select('body').select('h1');
+        // cl(h1);
+        if(h1.empty()){
+          h1 = d3.select('body').append('h1').attr('value', '123');
+        }
+        h1.text(count);
+      }
+      test();
+    </script>
+	</body>
+</html>

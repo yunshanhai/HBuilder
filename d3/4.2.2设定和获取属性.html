@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <div id="mydiv"></div>
+    <script src="js/d3.v3.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+      //clientWidth是浏览器自动计算所得,是不能用attr()来获取的
+      cl(d3.select('#mydiv').property('clientWidth'));
+    </script>
+	</body>
+</html>
