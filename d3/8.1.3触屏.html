@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>交互式入门</title>
+    <style>
+      svg{
+        border:solid 1px steelblue;
+      }
+    </style>
+	</head>
+	<body>
+    <p>触屏常用事件：touchstart、touchmove、touchend</p>
+    <script src="js/d3.v3.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+      function demo2(){
+        var svg = d3.select('body').append('svg')
+          .attr('width', 300)
+          .attr('height', 300);
+        
+        var circle = svg.append('circle')
+          .attr('cx', 150)
+          .attr('cy', 150)
+          .attr('r', 50)
+          .attr('fill', 'steelblue')
+          .on('touchstart',function(){
+            d3.select(this).attr('fill', 'yellow');//触摸开始,改变颜色
+          })
+          .on('touchmove',function(){
+            //由于触摸可能不止一个点,d3.touches()返回的是一个数组[[x0,y0],[x1,y1],...]
+            var pos = d3.touches(this)[0];//获取第一个触摸点
+            d3.select(this)
+              .attr('cx', pos[0]) //触摸点的x坐标
+              .attr('cy', pos[1]);//触摸点的y坐标
+          })
+          .on('touchend',function(){
+            d3.select(this).attr('fill', 'steelblue');//触摸结束,设置回原来颜色
+          });
+      }
+      demo2();
+    </script>
+	</body>
+</html>

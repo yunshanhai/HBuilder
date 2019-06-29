@@ -9,45 +9,45 @@
     <script src="js/common.js"></script>
     <script>
       //排序d3.ascending(a,b) a<b:-1,a==b:0,a>b:1
-      cl('比较1和2：' + d3.ascending(1,2));
+      c2p('比较1和2：' + d3.ascending(1,2));
       //d3.descending(a,b) a<b:1,a==b:0,a>b:-1
-      cl('比较1和2：' + d3.descending(1,2));
+      c2p('比较1和2：' + d3.descending(1,2));
       var dataset = [1, 5, 3, 2, 9, 7];
-      cl('原数组：' + dataset);
-      cl('正序：' + dataset.sort(d3.ascending));
-      cl('倒序：' + dataset.sort(d3.descending));
+      c2p('原数组：' + dataset);
+      c2p('正序：' + dataset.sort(d3.ascending));
+      c2p('倒序：' + dataset.sort(d3.descending));
       
       var dataset = [1, 5, 3, 2, 9, 7];
       //数组最小值
-      cl(dataset + '中最小值：' + d3.min(dataset));
+      c2p(dataset + '中最小值：' + d3.min(dataset));
       //数组最大值
-      cl(dataset + '中最大值：' + d3.max(dataset));
+      c2p(dataset + '中最大值：' + d3.max(dataset));
       //最下和最大值
-      cl(dataset + '最小和最大值：' + d3.extent(dataset));
+      c2p(dataset + '最小和最大值：' + d3.extent(dataset));
       //数组求和
-      cl(dataset + '求和：' + d3.sum(dataset));
+      c2p(dataset + '求和：' + d3.sum(dataset));
       //数组平均值 数组为空返回undefined,数组中有非数值型会被剔除(undefiend、NaN)
-      cl(dataset + '求平均值：' + d3.mean(dataset));
-      cl('空数组为空平均值：' + d3.mean([]));
+      c2p(dataset + '求平均值：' + d3.mean(dataset));
+      c2p('空数组为空平均值：' + d3.mean([]));
       //数组中间值(先将数组递增排序，然后取中间的那个值，如果长度是偶数则取中间两个值的平均数)
-      cl([2, 9, 8] + '中间值：' + d3.median([2, 9, 8]));
-      cl(dataset + '中间值：' + d3.median(dataset) + '，数组长度为偶数，取中间两个值的平均数');
+      c2p([2, 9, 8] + '中间值：' + d3.median([2, 9, 8]));
+      c2p(dataset + '中间值：' + d3.median(dataset) + '，数组长度为偶数，取中间两个值的平均数');
       //求取数组分位点p的值(分位点p的取值范围0-1)
       var numbers = [3, 1, 10];
       //一般情况下数组要进行递增排序,但不是必须的,可注释掉下行查看差异
       numbers.sort(d3.ascending);
-      cl(d3.quantile(numbers, 0));
-      cl(d3.quantile(numbers, 0.25));
-      cl(d3.quantile(numbers, 0.5));
-      cl(d3.quantile(numbers, 0.75));
-      cl(d3.quantile(numbers, 1));
+      c2p(d3.quantile(numbers, 0));
+      c2p(d3.quantile(numbers, 0.25));
+      c2p(d3.quantile(numbers, 0.5));
+      c2p(d3.quantile(numbers, 0.75));
+      c2p(d3.quantile(numbers, 1));
       
       var dataset = [1,9,7,9,5,8,9,10];
       var dataset = [1,3];
       //求方差
-      cl(dataset + '方差：' + d3.variance(dataset));
+      c2p(dataset + '方差：' + d3.variance(dataset));
       //求标准差()
-      cl(dataset + '标准差：' + d3.deviation(dataset));
+      c2p(dataset + '标准差：' + d3.deviation(dataset));
       
       
       
@@ -56,19 +56,19 @@
        */
       //生成0-4 stop:5
       var dataset = d3.range(5);
-      cl(dataset);
+      c2p('生成0-4：' + dataset);
       //生成1-5 start:1,stop:6
       dataset = d3.range(1,6);
-      cl(dataset);
+      c2p('生成1-5：' + dataset);
       //生成2,4,6,8,10 start:2,stop:11或12都可,step:2
       dataset = d3.range(2,11,2);
-      cl(dataset);
+      c2p('生成2-10的偶数：' + dataset);
       
       /**
        * d3.merge([array1, array2, ...]) 合并数组，数量不限
        */
       var dataset = d3.merge([[1,2], [3,4], [5,6]]);
-      cl(dataset);
+      c2p('合并数组：' + dataset);
     </script>
 	</body>
 </html>

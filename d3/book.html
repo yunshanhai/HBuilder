@@ -9,6 +9,10 @@
     <script src="js/d3.v3.js"></script>
     <script src="js/common.js"></script>
     <script>
+      var client = {
+        maxheight : 800
+      };
+      
       d3.json('/HBuilder/d3/json/book.json',function(data){
         cl(data);
         initBook(data)
@@ -21,6 +25,7 @@
         pages = d3.map(data.pages);
         pageWidth = mm2px(book.size.width);
         pageHeight = mm2px(book.size.height);
+        cl('w:' + pageWidth + ',h' + pageHeight);
         var divBook = d3.select('#divBook')
           .style('width', pageWidth + 'px')
           .style('height', pageHeight + 'px');

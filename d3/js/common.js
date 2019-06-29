@@ -7,6 +7,29 @@ function cl(message) {
 }
 
 /**
+ * 输出信息到页面 console message to page
+ * @param {Object} message 要输出的信息
+ * @param {Object} position 0为插入到body的最前面，1为append到body最后一个元素
+ */
+function c2p(message, position = 0) {
+  var c2p;
+
+  if (position === 0) {
+    c2p = d3.select('body').select('#c2p0');
+    if (c2p.empty()) {
+      c2p = d3.select('body').insert('div', '*:first-child').attr('id', 'c2p0');
+    }
+
+  } else {
+    c2p = d3.select('body').select('#c2p1');
+    if (c2p.empty()) {
+      c2p = d3.select('body').append('div').attr('id', 'c2p1');
+    }
+  }
+  c2p.append('p').text(message);
+}
+
+/**
  * '{0}{1}'.format('0', '1');
  * '{key0, key1}'.format({key0:'value0', key1:'value1'});
  * @param {Object} args
@@ -56,10 +79,10 @@ function px2px(px, fromDpi = 300, toDpi = 96) {
   return px * toDpi / fromDpi
 }
 
-!function (){
+! function() {
   var wuyun = {
     version: '1.0'
   };
-  
+
   this.wuyun = wuyun;
 }();
