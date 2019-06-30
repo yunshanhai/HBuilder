@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <svg width="200" height="200" style="background: steelblue;">
+      <defs>
+        <pattern id="p1" x="0" y="0" width="20" height="20">
+          <image width="200" height="200" href="../images/p1.jpg" ></image>
+        </pattern>
+      </defs>
+      <circle cx="100" cy="100" r="100" fill="url(#p1)"></circle>
+    </svg>
+    <svg width="200" height="200" style="background: steelblue;">
+      <defs>
+        <pattern id="p1" width="100%" height="100%" patternContentUnits="objectBoundingBox">
+          <image width="1" height="1" href="../images/p1.jpg" ></image>
+        </pattern>
+      </defs>
+      <circle cx="100" cy="100" r="100" fill="url(#p1)"></circle>
+    </svg>
+<svg style="background: steelblue;">
+    <defs>
+        <pattern id="avatar" width="100%" height="100%" patternContentUnits="objectBoundingBox">
+            <image width="1" height="1" href="http://userimg.yingyonghui.com/head/24/1458708838143/5426424.png-thumb"/>
+        </pattern>
+        <style>
+            circle, rect {
+                stroke: #ff9900;
+                stroke-width: 5px;
+            }
+        </style>
+    </defs>
+    <g>
+        <circle cx="100" cy="100" r="50" fill="url(#avatar)"/>
+        <rect x="200" y="50" rx="20" ry="20" width="100" height="100" fill="url(#avatar)"/>
+    </g>
+</svg>
+
+	</body>
+</html>
