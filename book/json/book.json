@@ -1,0 +1,53 @@
+{
+  "id":1,
+  "theme":0,
+  "name": "初恋的感觉",
+  "author": "污云",
+  "size": "A4",
+  "_width": 210,
+  "_height": 285,
+  "page": {
+    "start": "right",
+    "_padding": {
+      "top": 10,
+      "right": 10,
+      "bottom": 10,
+      "left": 10
+    }
+  },
+  "pages":[
+    {
+      "id": "cover",
+      "elements":[
+        {
+          "type": "image",
+          "shape": "rect",
+          "x": 10,
+          "y": 10,
+          "width": 100,
+          "height": 100,
+          "value": {
+            "url": "/HBuilder/book/images/p1_h_4352_2720.jpg",
+            "width": 4352,
+            "height": 2720,
+            "flag": "h"
+          }
+        },
+        {
+          "type": "text",
+          "value": "初恋的感觉"
+        }
+      ]
+    },
+    {
+      "id": "p0"
+    },
+    {
+      "id": "p1"
+    },
+    {
+      "id": "back_cover"
+    }
+  ]
+  
+}

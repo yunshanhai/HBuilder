@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <!-- https://developer.mozilla.org/zh-CN/docs/Web/SVG/Element/use
+    https://developer.mozilla.org/zh-CN/docs/Web/SVG/Element/defs
+    https://developer.mozilla.org/zh-CN/docs/Web/SVG -->
+    <p>！！！页面直接写时可用小写，使用js渲染时clippath应写为clipPath</p>
+    <p>js渲染，参考页面审查元素时的代码</p>
+    <svg width="300" height="300" style="background: steelblue;">
+      <style>
+        .c1{
+          stroke: white;
+          stroke-width: 10;
+          stroke-dasharray: 30,1;
+          fill: none;
+        }
+      </style>
+      <defs>
+        <circle id="c1" cx="150" cy="150" r="100" />
+        <clippath id="img2">
+          <use xlink:href="#c1" />
+          <!-- <circle cx="250" cy="450" r="100" /> -->
+        </clippath>
+      </defs>
+      <image x="50" y="0" width="200" height="300" clip-path="url(#img2)" xlink:href="../images/p2.jpg"></image>
+      <!-- <use xlink:href="#c1" stroke="white" stroke-width="10" fill="none" /> -->
+      <use href="#c1" class="c1" />
+      <!--use 的属性xlink:href可以写为href，实测-->
+      <!-- <use xlink:href="#c1" class="c1" /> -->
+    </svg>
+    <svg width="300" height="300" style="background: steelblue;">
+      <defs>
+        <circle id="c3" cx="150" cy="150" r="100" 
+          stroke="white" stroke-width="10" stroke-dasharray="30,1" 
+          fill="none"/>
+        <clippath id="img3">
+          <use href="#c3" />
+        </clippath>
+      </defs>
+      <image x="50" y="0" width="200" height="300" 
+        href="../images/p2.jpg" clip-path="url(#img3)"></image>
+      <use href="#c3"/>
+    </svg>
+    <script src="../d3/js/d3.v3.js"></script>
+    <script src="../d3/js/common.js"></script>
+    <script>
+      var svg = d3.select('body').append('svg')
+        .attr('width', 300).attr('height', 300)
+        .style('background', 'steelblue');
+      var style = '.c2{' + 
+          'stroke: white;' + 
+          'stroke-width: 10;' + 
+          'stroke-dasharray: 30,1;' +
+          'fill: none;'
+        '}';
+      svg.append('style').text(style);
+      var defs = svg.append('defs');
+      defs.append('circle').attr('id', 'c2')
+        .attr('cx', 150).attr('cy', 150).attr('r', 100);
+      var clipPath = defs.append('clipPath').attr('id', 'cp1');
+      clipPath.append('use').attr('xlink:href', '#c2');
+      svg.append('image').attr('x', 50).attr('y', 0)
+        .attr('width', 200).attr('height', 300)
+        .attr('clip-path', 'url(#cp1)')
+        .attr('href', '../images/p2.jpg');
+      svg.append('use').attr('href', '#c2').attr('class', 'c2');
+    </script>
+  </body>
+</html>

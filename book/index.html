@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Book Editor</title>
+	</head>
+	<body>
+    <div id="divBook" style="margin: 0 auto; border: solid 1px black;"></div>
+    <script src="../d3/js/d3.v3.js"></script>
+    <script src="../d3/js/common.js"></script>
+    <script>
+      var client = {
+        maxheight : 800
+      };
+      
+      d3.json('/HBuilder/book/json/book.json',function(data){
+        cl(data);
+        initBook(data)
+      });
+      
+      var book;
+      var page;
+      var pages;
+      function initBook(data){
+        book = data;
+        page = book.page;
+        pages = d3.map(data.pages);
+        
+        book.width = mm2px(book._width);
+        book.height = mm2px(book._height);
+        page.padding = {
+          top: mm2px(page._padding.top),
+          right: mm2px(page._padding.right),
+          bottom: mm2px(page._padding.bottom),
+          left: mm2px(page._padding.left)
+        };
+        //页面除去padding之后的上下左右
+        page.top = page.padding.top;
+        page.right = book.width - page.padding.right;
+        page.bottom = book.height - page.padding.bottom;
+        page.left = page.padding.left;
+        
+        cl(book);
+        
+        var pageContainer = getPageContainerSize();
+        
+        var divBook = d3.select('#divBook')
+          .style('width', pageContainer.width + 'px')
+          .style('height', pageContainer.height + 'px');
+        
+        var svgPage = divBook.append('svg')
+          .attr('width', pageContainer.width)
+          .attr('height', pageContainer.height)
+          .attr('viewBox', '0 0 ' + book.width + ' ' + book.height);
+        
+        initPage(svgPage, book.pages[0]);
+      }
+      
+      function initPage(svgPage, pageData){
+        
+        //初始化padding框
+        var points = [
+          [page.left, page.top],
+          [page.right, page.top],
+          [page.right, page.bottom],
+          [page.left, page.bottom]
+        ];
+        var line = d3.svg.line()
+          .x(function(d){ return d[0]; })
+          .y(function(d){ return d[1]; })
+          .interpolate('linear-closed');
+        svgPage.append('path')
+          .attr('d', line(points))
+          .attr('stroke', 'black')
+          .attr('stroke-width', 1)
+          .attr('fill', 'none')
+          .attr('stroke-dasharray', '5,5');
+      }
+      
+      function getPageContainerSize(){
+        var container = {
+          width: 700,
+          height: 700 * book.height / book.width
+        };
+        return container;
+      }
+    </script>
+	</body>
+</html>
