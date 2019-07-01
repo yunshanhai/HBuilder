@@ -15,6 +15,10 @@
       
       d3.json('/HBuilder/book/json/book.json',function(data){
         cl(data);
+        // for(var i in data.pages[0].elements[0].style){
+        //   cl(i);
+        //   cl(data.pages[0].elements[0].style[i]);
+        // }
         initBook(data)
       });
       

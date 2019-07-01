@@ -129,33 +129,12 @@
           .attr('href', '../images/p2.jpg');
       
         var circle = svg.append('use').datum({cx: 150, cy:150}).attr('href', '#c2').attr('class', 'c2');
-        // circle.on('click', function() {
-        //     cl('click事件');
-        //   })
-        //   .on('touchstart', function() {
-        //     cl('touchstart');
-        //     d3.select(this).style('fill-opacity', '0.5'); //触摸开始,改变颜色
-        //   })
-        //   .on('touchmove', function() {
-        //     cl('touchmove');
-        //     //由于触摸可能不止一个点,d3.touches()返回的是一个数组[[x0,y0],[x1,y1],...]
-        //     var pos = d3.touches(this)[0]; //获取第一个触摸点
-        //     var thisShape = d3.select(this);
-        //     // d3.select(this)
-        //     //   .attr('cx', pos[0]) //触摸点的x坐标
-        //     //   .attr('cy', pos[1]); //触摸点的y坐标
-        //     svg.select(thisShape.attr('href'))
-        //       .attr('cx', pos[0])
-        //       .attr('cy', pos[1]);
-        //   })
-        //   .on('touchend', function() {
-        //     cl('touchend');
-        //     d3.select(this).style('fill-opacity', '0'); //触摸结束,设置回原来颜色
-        //   });
-        circle.call(d3.behavior.drag()
+        
+        var drag = d3.behavior.drag()
           .origin(function(d,i){
+            cl('拖拽初始')
             return {x: d.cx, y: d.cy};
-          }))
+          })
           .on('dragstart', function(d){
             cl('拖拽开始');
           })
@@ -163,12 +142,131 @@
             cl('拖拽结束');
           })
           .on('drag', function(d){
-            svg.select(d3.select(this).attr('href'))
+            // cl(d3.select(this).attr('href'));
+            cl(d3.event.x);
+            var c2 = defs.select('#c2');
+            cl(c2);
+            defs.select(d3.select(this).attr('href'))
               .attr('cx', d3.event.x)
               .attr('cy', d3.event.y);
           });
+        
+        circle.call(drag);
+        
+        cl(defs.select('#c2').attr('cx', 10));
       }
       demo2();
+      
+      function demo3() {
+        var svg = d3.select('body').append('svg')
+          .attr('width', 300).attr('height', 300)
+          .style('background', 'steelblue');
+      
+      svg.append('text').attr('dy', '1em').text('拖动外圆')
+      
+        var style = { stroke: 'white'};
+        style['stroke-width'] = 10;
+        style['stroke-dasharray'] = '30,1';
+        style['fill'] = 'steelblue';
+        style['fill-opacity'] = 0;
+      
+        var clipPath = svg.append('clipPath').attr('id', 'cp5');
+        clipPath.append('circle')
+          .attr('cx', 150).attr('cy', 150)
+          .attr('id', 'cp55')
+          .attr('r', 100);
+      
+        var image = svg.append('image').attr('x', 50).attr('y', 0)
+          .attr('width', 200).attr('height', 300)
+          .attr('clip-path', 'url(#cp5)')
+          .attr('href', '../images/p2.jpg');
+      
+        var circle = svg.append('circle')
+          .datum({cx: 150, cy:150})
+          .attr('cx', 150).attr('cy', 150)
+          .attr('r', 100);
+        for(var i in style){
+          circle.style(i, style[i]);
+        }
+        
+        var drag = d3.behavior.drag()
+          .origin(function(d,i){
+            cl('拖拽初始')
+            return {x: d.cx, y: d.cy};
+          })
+          .on('dragstart', function(d){
+            cl('拖拽开始');
+          })
+          .on('dragend', function(d){
+            cl('拖拽结束');
+          })
+          .on('drag', function(d){
+            cl('拖拽中：' + d3.event);
+            d3.select(this).attr('cx', d3.event.x)
+              .attr('cy', d3.event.y);
+            // d3.select('#cp5').select('circle').attr('cx', d3.event.x)
+            //   .attr('cy', d3.event.y);
+            d3.select('#cp55').attr('cx', d3.event.x)
+              .attr('cy', d3.event.y);
+          });
+        
+        circle.call(drag);
+        
+      }
+      demo3();
+      function demo4() {
+        var svg = d3.select('body').append('svg')
+          .attr('width', 300).attr('height', 300)
+          .style('background', 'steelblue');
+          
+        svg.append('text').attr('dy', '1em').text('拖动图片')
+      
+        var style = { stroke: 'white'};
+        style['stroke-width'] = 10;
+        style['stroke-dasharray'] = '30,1';
+        style['fill'] = 'none';
+        // style['fill-opacity'] = 0;
+      
+        var clipPath = svg.append('clipPath').attr('id', 'cp6');
+        clipPath.append('circle')
+          .attr('cx', 150).attr('cy', 150)
+          .attr('id', 'cp55')
+          .attr('r', 100);
+      
+        var image = svg.append('image').datum({x:50,y:0}).attr('x', 50).attr('y', 0)
+          .attr('width', 200).attr('height', 300)
+          .attr('clip-path', 'url(#cp6)')
+          .attr('href', '../images/p2.jpg');
+      
+        var circle = svg.append('circle')
+          .datum({cx: 150, cy:150})
+          .attr('cx', 150).attr('cy', 150)
+          .attr('r', 100);
+        for(var i in style){
+          circle.style(i, style[i]);
+        }
+        
+        var drag = d3.behavior.drag()
+          .origin(function(d,i){
+            cl('拖拽初始')
+            return {x: d.x, y: d.y};
+          })
+          .on('dragstart', function(d){
+            cl('拖拽开始');
+          })
+          .on('dragend', function(d){
+            cl('拖拽结束');
+          })
+          .on('drag', function(d){
+            cl('拖拽中：' + d3.event);
+            d3.select(this).attr('x', d3.event.x)
+              .attr('y', d3.event.y);
+          });
+        
+        image.call(drag);
+        
+      }
+      demo4();
     </script>
   </body>
 </html>
