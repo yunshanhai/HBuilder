@@ -20,12 +20,17 @@
       "id": "cover",
       "elements":[
         {
-          "type": "image",
           "shape": "rect",
           "x": 10,
           "y": 10,
           "width": 100,
           "height": 100,
+          "style": {
+            "fill": "none",
+            "stroke-width": "steelblue",
+            "stroke": 5
+          },
+          "type": "image",
           "value": {
             "url": "/HBuilder/book/images/p1_h_4352_2720.jpg",
             "width": 4352,

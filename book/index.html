@@ -48,15 +48,17 @@
           .style('width', pageContainer.width + 'px')
           .style('height', pageContainer.height + 'px');
         
-        var svgPage = divBook.append('svg')
+        var pageRootSvg = divBook.append('svg')
           .attr('width', pageContainer.width)
           .attr('height', pageContainer.height)
           .attr('viewBox', '0 0 ' + book.width + ' ' + book.height);
         
-        initPage(svgPage, book.pages[0]);
+        initPage(pageRootSvg, book.pages[0]);
       }
       
-      function initPage(svgPage, pageData){
+      function initPage(pageRootSvg, pageData){
+        
+        var defs = pageRootSvg.append('defs');
         
         //初始化padding框
         var points = [
@@ -69,12 +71,27 @@
           .x(function(d){ return d[0]; })
           .y(function(d){ return d[1]; })
           .interpolate('linear-closed');
-        svgPage.append('path')
+        pageRootSvg.append('path')
           .attr('d', line(points))
           .attr('stroke', 'black')
           .attr('stroke-width', 1)
           .attr('fill', 'none')
           .attr('stroke-dasharray', '5,5');
+        
+        //初始化页面元素
+        for(var i = 0; i < pageData.elements.length; i++){
+          // console.log(element);
+          initElement(pageRootSvg, defs, pageData.elements[0]);
+        }
+      }
+      
+      function initElement(pageRootSvg, defs, element){
+        switch (element.shape){
+          case 'rect':
+            pageRootSvg.append('rect')
+          case 'circle':
+          default :
+        }
       }
       
       function getPageContainerSize(){

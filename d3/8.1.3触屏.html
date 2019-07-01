@@ -26,6 +26,7 @@
           .attr('fill', 'steelblue')
           .on('touchstart',function(){
             d3.select(this).attr('fill', 'yellow');//触摸开始,改变颜色
+            cl('touchstart');
           })
           .on('touchmove',function(){
             //由于触摸可能不止一个点,d3.touches()返回的是一个数组[[x0,y0],[x1,y1],...]
@@ -33,9 +34,11 @@
             d3.select(this)
               .attr('cx', pos[0]) //触摸点的x坐标
               .attr('cy', pos[1]);//触摸点的y坐标
+            cl('touchmove:' + pos);
           })
           .on('touchend',function(){
             d3.select(this).attr('fill', 'steelblue');//触摸结束,设置回原来颜色
+            cl('touchend');
           });
       }
       demo2();

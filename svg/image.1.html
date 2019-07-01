@@ -12,10 +12,10 @@
     <p>js渲染，参考页面审查元素时的代码</p>
     <svg width="300" height="300" style="background: steelblue;">
       <style>
-        .c1{
+        .c1 {
           stroke: white;
           stroke-width: 10;
-          stroke-dasharray: 30,1;
+          stroke-dasharray: 30, 1;
           fill: none;
         }
       </style>
@@ -32,44 +32,143 @@
       <!--use 的属性xlink:href可以写为href，实测-->
       <!-- <use xlink:href="#c1" class="c1" /> -->
     </svg>
-    
+
     <svg width="300" height="300" style="background: steelblue;">
       <defs>
-        <circle id="c3" cx="150" cy="150" r="100" 
-          stroke="white" stroke-width="10" stroke-dasharray="30,1" 
-          fill="none"/>
+        <circle id="c3" cx="150" cy="150" r="100" stroke="white" stroke-width="10" stroke-dasharray="30,1" fill="none" />
         <clippath id="img3">
           <use href="#c3" />
         </clippath>
       </defs>
-      <image x="50" y="0" width="200" height="300" 
-        href="../images/p2.jpg" clip-path="url(#img3)"></image>
-      <use href="#c3"/>
+      <image x="50" y="0" width="200" height="300" href="../images/p2.jpg" clip-path="url(#img3)"></image>
+      <use href="#c3" />
     </svg>
-    
+
     <script src="../d3/js/d3.v3.js"></script>
     <script src="../d3/js/common.js"></script>
     <script>
-      var svg = d3.select('body').append('svg')
-        .attr('width', 300).attr('height', 300)
-        .style('background', 'steelblue');
-      var style = '.c2{' + 
-          'stroke: white;' + 
-          'stroke-width: 10;' + 
+      function demo1() {
+        var svg = d3.select('body').append('svg')
+          .attr('width', 300).attr('height', 300)
+          .style('background', 'steelblue');
+
+        var style = '.c2{' +
+          'stroke: white;' +
+          'stroke-width: 10;' +
           'stroke-dasharray: 30,1;' +
-          'fill: none;'
+          'fill: steelblue;' +
+          'fill-opacity: 0;'
         '}';
-      svg.append('style').text(style);
-      var defs = svg.append('defs');
-      defs.append('circle').attr('id', 'c2')
-        .attr('cx', 150).attr('cy', 150).attr('r', 100);
-      var clipPath = defs.append('clipPath').attr('id', 'cp1');
-      clipPath.append('use').attr('xlink:href', '#c2');
-      svg.append('image').attr('x', 50).attr('y', 0)
-        .attr('width', 200).attr('height', 300)
-        .attr('clip-path', 'url(#cp1)')
-        .attr('href', '../images/p2.jpg');
-      svg.append('use').attr('href', '#c2').attr('class', 'c2');
+        svg.append('style').text(style);
+
+        var defs = svg.append('defs');
+
+        defs.append('circle').attr('id', 'c2')
+          .attr('cx', 150).attr('cy', 150).attr('r', 100);
+
+        var clipPath = defs.append('clipPath').attr('id', 'cp1');
+        clipPath.append('use').attr('href', '#c2');
+
+        var image = svg.append('image').attr('x', 50).attr('y', 0)
+          .attr('width', 200).attr('height', 300)
+          .attr('clip-path', 'url(#cp1)')
+          .attr('href', '../images/p2.jpg');
+
+        var circle = svg.append('use').attr('href', '#c2').attr('class', 'c2');
+        circle.on('click', function() {
+            cl('click事件');
+          })
+          .on('touchstart', function() {
+            cl('touchstart');
+            d3.select(this).style('fill-opacity', '0.5'); //触摸开始,改变颜色
+          })
+          .on('touchmove', function() {
+            cl('touchmove');
+            //由于触摸可能不止一个点,d3.touches()返回的是一个数组[[x0,y0],[x1,y1],...]
+            var pos = d3.touches(this)[0]; //获取第一个触摸点
+            var thisShape = d3.select(this);
+            // d3.select(this)
+            //   .attr('cx', pos[0]) //触摸点的x坐标
+            //   .attr('cy', pos[1]); //触摸点的y坐标
+            svg.select(thisShape.attr('href'))
+              .attr('cx', pos[0])
+              .attr('cy', pos[1]);
+          })
+          .on('touchend', function() {
+            cl('touchend');
+            d3.select(this).style('fill-opacity', '0'); //触摸结束,设置回原来颜色
+          });
+      }
+      demo1();
+      
+      function demo2() {
+        var svg = d3.select('body').append('svg')
+          .attr('width', 300).attr('height', 300)
+          .style('background', 'steelblue');
+      
+        var style = '.c2{' +
+          'stroke: white;' +
+          'stroke-width: 10;' +
+          'stroke-dasharray: 30,1;' +
+          'fill: steelblue;' +
+          'fill-opacity: 0;'
+        '}';
+        svg.append('style').text(style);
+      
+        var defs = svg.append('defs');
+      
+        defs.append('circle').attr('id', 'c2')
+          .attr('cx', 150).attr('cy', 150).attr('r', 100);
+      
+        var clipPath = defs.append('clipPath').attr('id', 'cp1');
+        clipPath.append('use').attr('href', '#c2');
+      
+        var image = svg.append('image').attr('x', 50).attr('y', 0)
+          .attr('width', 200).attr('height', 300)
+          .attr('clip-path', 'url(#cp1)')
+          .attr('href', '../images/p2.jpg');
+      
+        var circle = svg.append('use').datum({cx: 150, cy:150}).attr('href', '#c2').attr('class', 'c2');
+        // circle.on('click', function() {
+        //     cl('click事件');
+        //   })
+        //   .on('touchstart', function() {
+        //     cl('touchstart');
+        //     d3.select(this).style('fill-opacity', '0.5'); //触摸开始,改变颜色
+        //   })
+        //   .on('touchmove', function() {
+        //     cl('touchmove');
+        //     //由于触摸可能不止一个点,d3.touches()返回的是一个数组[[x0,y0],[x1,y1],...]
+        //     var pos = d3.touches(this)[0]; //获取第一个触摸点
+        //     var thisShape = d3.select(this);
+        //     // d3.select(this)
+        //     //   .attr('cx', pos[0]) //触摸点的x坐标
+        //     //   .attr('cy', pos[1]); //触摸点的y坐标
+        //     svg.select(thisShape.attr('href'))
+        //       .attr('cx', pos[0])
+        //       .attr('cy', pos[1]);
+        //   })
+        //   .on('touchend', function() {
+        //     cl('touchend');
+        //     d3.select(this).style('fill-opacity', '0'); //触摸结束,设置回原来颜色
+        //   });
+        circle.call(d3.behavior.drag()
+          .origin(function(d,i){
+            return {x: d.cx, y: d.cy};
+          }))
+          .on('dragstart', function(d){
+            cl('拖拽开始');
+          })
+          .on('dragend', function(d){
+            cl('拖拽结束');
+          })
+          .on('drag', function(d){
+            svg.select(d3.select(this).attr('href'))
+              .attr('cx', d3.event.x)
+              .attr('cy', d3.event.y);
+          });
+      }
+      demo2();
     </script>
   </body>
 </html>
