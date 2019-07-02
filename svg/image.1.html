@@ -191,8 +191,10 @@
         
         var drag = d3.behavior.drag()
           .origin(function(d,i){
-            cl('拖拽初始')
-            return {x: d.cx, y: d.cy};
+            let circle = d3.select(this);
+            cl('拖拽初始');
+            // cl(circle.node().tagName);
+            return {x: circle.attr('cx'), y: circle.attr('cy')};
           })
           .on('dragstart', function(d){
             cl('拖拽开始');
@@ -204,8 +206,7 @@
             cl('拖拽中：' + d3.event);
             d3.select(this).attr('cx', d3.event.x)
               .attr('cy', d3.event.y);
-            // d3.select('#cp5').select('circle').attr('cx', d3.event.x)
-            //   .attr('cy', d3.event.y);
+
             d3.select('#cp55').attr('cx', d3.event.x)
               .attr('cy', d3.event.y);
           });
@@ -233,13 +234,15 @@
           .attr('id', 'cp55')
           .attr('r', 100);
       
-        var image = svg.append('image').datum({x:50,y:0}).attr('x', 50).attr('y', 0)
+      var imageData = {x:50,y:0};
+        var image = svg.append('image').datum(imageData).attr('x', 50).attr('y', 0)
           .attr('width', 200).attr('height', 300)
           .attr('clip-path', 'url(#cp6)')
           .attr('href', '../images/p2.jpg');
       
+      var data = {cx: 150, cy:150};
         var circle = svg.append('circle')
-          .datum({cx: 150, cy:150})
+          .datum(data)
           .attr('cx', 150).attr('cy', 150)
           .attr('r', 100);
         for(var i in style){
@@ -248,14 +251,18 @@
         
         var drag = d3.behavior.drag()
           .origin(function(d,i){
-            cl('拖拽初始')
-            return {x: d.x, y: d.y};
+            cl('拖拽初始：' + d.x + ',' + d.y);
+            // cl('拖拽初始：' + d3.select(this).attr('x') + ',' + d3.select(this).attr('y'));
+            let img = d3.select(this);
+            return {x: img.attr('x'), y: img.attr('y')};
           })
           .on('dragstart', function(d){
             cl('拖拽开始');
           })
           .on('dragend', function(d){
             cl('拖拽结束');
+            // imageData.x = d3.event.x;
+            // imageData.y = d3.event.y;
           })
           .on('drag', function(d){
             cl('拖拽中：' + d3.event);

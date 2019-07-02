@@ -5,15 +5,16 @@
 		<title></title>
 	</head>
 	<body>
+    <p>x 文字位置的x坐标</p>
+    <p>y 文字位置的y坐标</p>
+    <p>dx 相对于当前位置在x方向上平移的距离（正往右，负往左）</p>
+    <p>dy 相对于当前位置在y方向上平移的距离（正往下，负往上）</p>
+    <p>textLength 文字的显示长度（不足则拉长，足则压缩）</p>
+    <p>rotate 旋转角度，transform="rotate(angle x y)" angle是旋转的角度，正为顺时针，负为逆时针，x和y是基坐标</p>
+    <p>font-size有效值从1开始到无限大</p>
+    <p>text-anchor: start 文字第一个字位于起始位置的左侧 middle 文字的中心位于其实位置上 end 文字的最后一个字符靠近起始位置</p>
     <svg width="100%" height="500">
-      <!--文本 
-      x 文字位置的x坐标
-      y 文字位置的y坐标
-      dx 相对于当前位置在x方向上平移的距离（正往右，负往左）
-      dy 相对于当前位置在y方向上平移的距离（正往下，负往上）
-      textLength 文字的显示长度（不足则拉长，足则压缩）
-      rotate 旋转角度，transform="rotate(angle x y)" angle是旋转的角度，正为顺时针，负为逆时针，x和y是基坐标
-      font-size有效值从1开始到无限大-->
+      
       <text x="10" y="55" fill="red" font-size="45">I love SVG</text>
       <text x="300" y="15" fill="green" transform="rotate(10 300 15)">文字角度旋转</text>
       <defs>
