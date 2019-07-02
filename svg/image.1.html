@@ -177,6 +177,7 @@
           .attr('r', 100);
       
         var image = svg.append('image').attr('x', 50).attr('y', 0)
+          .attr('id', 'image5')
           .attr('width', 200).attr('height', 300)
           .attr('clip-path', 'url(#cp5)')
           .attr('href', '../images/p2.jpg');
@@ -206,15 +207,19 @@
             cl('拖拽中：' + d3.event);
             d3.select(this).attr('cx', d3.event.x)
               .attr('cy', d3.event.y);
-
+            //图片的裁剪路径跟着拖动
             d3.select('#cp55').attr('cx', d3.event.x)
               .attr('cy', d3.event.y);
+            //图片跟着拖动
+            image.attr('x', parseInt(image.attr('x')) + parseInt(d3.event.dx))
+              .attr('y', parseInt(image.attr('y')) + parseInt(d3.event.dy));
           });
         
         circle.call(drag);
         
       }
       demo3();
+      
       function demo4() {
         var svg = d3.select('body').append('svg')
           .attr('width', 300).attr('height', 300)
