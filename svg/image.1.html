@@ -189,6 +189,29 @@
         for(var i in style){
           circle.style(i, style[i]);
         }
+        circle.on('mouseover', function(d,i){
+          var that = d3.select(this);
+          // that.style('stroke', 'black');
+          var top = [parseInt(that.attr('cx')), parseInt(that.attr('cy')) - parseInt(that.attr('r'))];
+          var cTop =  svg.append('circle').attr('cx', top[0])
+            .attr('cy', top[1])
+            .attr('r', 5)
+            .attr('id', 'dragTop');
+          cTop.style('stroke', 'red')
+            .style('stroke-width', 1)
+            .style('fill', 'white')
+            .style('fill-opacity', '0');
+          cTop.on('mouseover', function(d,i){
+              cl('进入小圈');
+            })
+            // .style('fill', 'none')
+            // .style('cursor', 'crosshair');
+        })
+        .on('mouseout', function(d,i){
+          // d3.select(this).style('stroke', 'white');
+          cl('退出大圈');
+          // svg.select('#dragTop').remove();
+        });
         
         var drag = d3.behavior.drag()
           .origin(function(d,i){
