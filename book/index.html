@@ -85,17 +85,43 @@
         //初始化页面元素
         for(var i = 0; i < pageData.elements.length; i++){
           // console.log(element);
-          initElement(pageRootSvg, defs, pageData.elements[0]);
+          initElement(pageRootSvg, defs, pageData.elements[i]);
         }
       }
       
       function initElement(pageRootSvg, defs, element){
+        var shape;
         switch (element.shape){
           case 'rect':
-            pageRootSvg.append('rect')
+            shape = pageRootSvg.append('rect');
+            // rect.attr('x', element.x)
+            //   .attr('y', element.y)
+            //   .attr('width', element.width)
+            //   .attr('height', element.height);
+            // if(element.hasOwnProperty('rx')){
+            //   rect.attr('rx', element.rx);
+            // }
+            // if(element.hasOwnProperty('ry')){
+            //   rect.attr('ry', element.ry);
+            // }
+            // Object.keys(element.properties).forEach(function(key){
+            //   shape.attr(key, element.properties[key]);
+            // });
+            // Object.keys(element.style).forEach(function(key){
+            //   shape.style(key, element.style[key]);
+            // });
+            break;
           case 'circle':
+            shape = pageRootSvg.append('circle');
+            break;
           default :
         }
+        Object.keys(element.properties).forEach(function(key){
+          shape.attr(key, element.properties[key]);
+        });
+        Object.keys(element.styles).forEach(function(key){
+          shape.style(key, element.styles[key]);
+        });
       }
       
       function getPageContainerSize(){
