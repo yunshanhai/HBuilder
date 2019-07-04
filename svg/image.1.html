@@ -246,7 +246,12 @@
       function demo4() {
         var svg = d3.select('body').append('svg')
           .attr('width', 300).attr('height', 300)
-          .style('background', 'steelblue');
+          .style('background', 'steelblue')
+          .on('mouseover',function(){
+            cl('svg mouseover');
+          }).on('mouseout',function(){
+            cl('svg mouseout');
+          });
           
         svg.append('text').attr('dy', '1em').text('拖动图片')
       
