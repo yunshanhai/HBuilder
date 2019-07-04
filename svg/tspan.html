@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+    <style>
+      svg{ border: solid 1px gray;}
+    </style>
+	</head>
+	<body>
+    <svg width="400">
+      <text x="10" y="30">
+    这是一个<tspan style="font-weight:bold;">tspan</tspan>元素的 <tspan style="baseline-shift: super;">上标</tspan>
+    和 <tspan style="baseline-shift: sub;">下标</tspan> 混合的文本串效果。
+</text>
+    </svg>
+    <script src="../d3/js/d3.v3.js"></script>
+    <script src="../d3/js/common.js"></script>
+    <script>
+      var svg = d3.select('body').append('svg');
+      var text = svg.append('text');
+      text.append('tspan').attr('x', 0).attr('dy', '1em').text('123');
+      text.append('tspan').attr('x', 0).attr('dy', '1em')
+        .style('font-size', 40).style('fill', 'red').text('456');
+      text.append('tspan').attr('x', 0).attr('dy', '1em').text('789');
+      text.html(text.html() + '<tspan x="0" dy="1em">通过html插入10</tspan>');
+    </script>
+	</body>
+</html>

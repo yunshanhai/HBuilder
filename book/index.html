@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Book Editor</title>
-	</head>
-	<body>
+  <head>
+    <meta charset="utf-8">
+    <title>Book Editor</title>
+  </head>
+  <body>
     <div id="divBook" style="margin: 0 auto; border: solid 1px black;"></div>
     <script src="../d3/js/d3.v3.js"></script>
     <script src="../d3/js/common.js"></script>
+    <script src="../js/vue.js"></script>
     <script>
       var client = {
-        maxheight : 800
+        maxheight: 800
       };
-      
-      d3.json('/HBuilder/book/json/book.json',function(data){
+
+      d3.json('/HBuilder/book/json/book.json', function(data) {
         cl(data);
-        // for(var i in data.pages[0].elements[0].style){
-        //   cl(i);
-        //   cl(data.pages[0].elements[0].style[i]);
-        // }
         initBook(data)
       });
-      
+
       var book;
       var page;
       var pages;
-      function initBook(data){
+      var currentPage; //当前页面,暂时未用到
+      var currentElement;
+
+      function initBook(data) {
         book = data;
         page = book.page;
         pages = d3.map(data.pages);
-        
+
+
         book.width = mm2px(book._width);
         book.height = mm2px(book._height);
         page.padding = {
@@ -43,27 +44,27 @@
         page.right = book.width - page.padding.right;
         page.bottom = book.height - page.padding.bottom;
         page.left = page.padding.left;
-        
+
         cl(book);
-        
+
         var pageContainer = getPageContainerSize();
-        
+
         var divBook = d3.select('#divBook')
           .style('width', pageContainer.width + 'px')
           .style('height', pageContainer.height + 'px');
-        
-        var pageRootSvg = divBook.append('svg')
+
+        var pageRootSvg = divBook.append('svg').datum(book.pages[0])
           .attr('width', pageContainer.width)
           .attr('height', pageContainer.height)
           .attr('viewBox', '0 0 ' + book.width + ' ' + book.height);
-        
+
         initPage(pageRootSvg, book.pages[0]);
       }
-      
-      function initPage(pageRootSvg, pageData){
-        
+
+      function initPage(pageRootSvg, pageData) {
+
         var defs = pageRootSvg.append('defs');
-        
+
         //初始化padding框
         var points = [
           [page.left, page.top],
@@ -72,8 +73,12 @@
           [page.left, page.bottom]
         ];
         var line = d3.svg.line()
-          .x(function(d){ return d[0]; })
-          .y(function(d){ return d[1]; })
+          .x(function(d) {
+            return d[0];
+          })
+          .y(function(d) {
+            return d[1];
+          })
           .interpolate('linear-closed');
         pageRootSvg.append('path')
           .attr('d', line(points))
@@ -81,56 +86,116 @@
           .attr('stroke-width', 1)
           .attr('fill', 'none')
           .attr('stroke-dasharray', '5,5');
-        
+
         //初始化页面元素
-        for(var i = 0; i < pageData.elements.length; i++){
+        for (var i = 0; i < pageData.elements.length; i++) {
           // console.log(element);
-          initElement(pageRootSvg, defs, pageData.elements[i]);
+          initElement(pageRootSvg, defs, pageData.elements[i], i);
         }
       }
-      
-      function initElement(pageRootSvg, defs, element){
-        var shape;
-        switch (element.shape){
-          case 'rect':
-            shape = pageRootSvg.append('rect');
-            // rect.attr('x', element.x)
-            //   .attr('y', element.y)
-            //   .attr('width', element.width)
-            //   .attr('height', element.height);
-            // if(element.hasOwnProperty('rx')){
-            //   rect.attr('rx', element.rx);
-            // }
-            // if(element.hasOwnProperty('ry')){
-            //   rect.attr('ry', element.ry);
-            // }
-            // Object.keys(element.properties).forEach(function(key){
-            //   shape.attr(key, element.properties[key]);
-            // });
-            // Object.keys(element.style).forEach(function(key){
-            //   shape.style(key, element.style[key]);
-            // });
-            break;
-          case 'circle':
-            shape = pageRootSvg.append('circle');
-            break;
-          default :
+
+      function addPointCircle(pageRootSvg, id, points) {
+        pageRootSvg.append('circle').attr('id', id)
+          .attr('r', 5)
+          .attr('cx', points[0])
+          .attr('cy', points[1])
+          .style('display', 'block')
+          .style('stroke', 'red')
+          .style('stroke-width', 2)
+          .style('fill', 'none');
+      }
+
+      function initElement(pageRootSvg, defs, element, index) {
+        var shape = pageRootSvg.select('#element' + index);
+        if (shape.empty()) {
+          shape = pageRootSvg.append(element.shape)
+            .attr('id', '#element' + index);
         }
-        Object.keys(element.properties).forEach(function(key){
+        shape.datum(element);
+
+        //计算形状的八个坐标点
+        calcElementPoints(element);
+
+        Object.keys(element.properties).forEach(function(key) {
           shape.attr(key, element.properties[key]);
         });
-        Object.keys(element.styles).forEach(function(key){
+
+        Object.keys(element.styles).forEach(function(key) {
           shape.style(key, element.styles[key]);
         });
+        
+        shape.on('mouseover', function(d, i) {
+          cl('mouseover');
+          //初始化元素选择指示点
+          addPointCircle(pageRootSvg, 'topPoint', d.points.top);
+          addPointCircle(pageRootSvg, 'rightPoint', d.points.right);
+          addPointCircle(pageRootSvg, 'bottomPoint', d.points.bottom);
+          addPointCircle(pageRootSvg, 'leftPoint', d.points.left);
+        })
+        .on('mouseout', function(d){
+          cl('mouseout');
+          cl(d3.event);
+          pageRootSvg.select('#topPoint').remove();
+          pageRootSvg.select('#rightPoint').remove();
+          pageRootSvg.select('#bottomPoint').remove();
+          pageRootSvg.select('#leftPoint').remove();
+        });
       }
-      
-      function getPageContainerSize(){
+
+      /**
+       * 计算元素图形的八个点坐标，放到element.points属性
+       * @param {Object} element 要计算的元素图形
+       */
+      function calcElementPoints(element) {
+        if (!element.hasOwnProperty('points')) {
+          element.points = {};
+        }
+        switch (element.shape) {
+          case 'rect':
+            element.points.top = [element.properties.x + element.properties.width / 2, element.properties.y];
+            element.points.right = [element.properties.x + element.properties.width, element.properties.y + element.properties
+              .height / 2
+            ];
+            element.points.bottom = [element.properties.x + element.properties.width / 2, element.properties.y +
+              element.properties.height
+            ];
+            element.points.left = [element.properties.x, element.properties.y + element.properties.height / 2];
+            element.points.tl = [element.properties.x, element.properties.y];
+            element.points.tr = [element.properties.x + element.properties.width, element.properties.y];
+            element.points.bl = [element.properties.x, element.properties.y + element.properties.height];
+            element.points.br = [element.properties.x + element.properties.width, element.properties.y + element.properties
+              .height
+            ];
+            break;
+          case 'circle':
+            element.points.top = [element.properties.cx, element.properties.cy - element.properties.r];
+            element.points.right = [element.properties.cx + element.properties.r, element.properties.cy];
+            element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.r];
+            element.points.left = [element.properties.cx - element.properties.r, element.properties.cy];
+            element.points.tl = [element.properties.cx - element.properties.r, element.properties.cy - element.properties
+              .r
+            ];
+            element.points.tr = [element.properties.cx + element.properties.r, element.properties.cy - element.properties
+              .r
+            ];
+            element.points.bl = [element.properties.cx - element.properties.r, element.properties.cy + element.properties
+              .r
+            ];
+            element.points.br = [element.properties.cx + element.properties.r, element.properties.cy + element.properties
+              .r
+            ];
+            break;
+          default:
+        }
+      }
+
+      function getPageContainerSize() {
         var container = {
-          width: 700,
-          height: 700 * book.height / book.width
+          width: 600,
+          height: 600 * book.height / book.width
         };
         return container;
       }
     </script>
-	</body>
+  </body>
 </html>
