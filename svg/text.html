@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-	</head>
-	<body>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
     <p>x 文字位置的x坐标</p>
     <p>y 文字位置的y坐标</p>
     <p>dx 相对于当前位置在x方向上平移的距离（正往右，负往左）</p>
@@ -14,7 +14,7 @@
     <p>font-size有效值从1开始到无限大</p>
     <p>text-anchor: start 文字第一个字位于起始位置的左侧 middle 文字的中心位于其实位置上 end 文字的最后一个字符靠近起始位置</p>
     <svg width="100%" height="500">
-      
+
       <text x="10" y="55" fill="red" font-size="45">I love SVG</text>
       <text x="300" y="15" fill="green" transform="rotate(10 300 15)">文字角度旋转</text>
       <defs>
@@ -43,5 +43,42 @@
         <text x="10" y="100" fill="blue">链接到w3schools</text>
       </a>
     </svg>
-	</body>
+    <svg width="100%" height="100%" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <path id="MyPath" d="M 100 200 
+             C 200 100 300   0 400 100
+             C 500 200 600 300 700 200
+             C 800 100 900 100 900 100" />
+      </defs>
+
+      <use xlink:href="#MyPath" fill="none" stroke="red" />
+
+      <text font-family="Verdana" font-size="42.5">
+        <textPath xlink:href="#MyPath">
+          We go up, then we go down, then up again
+        </textPath>
+      </text>
+
+      <!-- Show outline of the viewport using 'rect' element -->
+      <rect x="1" y="1" width="998" height="298" fill="none" stroke="black" stroke-width="2" />
+    </svg>
+    <svg width="100%" height="100%" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <text id="ReferencedText">
+          Referenced character data
+        </text>
+      </defs>
+
+      <text x="100" y="100" font-size="45">
+        Inline character data
+      </text>
+
+      <text x="100" y="200" font-size="45" fill="red">
+        <tref xlink:href="#ReferencedText" />
+      </text>
+
+      <!-- Show outline of canvas using 'rect' element -->
+      <rect x="1" y="1" width="998" height="298" fill="none" stroke-width="2" />
+    </svg>
+  </body>
 </html>

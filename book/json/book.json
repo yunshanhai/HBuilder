@@ -21,14 +21,19 @@
       "elements":[
         {
           "shape": "rect",
-          "x": 10,
-          "y": 10,
-          "width": 100,
-          "height": 100,
-          "style": {
-            "fill": "none",
-            "stroke-width": "steelblue",
-            "stroke": 5
+          "properties":{
+            "x": 100,
+            "y": 100,
+            "width": 600,
+            "height": 400,
+            "rx": 10,
+            "ry": 10
+          },
+          "styles": {
+            "stroke-width": 1,
+            "stroke": "steelblue",
+            "fill": "white",
+            "fill-opacity": 0
           },
           "type": "image",
           "value": {
@@ -39,8 +44,26 @@
           }
         },
         {
-          "type": "text",
-          "value": "初恋的感觉"
+          "shape": "circle",
+          "properties":{
+            "cx": 400,
+            "cy": 800,
+            "r": 200
+          },
+          "styles": {
+            "stroke-width": 10,
+            "stroke": "steelblue",
+            "stroke-dasharray": "20,1",
+            "fill": "white",
+            "fill-opacity": 0
+          },
+          "type": "image",
+          "value": {
+            "url": "/HBuilder/book/images/p2_v_1760_2816.jpg",
+            "width": 1760,
+            "height": 2816,
+            "flag": "v"
+          }
         }
       ]
     },

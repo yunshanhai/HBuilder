@@ -189,14 +189,24 @@
         for(var i in style){
           circle.style(i, style[i]);
         }
+        circle.on('click', function(d,i){
+          cl('click事件');
+        });
         circle.on('mouseover', function(d,i){
+          cl('mouseover事件');
           var that = d3.select(this);
           // that.style('stroke', 'black');
           var top = [parseInt(that.attr('cx')), parseInt(that.attr('cy')) - parseInt(that.attr('r'))];
-          var cTop =  svg.append('circle').attr('cx', top[0])
+          var cTop =  svg.select('#dragTop');
+          cl(cTop);
+          if(cTop.empty()){
+            cTop = svg.append('circle').attr('id', 'dragTop');
+          }
+          cTop.attr('cx', top[0])
             .attr('cy', top[1])
             .attr('r', 5)
             .attr('id', 'dragTop');
+          cTop.style('display', 'block');
           cTop.style('stroke', 'red')
             .style('stroke-width', 1)
             .style('fill', 'white')
@@ -209,8 +219,9 @@
         })
         .on('mouseout', function(d,i){
           // d3.select(this).style('stroke', 'white');
-          cl('退出大圈');
+          cl('mouseout');
           // svg.select('#dragTop').remove();
+          svg.select('#dragTop').style('display', 'none');
         });
         
         var drag = d3.behavior.drag()
