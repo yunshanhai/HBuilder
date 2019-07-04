@@ -94,7 +94,7 @@
         }
       }
 
-      function addPointCircle(pageRootSvg, id, points) {
+      function addShapePoint(pageRootSvg, id, points) {
         pageRootSvg.append('circle').attr('id', id)
           .attr('r', 5)
           .attr('cx', points[0])
@@ -114,7 +114,7 @@
         shape.datum(element);
 
         //计算形状的八个坐标点
-        calcElementPoints(element);
+        calcShapePoints(element);
 
         Object.keys(element.properties).forEach(function(key) {
           shape.attr(key, element.properties[key]);
@@ -127,10 +127,10 @@
         shape.on('mouseover', function(d, i) {
           cl('mouseover');
           //初始化元素选择指示点
-          addPointCircle(pageRootSvg, 'topPoint', d.points.top);
-          addPointCircle(pageRootSvg, 'rightPoint', d.points.right);
-          addPointCircle(pageRootSvg, 'bottomPoint', d.points.bottom);
-          addPointCircle(pageRootSvg, 'leftPoint', d.points.left);
+          addShapePoint(pageRootSvg, 'topPoint', d.points.top);
+          addShapePoint(pageRootSvg, 'rightPoint', d.points.right);
+          addShapePoint(pageRootSvg, 'bottomPoint', d.points.bottom);
+          addShapePoint(pageRootSvg, 'leftPoint', d.points.left);
         })
         .on('mouseout', function(d){
           cl('mouseout');
@@ -146,44 +146,32 @@
        * 计算元素图形的八个点坐标，放到element.points属性
        * @param {Object} element 要计算的元素图形
        */
-      function calcElementPoints(element) {
+      function calcShapePoints(element) {
         if (!element.hasOwnProperty('points')) {
           element.points = {};
         }
         switch (element.shape) {
           case 'rect':
             element.points.top = [element.properties.x + element.properties.width / 2, element.properties.y];
-            element.points.right = [element.properties.x + element.properties.width, element.properties.y + element.properties
-              .height / 2
-            ];
-            element.points.bottom = [element.properties.x + element.properties.width / 2, element.properties.y +
-              element.properties.height
-            ];
+            element.points.right = [element.properties.x + element.properties.width, element.properties.y + element.properties.height / 2];
+            element.points.bottom = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height];
             element.points.left = [element.properties.x, element.properties.y + element.properties.height / 2];
             element.points.tl = [element.properties.x, element.properties.y];
             element.points.tr = [element.properties.x + element.properties.width, element.properties.y];
             element.points.bl = [element.properties.x, element.properties.y + element.properties.height];
-            element.points.br = [element.properties.x + element.properties.width, element.properties.y + element.properties
-              .height
-            ];
+            element.points.br = [element.properties.x + element.properties.width, element.properties.y + element.properties.height];
+            element.points.center = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height / 2];
             break;
           case 'circle':
             element.points.top = [element.properties.cx, element.properties.cy - element.properties.r];
             element.points.right = [element.properties.cx + element.properties.r, element.properties.cy];
             element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.r];
             element.points.left = [element.properties.cx - element.properties.r, element.properties.cy];
-            element.points.tl = [element.properties.cx - element.properties.r, element.properties.cy - element.properties
-              .r
-            ];
-            element.points.tr = [element.properties.cx + element.properties.r, element.properties.cy - element.properties
-              .r
-            ];
-            element.points.bl = [element.properties.cx - element.properties.r, element.properties.cy + element.properties
-              .r
-            ];
-            element.points.br = [element.properties.cx + element.properties.r, element.properties.cy + element.properties
-              .r
-            ];
+            element.points.tl = [element.properties.cx - element.properties.r, element.properties.cy - element.properties.r];
+            element.points.tr = [element.properties.cx + element.properties.r, element.properties.cy - element.properties.r];
+            element.points.bl = [element.properties.cx - element.properties.r, element.properties.cy + element.properties.r];
+            element.points.br = [element.properties.cx + element.properties.r, element.properties.cy + element.properties.r];
+            element.points.center = [element.properties.cx, element.properties.cy];
             break;
           default:
         }
