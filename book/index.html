@@ -150,7 +150,7 @@
         
         shape.on('mouseover', function(d, i) {
           cl('shape mouseover');
-          if(lockShape === d3.select(this).attr('id') || shapePointIds.has(d3.event.relatedTarget.id)){
+          if(lockShape === d3.select(this).attr('id') || d3.event.relatedTarget == null || shapePointIds.has(d3.event.relatedTarget.id)){
             return;
           }
           //初始化元素选择指示点
@@ -209,7 +209,7 @@
       function addDragPoint(pageRootSvg, point, id){
         var square = calcSquareFromCenterPoint(point, 10);
         cl(square);
-        var dragPoint = pageRootSvg.append('rect').attr('id', id)
+        var dragPoint = pageRootSvg.append('rect').datum(point).attr('id', id)
           .attr('x', square.x)
           .attr('y', square.y)
           .attr('width', square.width)
@@ -218,6 +218,11 @@
           .style('stroke', 'red')
           .style('stroke-width', 2)
           .style('fill', 'white');
+        
+        dragPoint.on('click', function(){
+          event.cancelBubble = true;
+        });
+        
         switch(id){
           case 'tlDrag':
             dragPoint.style('cursor', 'nw-resize');
@@ -232,6 +237,33 @@
             dragPoint.style('cursor', 'se-resize');
             break;
         }
+        // drag.on('mousedown')
+        var drag = d3.behavior.drag()
+          .origin(function(d){
+            return {x:d[0], y:d[1]};
+          }).on('dragstart', function(d){
+            // event.cancelBubble = true;
+            cl('拖拽开始');
+          })
+          .on('dragend', function(d){
+            event.cancelBubble = true;
+            // event.cancelable = true;
+            cl(event);
+            cl('拖拽结束');
+          })
+          .on('drag', function(d){
+            // event.cancelBubble = true;
+            cl('拖拽中：' + d3.event);
+            d3.select(this).attr('x', d3.event.x)
+              .attr('y', d3.event.y);
+            // //图片的裁剪路径跟着拖动
+            // d3.select('#cp55').attr('cx', d3.event.x)
+            //   .attr('cy', d3.event.y);
+            // //图片跟着拖动
+            // image.attr('x', parseInt(image.attr('x')) + parseInt(d3.event.dx))
+            //   .attr('y', parseInt(image.attr('y')) + parseInt(d3.event.dy));
+          });
+        dragPoint.call(drag);
       }
       
       function calcSquareFromCenterPoint(point, width){

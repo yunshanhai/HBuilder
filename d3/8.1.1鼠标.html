@@ -48,6 +48,32 @@
       
       //！！事件监听器要设置在transition()之前
       cl(d3.ascending(2,2))
+      
+      var svg = d3.select('body').append('svg')
+        .style('border', 'solid 1px gray;');
+      var circle = svg.append('circle').attr('cx', 150).attr('cy', 75).attr('r', 50)
+        .style('stroke', 'gray').style('stroke-width', 1);
+      var down = false;
+      circle.on('mousedown', function(){
+        cl('mousedown')
+        cl(event);
+        down = true;
+      })
+      .on('mousemove', function(){
+        if(!down) return;
+        
+        cl('mousemove');
+        cl(event);
+      })
+      .on('mouseup', function(){
+        cl('mouseup');
+        cl(event);
+        down = false;
+      })
+      .on('click', function(){
+        cl('click');
+        cl(event);
+      });
     </script>
 	</body>
 </html>
