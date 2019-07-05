@@ -30,7 +30,7 @@
             "ry": 10
           },
           "styles": {
-            "stroke-width": 1,
+            "stroke-width": 10,
             "stroke": "steelblue",
             "fill": "white",
             "fill-opacity": 0
