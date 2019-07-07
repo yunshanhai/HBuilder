@@ -114,7 +114,7 @@
         //初始化页面元素
         for (var i = 0; i < pageData.elements.length; i++) {
           // console.log(element);
-          initElement(pageRootSvg, defs, pageData.elements[i], i);
+          drawElement(pageRootSvg, defs, pageData.elements[i], 'element' + i);
         }
       }
 
@@ -129,11 +129,11 @@
           .style('fill', 'none');
       }
 
-      function initElement(pageRootSvg, defs, element, index) {
-        var shape = pageRootSvg.select('#element' + index);
+      function drawElement(pageRootSvg, defs, element, id, update = false) {
+        var shape = pageRootSvg.select('#' + id);
         if (shape.empty()) {
           shape = pageRootSvg.append(element.shape)
-            .attr('id', 'element' + index);
+            .attr('id', id);
         }
         shape.datum(element);
 
