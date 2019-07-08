@@ -7,87 +7,108 @@
   <body>
     <div id="divBook" style="margin: 0 auto; border: solid 1px black;"></div>
     <script src="../d3/js/d3.v3.js"></script>
-    <script src="../d3/js/common.js"></script>
+    <script src="./js/unit.js"></script>
     <script src="../js/vue.js"></script>
     <script>
       var client = {
         maxheight: 800
-      };
+      }
 
       d3.json('/HBuilder/book/json/book.json', function(data) {
-        cl(data);
+        cl(data)
         initBook(data)
-      });
+      })
 
-      var book;
-      var page;
-      var pages;
-      var currentPage; //当前页面,暂时未用到
-      var currentElement;
-      var shapePointIds = d3.set(['topPoint', 'rightPoint', 'bottomPoint', 'leftPoint']);
-      var dragPointIds = d3.set(['tlDrag', 'trDrag', 'blDrag', 'brDrag']);
-      var lockShape = '';
+      var book
+      var page
+      var pages
+      // var currentPage //当前页面,暂时未用到
+      // var currentElement
+      var elementIdPrefix = 'element'
+      var shapePointIds = d3.set(['topPoint', 'rightPoint', 'bottomPoint', 'leftPoint'])
+      var dragPointIds = d3.set(['dragPoint00', 'dragPoint01', 'dragPoint10', 'dragPoint11'])
+      var dragPointWidth = 16
+      var lockElementId = ''
+      var aa = '';
+      var dragPointId = ''
+      
+      function getPageContainerSize() {
+        var container = {
+          width: 600,
+          height: 600 * book.height / book.width
+        }
+        return container
+      }
+      
+      /**
+       * 移除形状的所有指示点和拖动层：中心指示点（锁定状态下）、四角拖拽指示点、拖动层
+       * @param {Object} pageRootSvg
+       */
+      function removeElementPointsAndDragLevel(pageRootSvg){
+        //移除中心指示点(锁定)
+        shapePointIds.forEach(function(value){
+          pageRootSvg.select('#' + value + 'Lock').remove()
+        })
+        //移除拖动层
+        pageRootSvg.select('#dragLevel').remove()
+        //移除四角拖拽指示点
+        dragPointIds.forEach(function(value){
+          pageRootSvg.select('#' + value).remove()
+        })
+      }
 
       function initBook(data) {
-        book = data;
-        page = book.page;
-        pages = d3.map(data.pages);
+        book = data
+        page = book.page
+        pages = d3.map(data.pages, function(d) {return d.id })
 
 
-        book.width = mm2px(book._width);
-        book.height = mm2px(book._height);
+        book.width = mm2px(book._width)
+        book.height = mm2px(book._height)
         page.padding = {
           top: mm2px(page._padding.top),
           right: mm2px(page._padding.right),
           bottom: mm2px(page._padding.bottom),
           left: mm2px(page._padding.left)
-        };
+        }
         //页面除去padding之后的上下左右
-        page.top = page.padding.top;
-        page.right = book.width - page.padding.right;
-        page.bottom = book.height - page.padding.bottom;
-        page.left = page.padding.left;
+        page.top = page.padding.top
+        page.right = book.width - page.padding.right
+        page.bottom = book.height - page.padding.bottom
+        page.left = page.padding.left
 
-        cl(book);
+        cl(book)
 
-        var pageContainer = getPageContainerSize();
+        var pageContainer = getPageContainerSize()
 
         var divBook = d3.select('#divBook')
           .style('width', pageContainer.width + 'px')
-          .style('height', pageContainer.height + 'px');
+          .style('height', pageContainer.height + 'px')
 
-        var pageRootSvg = divBook.append('svg').datum(book.pages[0])
+        var pageRootSvg = divBook.append('svg')
+          // .datum(book.pages[0])
           .attr('width', pageContainer.width)
           .attr('height', pageContainer.height)
-          .attr('viewBox', '0 0 ' + book.width + ' ' + book.height);
+          .attr('viewBox', '0 0 ' + book.width + ' ' + book.height)
 
-        initPage(pageRootSvg, book.pages[0]);
+        initPage(pageRootSvg, book.pages[0])
         
         pageRootSvg.on('click', function(d){
-          cl('svg click');
-
-          if(lockShape){
-            removeShapePointsAndDragLevel(pageRootSvg);
-            lockShape = '';
+          cl('svg click')
+          
+          if(lockElementId){
+            aa = lockElementId;
+            // cl(pageRootSvg.select('#' + lockElementId).datum())
+            removeElementPointsAndDragLevel(pageRootSvg)
+            lockElementId = ''
+            
           }
-        });
-      }
-      
-      function removeShapePointsAndDragLevel(pageRootSvg){
-        shapePointIds.forEach(function(value){
-          pageRootSvg.select('#' + value + 'Lock').remove();
-        });
-        
-        pageRootSvg.select('#dragLevel').remove();
-        
-        dragPointIds.forEach(function(value){
-          pageRootSvg.select('#' + value).remove();
         })
       }
-
+      
       function initPage(pageRootSvg, pageData) {
 
-        var defs = pageRootSvg.append('defs');
+        var defs = pageRootSvg.append('defs')
 
         //初始化padding框
         var points = [
@@ -95,230 +116,271 @@
           [page.right, page.top],
           [page.right, page.bottom],
           [page.left, page.bottom]
-        ];
+        ]
         var line = d3.svg.line()
           .x(function(d) {
-            return d[0];
+            return d[0]
           })
           .y(function(d) {
-            return d[1];
+            return d[1]
           })
-          .interpolate('linear-closed');
+          .interpolate('linear-closed')
         pageRootSvg.append('path')
           .attr('d', line(points))
           .attr('stroke', 'black')
           .attr('stroke-width', 1)
           .attr('fill', 'none')
-          .attr('stroke-dasharray', '5,5');
+          .attr('stroke-dasharray', '5,5')
 
         //初始化页面元素
         for (var i = 0; i < pageData.elements.length; i++) {
-          // console.log(element);
-          drawElement(pageRootSvg, defs, pageData.elements[i], 'element' + i);
+          // console.log(element)
+          drawElement(pageRootSvg, defs, pageData.elements[i], i)
         }
       }
 
-      function addShapePoint(pageRootSvg, points, id) {
-        pageRootSvg.append('circle').attr('id', id)
-          .attr('r', 5)
-          .attr('cx', points[0])
-          .attr('cy', points[1])
-          .style('display', 'block')
-          .style('stroke', 'red')
-          .style('stroke-width', 2)
-          .style('fill', 'none');
-      }
-
-      function drawElement(pageRootSvg, defs, element, id, update = false) {
-        var shape = pageRootSvg.select('#' + id);
+      function drawElement(pageRootSvg, defs, elementData, index) {
+        var update = true
+        var shape = pageRootSvg.select('#' + elementIdPrefix + index)
         if (shape.empty()) {
-          shape = pageRootSvg.append(element.shape)
-            .attr('id', id);
+          update = false
+          shape = pageRootSvg.append(elementData.shape)
+            .attr('id', elementIdPrefix + index)
+            .datum(elementData)
+          
+          //元素样式赋值
+          Object.keys(elementData.styles).forEach(function(key) {
+            shape.style(key, elementData.styles[key])
+          })
+          
+          //计算并且生成元素的关键坐标点
+          calcShapePoints(elementData)
+          
+          //元素属性赋值
+          Object.keys(elementData.properties).forEach(function(key) {
+            shape.attr(key, elementData.properties[key])
+          })
+          
+          //-------------------------------元素鼠标移入---------------------------------
+          shape.on('mouseover', function(d, i) {
+            cl('shape mouseover')
+            cl(d);
+            if(lockElementId === d3.select(this).attr('id') || d3.event.relatedTarget == null || shapePointIds.has(d3.event.relatedTarget.id)){
+              return
+            }
+            //初始化元素选择指示点
+            // shapePointIds.forEach(function(value){
+            //   drawElementPoint(pageRootSvg, d.points[value.replace('Point', '')], value)
+            // })
+            drawElementPoint(pageRootSvg, d.points.top, 'topPoint')
+            drawElementPoint(pageRootSvg, d.points.right, 'rightPoint')
+            drawElementPoint(pageRootSvg, d.points.bottom, 'bottomPoint')
+            drawElementPoint(pageRootSvg, d.points.left, 'leftPoint')
+          })
+          //-------------------------------元素鼠标移出---------------------------------
+          .on('mouseout', function(d){
+            cl('shape mouseout')
+            if(lockElementId === d3.select(this).attr('id') || shapePointIds.has(d3.event.relatedTarget.id)){
+              return
+            }
+            //移除元素选择点
+            shapePointIds.forEach(function(value){
+              pageRootSvg.select('#' + value).remove()
+            })
+          })
+          //-------------------------------元素选中事件---------------------------------
+          .on('click', function(d){
+            cl('shape click')
+            event.cancelBubble = true
+            
+            //如果选中了另外一个元素，移除上一个锁定元素的指示点,拖动点,拖动层
+            if(lockElementId && lockElementId !== d3.select(this).attr('id')){
+              removeElementPointsAndDragLevel(pageRootSvg)
+            }
+            
+            lockElementId = d3.select(this).attr('id')
+            cl(d);
+            cl(pageRootSvg.select('#' + lockElementId).datum());
+            //锁定元素指示点(修改为id+Lock)
+            shapePointIds.forEach(function(value){
+              pageRootSvg.select('#' + value).attr('id', value + 'Lock')
+            })
+            
+            drawLockElements(pageRootSvg, d.points)
+            
+          })
+        }else{
+          elementData = shape.datum();
+          calcShapePointsAndPropertiesFromDragPoints(elementData)
+          
+          //元素属性赋值
+          Object.keys(elementData.properties).forEach(function(key) {
+            shape.attr(key, elementData.properties[key])
+          })
+          
+          drawElementPoint(pageRootSvg, elementData.points.top, 'topPointLock')
+          drawElementPoint(pageRootSvg, elementData.points.right, 'rightPointLock')
+          drawElementPoint(pageRootSvg, elementData.points.bottom, 'bottomPointLock')
+          drawElementPoint(pageRootSvg, elementData.points.left, 'leftPointLock')
+          
+          drawLockElements(pageRootSvg, elementData.points)
         }
-        shape.datum(element);
 
-        //计算形状的八个坐标点
-        calcShapePoints(element);
-
-        Object.keys(element.properties).forEach(function(key) {
-          shape.attr(key, element.properties[key]);
-        });
-
-        Object.keys(element.styles).forEach(function(key) {
-          shape.style(key, element.styles[key]);
-        });
-        
-        shape.on('mouseover', function(d, i) {
-          cl('shape mouseover');
-          if(lockShape === d3.select(this).attr('id') || d3.event.relatedTarget == null || shapePointIds.has(d3.event.relatedTarget.id)){
-            return;
-          }
-          //初始化元素选择指示点
-          addShapePoint(pageRootSvg, d.points.top, 'topPoint', d.points.top);
-          addShapePoint(pageRootSvg, d.points.right, 'rightPoint');
-          addShapePoint(pageRootSvg, d.points.bottom, 'bottomPoint');
-          addShapePoint(pageRootSvg, d.points.left, 'leftPoint');
-        })
-        .on('mouseout', function(d){
-          cl('shape mouseout');
-          cl(d.event);
-          if(lockShape === d3.select(this).attr('id') || shapePointIds.has(d3.event.relatedTarget.id)){
-            return;
-          }
-          //移除元素选择点
-          shapePointIds.forEach(function(value){
-            pageRootSvg.select('#' + value).remove();
-          });
-        })
-        .on('click', function(d){
-          cl('shape click')
-          event.cancelBubble = true;
-          
-          if(lockShape){
-            removeShapePointsAndDragLevel(pageRootSvg);
-          }
-          
-          lockShape = d3.select(this).attr('id');
-          
-          pageRootSvg.select('#topPoint').attr('id', 'topPointLock');
-          pageRootSvg.select('#rightPoint').attr('id', 'rightPointLock');
-          pageRootSvg.select('#bottomPoint').attr('id', 'bottomPointLock');
-          pageRootSvg.select('#leftPoint').attr('id', 'leftPointLock');
-          
-          pageRootSvg.append('rect').attr('id', 'dragLevel')
-            .attr('x', d.points.tl[0])
-            .attr('y', d.points.tl[1])
-            .attr('width', d.points.tr[0] - d.points.tl[0])
-            .attr('height', d.points.bl[1] - d.points.tl[1])
-            .style('stroke', '#8b3838')
-            .style('stroke-width', 1)
-            .style('fill', 'white')
-            .style('fill-opacity', 0)
-            .on('click', function(){
-              event.cancelBubble = true;
-            });
-          cl(d.points.tl);
-          addDragPoint(pageRootSvg, d.points.tl, 'tlDrag');
-          addDragPoint(pageRootSvg, d.points.tr, 'trDrag');
-          addDragPoint(pageRootSvg, d.points.bl, 'blDrag');
-          addDragPoint(pageRootSvg, d.points.br, 'brDrag');
-          
-        });
       }
       
-      function addDragPoint(pageRootSvg, point, id){
-        var square = calcSquareFromCenterPoint(point, 10);
-        cl(square);
-        var dragPoint = pageRootSvg.append('rect').datum(point).attr('id', id)
-          .attr('x', square.x)
+      function drawLockElements(pageRootSvg, points){
+        //绘制拖动层
+        var update = true;
+        var dragLevel = pageRootSvg.select('#dragLevel')
+        if(dragLevel.empty()){
+          update = false
+          dragLevel = pageRootSvg.append('rect').attr('id', 'dragLevel')
+        }
+        
+        dragLevel.attr('x', points.tl[0])
+          .attr('y', points.tl[1])
+          .attr('width', points.tr[0] - points.tl[0])
+          .attr('height', points.bl[1] - points.tl[1])
+        
+        if(!update){
+          dragLevel.style('stroke', '#8b3838')
+          .style('stroke-width', 1)
+          .style('fill', 'white')
+          .style('fill-opacity', 0)
+          .on('click', function(){
+            event.cancelBubble = true
+          })
+        }
+        
+        //绘制拖动点
+        drawDragPoint(pageRootSvg, points.tl, 'dragPoint00')
+        drawDragPoint(pageRootSvg, points.tr, 'dragPoint01')
+        drawDragPoint(pageRootSvg, points.bl, 'dragPoint10')
+        drawDragPoint(pageRootSvg, points.br, 'dragPoint11')
+          
+      }
+      
+      /**
+       * 绘制拖动点
+       * @param {Object} pageRootSvg
+       * @param {Object} points
+       * @param {Object} id
+       */
+      function drawElementPoint(pageRootSvg, point, id) {
+        var shapePoint = pageRootSvg.select('#' + id);
+        if(shapePoint.empty()){
+          shapePoint = pageRootSvg.append('circle')
+            .attr('id', id)
+            .style('display', 'block')
+            .style('stroke', 'red')
+            .style('stroke-width', 2)
+            .style('fill', 'none')
+        }
+        shapePoint.attr('r', 8)
+          .attr('cx', point[0])
+          .attr('cy', point[1])
+          
+      }
+      
+      function drawDragPoint(pageRootSvg, point, id){
+        var update = true
+        var dragPoint = pageRootSvg.select("#" + id)
+        if(dragPoint.empty()){
+          update = false
+          dragPoint = pageRootSvg.append('rect')
+            .attr('id', id)
+            .datum(point)
+        }
+        
+        var square = calcSquareFromCenterPoint(point, dragPointWidth)
+        // cl(square)
+        dragPoint.attr('x', square.x)
           .attr('y', square.y)
           .attr('width', square.width)
           .attr('height', square.height)
-          .style('display', 'block')
-          .style('stroke', 'red')
-          .style('stroke-width', 2)
-          .style('fill', 'white');
-        
-        dragPoint.on('click', function(){
-          event.cancelBubble = true;
-        });
-        
-        switch(id){
-          case 'tlDrag':
-            dragPoint.style('cursor', 'nw-resize');
-            break;
-          case 'trDrag':
-            dragPoint.style('cursor', 'ne-resize');
-            break;
-          case 'blDrag':
-            dragPoint.style('cursor', 'sw-resize');
-            break;
-          case 'brDrag':
-            dragPoint.style('cursor', 'se-resize');
-            break;
+
+        if(!update){
+          dragPoint.style('display', 'block')
+            .style('stroke', 'red')
+            .style('stroke-width', 2)
+            .style('fill', 'white')
+            .on('click', function(){
+              event.cancelBubble = true
+            })
+          
+          switch(id){
+            case 'dragPoint00':
+              dragPoint.style('cursor', 'nw-resize')
+              break
+            case 'dragPoint01':
+              dragPoint.style('cursor', 'ne-resize')
+              break
+            case 'dragPoint10':
+              dragPoint.style('cursor', 'sw-resize')
+              break
+            case 'dragPoint11':
+              dragPoint.style('cursor', 'se-resize')
+              break
+          }
+          
+          var drag = d3.behavior.drag()
+            .origin(function(d){
+              return {x:d[0], y:d[1]}
+            }).on('dragstart', function(d){
+              cl('拖拽开始')
+              dragPointId = d3.select(this).attr('id')
+              cl(pageRootSvg.select('#' + lockElementId).datum());
+              // cl(lockElementId);
+            })
+            .on('dragend', function(d){
+              event.cancelBubble = true
+              //拖拽结束d3.event.x和y是undefined,所以拖动点的坐标更新不能放到dragend事件
+              cl('拖拽结束')
+              dragPointId = ''
+            })
+            .on('drag', function(d){
+              // event.cancelBubble = true
+              var currentPoint = d3.select(this)
+              // dragPointId = currentPoint.attr('id')
+              // cl('拖拽中：' + currentPoint.attr('id'))
+              
+              d[0] = d3.event.x
+              d[1] = d3.event.y
+              
+              switch(dragPointId){
+                case 'dragPoint00':
+                  pageRootSvg.select('#dragPoint01').datum()[1] = d3.event.y
+                  pageRootSvg.select('#dragPoint10').datum()[0] = d3.event.x
+                  break
+                case 'dragPoint01':
+                    pageRootSvg.select('#dragPoint00').datum()[1] = d3.event.y
+                    pageRootSvg.select('#dragPoint11').datum()[0] = d3.event.x
+                  break
+                case 'dragPoint10':
+                  pageRootSvg.select('#dragPoint00').datum()[0] = d3.event.x
+                  pageRootSvg.select('#dragPoint11').datum()[1] = d3.event.y
+                  break
+                case 'dragPoint11':
+                  pageRootSvg.select('#dragPoint01').datum()[0] = d3.event.x
+                  pageRootSvg.select('#dragPoint10').datum()[1] = d3.event.y
+                  break
+              }
+              cl(pageRootSvg.select('#' + lockElementId).datum())
+              drawLockElements(pageRootSvg, pageRootSvg.select('#' + lockElementId).datum().points)
+              drawElement(pageRootSvg, null, null, lockElementId.replace(elementIdPrefix, ''))
+              // var square = calcSquareFromCenterPoint(d, dragPointWidth)
+              // d3.select(this).attr('x', square.x)
+              //   .attr('y', square.y)
+              
+              //图片的裁剪路径跟着拖动
+              //图片跟着拖动
+              
+            })
+          dragPoint.call(drag)
         }
-        // drag.on('mousedown')
-        var drag = d3.behavior.drag()
-          .origin(function(d){
-            return {x:d[0], y:d[1]};
-          }).on('dragstart', function(d){
-            // event.cancelBubble = true;
-            cl('拖拽开始');
-          })
-          .on('dragend', function(d){
-            event.cancelBubble = true;
-            // event.cancelable = true;
-            cl(event);
-            cl('拖拽结束');
-          })
-          .on('drag', function(d){
-            // event.cancelBubble = true;
-            cl('拖拽中：' + d3.event);
-            d3.select(this).attr('x', d3.event.x)
-              .attr('y', d3.event.y);
-            // //图片的裁剪路径跟着拖动
-            // d3.select('#cp55').attr('cx', d3.event.x)
-            //   .attr('cy', d3.event.y);
-            // //图片跟着拖动
-            // image.attr('x', parseInt(image.attr('x')) + parseInt(d3.event.dx))
-            //   .attr('y', parseInt(image.attr('y')) + parseInt(d3.event.dy));
-          });
-        dragPoint.call(drag);
+
       }
       
-      function calcSquareFromCenterPoint(point, width){
-        cl(point);
-        return {
-          x: point[0] - width / 2,
-          y: point[1] - width / 2,
-          width: width,
-          height: width
-        };
-      }
-
-      /**
-       * 计算元素图形的关键点坐标，放到element.points属性
-       * center top right bottom left tl tr bl br
-       * @param {Object} element 要计算的元素图形
-       */
-      function calcShapePoints(element) {
-        if (!element.hasOwnProperty('points')) {
-          element.points = {};
-        }
-        switch (element.shape) {
-          case 'rect':
-            element.points.top = [element.properties.x + element.properties.width / 2, element.properties.y];
-            element.points.right = [element.properties.x + element.properties.width, element.properties.y + element.properties.height / 2];
-            element.points.bottom = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height];
-            element.points.left = [element.properties.x, element.properties.y + element.properties.height / 2];
-            element.points.tl = [element.properties.x, element.properties.y];
-            element.points.tr = [element.properties.x + element.properties.width, element.properties.y];
-            element.points.bl = [element.properties.x, element.properties.y + element.properties.height];
-            element.points.br = [element.properties.x + element.properties.width, element.properties.y + element.properties.height];
-            element.points.center = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height / 2];
-            break;
-          case 'circle':
-            element.points.top = [element.properties.cx, element.properties.cy - element.properties.r];
-            element.points.right = [element.properties.cx + element.properties.r, element.properties.cy];
-            element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.r];
-            element.points.left = [element.properties.cx - element.properties.r, element.properties.cy];
-            element.points.tl = [element.properties.cx - element.properties.r, element.properties.cy - element.properties.r];
-            element.points.tr = [element.properties.cx + element.properties.r, element.properties.cy - element.properties.r];
-            element.points.bl = [element.properties.cx - element.properties.r, element.properties.cy + element.properties.r];
-            element.points.br = [element.properties.cx + element.properties.r, element.properties.cy + element.properties.r];
-            element.points.center = [element.properties.cx, element.properties.cy];
-            break;
-          default:
-        }
-      }
-
-      function getPageContainerSize() {
-        var container = {
-          width: 600,
-          height: 600 * book.height / book.width
-        };
-        return container;
-      }
     </script>
   </body>
 </html>

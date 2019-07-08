@@ -31,6 +31,7 @@
         .style('stroke', 'steelblue')
         .style('stroke-width', 1)
         .on('click',function(d){
+          cl(d);
           c2p(d.x + ':' + d.y);
           d.y = 100;
           c2p(d.x + ':' + d.y);
