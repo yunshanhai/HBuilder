@@ -31,6 +31,7 @@
       var lockElementId = ''
       var aa = '';
       var dragPointId = ''
+      var elementMin = 40
       
       function getPageContainerSize() {
         var container = {
@@ -344,27 +345,60 @@
               // dragPointId = currentPoint.attr('id')
               // cl('拖拽中：' + currentPoint.attr('id'))
               
-              d[0] = d3.event.x
-              d[1] = d3.event.y
-              
               switch(dragPointId){
                 case 'dragPoint00':
-                  pageRootSvg.select('#dragPoint01').datum()[1] = d3.event.y
-                  pageRootSvg.select('#dragPoint10').datum()[0] = d3.event.x
+                  var dragPoint01 = d3.select('#dragPoint01').datum()
+                  var dragPoint10 = d3.select('#dragPoint10').datum()
+                  if(dragPoint01[0] - d3.event.x >= elementMin){
+                    d[0] = d3.event.x
+                    dragPoint10[0] = d3.event.x
+                  }
+                  if(dragPoint10[1] - d3.event.y >= elementMin){
+                    d[1] = d3.event.y
+                    dragPoint01[1] = d3.event.y
+                  }
                   break
                 case 'dragPoint01':
-                    pageRootSvg.select('#dragPoint00').datum()[1] = d3.event.y
-                    pageRootSvg.select('#dragPoint11').datum()[0] = d3.event.x
+                  var dragPoint00 = pageRootSvg.select('#dragPoint00').datum()
+                  var dragPoint11 = pageRootSvg.select('#dragPoint11').datum()
+                  if(d3.event.x - dragPoint00[0] >= elementMin){
+                    d[0] = d3.event.x
+                    dragPoint11[0] = d3.event.x
+                  }
+                  if(dragPoint11[1] - d3.event.y >= elementMin){
+                    d[1] = d3.event.y
+                    dragPoint00[1] = d3.event.y
+                  }
                   break
                 case 'dragPoint10':
-                  pageRootSvg.select('#dragPoint00').datum()[0] = d3.event.x
-                  pageRootSvg.select('#dragPoint11').datum()[1] = d3.event.y
+                  var dragPoint00 = pageRootSvg.select('#dragPoint00').datum()
+                  var dragPoint11 = pageRootSvg.select('#dragPoint11').datum()
+                  if(dragPoint11[0] - d3.event.x >= elementMin){
+                    d[0] = d3.event.x
+                    dragPoint00[0] = d3.event.x
+                  }
+                  if(d3.event.y - dragPoint00[1] >= elementMin){
+                    d[1] = d3.event.y
+                    dragPoint11[1] = d3.event.y
+                  }
                   break
                 case 'dragPoint11':
-                  pageRootSvg.select('#dragPoint01').datum()[0] = d3.event.x
-                  pageRootSvg.select('#dragPoint10').datum()[1] = d3.event.y
+                  var dragPoint01 = pageRootSvg.select('#dragPoint01').datum()
+                  var dragPoint10 = pageRootSvg.select('#dragPoint10').datum()
+                  if(d3.event.x - dragPoint10[0] >= elementMin){
+                    d[0] = d3.event.x
+                    dragPoint01[0] = d3.event.x
+                  }
+                  if(d3.event.y - dragPoint01[1] >= elementMin){
+                    d[1] = d3.event.y
+                    dragPoint10[1] = d3.event.y
+                  }
                   break
               }
+              
+              // d[0] = d3.event.x
+              // d[1] = d3.event.y
+              
               cl(pageRootSvg.select('#' + lockElementId).datum())
               drawLockElements(pageRootSvg, pageRootSvg.select('#' + lockElementId).datum().points)
               drawElement(pageRootSvg, null, null, lockElementId.replace(elementIdPrefix, ''))
