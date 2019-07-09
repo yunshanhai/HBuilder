@@ -56,7 +56,7 @@
             "stroke-dasharray": "20,1",
             "fill": "white",
             "fill-opacity": 0,
-            "display": "none"
+            "display": "block"
           },
           "type": "image",
           "value": {
