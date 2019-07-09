@@ -175,6 +175,62 @@ function calcShapePointsAndPropertiesFromDragPoints(element){
   }
 }
 
+function calcShapePointsAndPropertiesFromCenterPoints(element){
+  switch (element.shape) {
+    case 'rect':
+      element.properties.x = element.points.center[0] - element.properties.width / 2
+      element.properties.y = element.points.center[1] - element.properties.height / 2
+      // element.properties.width = element.points.tr[0] - element.points.tl[0]
+      // element.properties.height = element.points.bl[1] - element.points.tl[1]
+      
+      element.points.top = [element.properties.x + element.properties.width / 2, element.properties.y]
+      element.points.right = [element.properties.x + element.properties.width, element.properties.y + element.properties.height / 2]
+      element.points.bottom = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height]
+      element.points.left = [element.properties.x, element.properties.y + element.properties.height / 2]
+      // element.points.center = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height / 2]
+      
+      element.points.tl = [element.properties.x, element.properties.y]
+      element.points.tr = [element.properties.x + element.properties.width, element.properties.y]
+      element.points.bl = [element.properties.x, element.properties.y + element.properties.height]
+      element.points.br = [element.properties.x + element.properties.width, element.properties.y + element.properties.height]
+      break
+    case 'circle':
+      // element.properties.r = (element.points.tr[0] - element.points.tl[0]) / 2
+      element.properties.cx = element.points.center[0]
+      element.properties.cy = element.points.center[1]
+      
+      element.points.top = [element.properties.cx, element.properties.cy - element.properties.r]
+      element.points.right = [element.properties.cx + element.properties.r, element.properties.cy]
+      element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.r]
+      element.points.left = [element.properties.cx - element.properties.r, element.properties.cy]
+      // element.points.center = [element.properties.cx, element.properties.cy]
+      
+      element.points.tl = [element.properties.cx - element.properties.r, element.properties.cy - element.properties.r]
+      element.points.tr = [element.properties.cx + element.properties.r, element.properties.cy - element.properties.r]
+      element.points.bl = [element.properties.cx - element.properties.r, element.properties.cy + element.properties.r]
+      element.points.br = [element.properties.cx + element.properties.r, element.properties.cy + element.properties.r]
+      break
+    case 'ellipse':
+      // element.properties.rx = (element.points.tr[0] - element.points.tl[0]) / 2
+      // element.properties.ry = (element.points.bl[1] - element.points.tl[1]) / 2
+      element.properties.cx = element.points.center[0]
+      element.properties.cy = element.points.center[1]
+      
+      element.points.top = [element.properties.cx, element.properties.cy - element.properties.ry]
+      element.points.right = [element.properties.cx + element.properties.rx, element.properties.cy]
+      element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.ry]
+      element.points.left = [element.properties.cx - element.properties.rx, element.properties.cy]
+      // element.points.center = [element.properties.cx, element.properties.cy]
+      
+      element.points.tl = [element.properties.cx - element.properties.rx, element.properties.cy - element.properties.ry]
+      element.points.tr = [element.properties.cx + element.properties.rx, element.properties.cy - element.properties.ry]
+      element.points.bl = [element.properties.cx - element.properties.rx, element.properties.cy + element.properties.ry]
+      element.points.br = [element.properties.cx + element.properties.rx, element.properties.cy + element.properties.ry]
+      break
+    default:
+  }
+}
+
 /**
  * 计算以一个坐标点为中心的正方形起始坐标
  * @param {Object} point 正放形中心点坐标

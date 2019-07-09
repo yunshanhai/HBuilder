@@ -236,6 +236,30 @@
         if(dragLevel.empty()){
           update = false
           dragLevel = pageRootSvg.append('rect').attr('id', 'dragLevel')
+          var drag = d3.behavior.drag()
+            .origin(function(d){
+              return {x: points.center[0], y: points.center[1]}
+            })
+            .on('dragstart', function(d){
+              cl('拖动层dragstart')
+            })
+            .on('dragend', function(d){
+              event.cancelBubble = true
+              cl('拖动层dragend')
+            })
+            .on('drag', function(d){
+              var lockElementData = pageRootSvg.select('#' + lockElementId).datum()
+              
+              var eventX = d3.event.x
+              var eventY = d3.event.y
+              
+              lockElementData.points.center = [eventX, eventY]
+              calcShapePointsAndPropertiesFromCenterPoints(lockElementData)
+              
+              drawLockElements(pageRootSvg, lockElementData.points)
+              drawElement(pageRootSvg, null, null, lockElementId.replace(elementIdPrefix, ''))
+            })
+          dragLevel.call(drag)
         }
         
         dragLevel.attr('x', points.tl[0])
