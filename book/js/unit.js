@@ -181,7 +181,6 @@ function calcShapePointsAndPropertiesFromDragPoints(element){
  * @param {Object} width 正放形边长
  */
 function calcSquareFromCenterPoint(point, width){
-  cl(point)
   return {
     x: point[0] - width / 2,
     y: point[1] - width / 2,

@@ -165,7 +165,7 @@
           //-------------------------------元素鼠标移入---------------------------------
           shape.on('mouseover', function(d, i) {
             cl('shape mouseover')
-            cl(d);
+            // cl(d);
             if(lockElementId === d3.select(this).attr('id') || d3.event.relatedTarget == null || shapePointIds.has(d3.event.relatedTarget.id)){
               return
             }
@@ -200,8 +200,8 @@
             }
             
             lockElementId = d3.select(this).attr('id')
-            cl(d);
-            cl(pageRootSvg.select('#' + lockElementId).datum());
+            // cl(d);
+            // cl(pageRootSvg.select('#' + lockElementId).datum());
             //锁定元素指示点(修改为id+Lock)
             shapePointIds.forEach(function(value){
               pageRootSvg.select('#' + value).attr('id', value + 'Lock')
@@ -331,7 +331,7 @@
             }).on('dragstart', function(d){
               cl('拖拽开始')
               dragPointId = d3.select(this).attr('id')
-              cl(pageRootSvg.select('#' + lockElementId).datum());
+              // cl(pageRootSvg.select('#' + lockElementId).datum());
               // cl(lockElementId);
             })
             .on('dragend', function(d){
@@ -345,54 +345,73 @@
               var currentPoint = d3.select(this)
               // dragPointId = currentPoint.attr('id')
               // cl('拖拽中：' + currentPoint.attr('id'))
+
+              // cl(d3.event);
+              var lockElementData = pageRootSvg.select('#' + lockElementId).datum();
+              
+              var eventX = d3.event.x
+              var eventY = d3.event.y
+              if(lockElementData.shape === 'circle'){
+                // cl('circle,x:{0},y:{1},dx:{2},dy:{3}'.format(eventX,eventY,d3.event.dx,d3.event.dy))
+                // if(Math.abs(d3.event.dx) > Math.abs(d3.event.dy)){
+                //   eventY = eventY - d3.event.dy + d3.event.dx
+                // }else{
+                //   eventX = eventX - d3.event.dx + d3.event.dy
+                // }
+                
+                // eventX = d3.event.x - d3.event.dx
+                // eventY = d3.event.y - d3.event.dy
+                // cl('circle,x:{0},y:{1}'.format(eventX, eventY))
+              }
+              // cl('circle,x:{0},y:{1}'.format(eventX, eventY))
               
               switch(dragPointId){
                 case 'dragPoint00':
-                  var dragPoint01 = d3.select('#dragPoint01').datum()
-                  var dragPoint10 = d3.select('#dragPoint10').datum()
-                  if(dragPoint01[0] - d3.event.x >= elementMin){
-                    d[0] = d3.event.x
-                    dragPoint10[0] = d3.event.x
+                  var dataPoint01 = d3.select('#dragPoint01').datum()
+                  var dataPoint10 = d3.select('#dragPoint10').datum()
+                  if(dataPoint01[0] - eventX >= elementMin){
+                    d[0] = eventX
+                    dataPoint10[0] = eventX
                   }
-                  if(dragPoint10[1] - d3.event.y >= elementMin){
-                    d[1] = d3.event.y
-                    dragPoint01[1] = d3.event.y
+                  if(dataPoint10[1] - eventY >= elementMin){
+                    d[1] = eventY
+                    dataPoint01[1] = eventY
                   }
                   break
                 case 'dragPoint01':
-                  var dragPoint00 = pageRootSvg.select('#dragPoint00').datum()
-                  var dragPoint11 = pageRootSvg.select('#dragPoint11').datum()
-                  if(d3.event.x - dragPoint00[0] >= elementMin){
-                    d[0] = d3.event.x
-                    dragPoint11[0] = d3.event.x
+                  var dataPoint00 = pageRootSvg.select('#dragPoint00').datum()
+                  var dataPoint11 = pageRootSvg.select('#dragPoint11').datum()
+                  if(eventX - dataPoint00[0] >= elementMin){
+                    d[0] = eventX
+                    dataPoint11[0] = eventX
                   }
-                  if(dragPoint11[1] - d3.event.y >= elementMin){
-                    d[1] = d3.event.y
-                    dragPoint00[1] = d3.event.y
+                  if(dataPoint11[1] - eventY >= elementMin){
+                    d[1] = eventY
+                    dataPoint00[1] = eventY
                   }
                   break
                 case 'dragPoint10':
-                  var dragPoint00 = pageRootSvg.select('#dragPoint00').datum()
-                  var dragPoint11 = pageRootSvg.select('#dragPoint11').datum()
-                  if(dragPoint11[0] - d3.event.x >= elementMin){
-                    d[0] = d3.event.x
-                    dragPoint00[0] = d3.event.x
+                  var dataPoint00 = pageRootSvg.select('#dragPoint00').datum()
+                  var dataPoint11 = pageRootSvg.select('#dragPoint11').datum()
+                  if(dataPoint11[0] - eventX >= elementMin){
+                    d[0] = eventX
+                    dataPoint00[0] = eventX
                   }
-                  if(d3.event.y - dragPoint00[1] >= elementMin){
-                    d[1] = d3.event.y
-                    dragPoint11[1] = d3.event.y
+                  if(eventY - dataPoint00[1] >= elementMin){
+                    d[1] = eventY
+                    dataPoint11[1] = eventY
                   }
                   break
                 case 'dragPoint11':
-                  var dragPoint01 = pageRootSvg.select('#dragPoint01').datum()
-                  var dragPoint10 = pageRootSvg.select('#dragPoint10').datum()
-                  if(d3.event.x - dragPoint10[0] >= elementMin){
-                    d[0] = d3.event.x
-                    dragPoint01[0] = d3.event.x
+                  var dataPoint01 = pageRootSvg.select('#dragPoint01').datum()
+                  var dataPoint10 = pageRootSvg.select('#dragPoint10').datum()
+                  if(eventX - dataPoint10[0] >= elementMin){
+                    d[0] = eventX
+                    dataPoint01[0] = eventX
                   }
-                  if(d3.event.y - dragPoint01[1] >= elementMin){
-                    d[1] = d3.event.y
-                    dragPoint10[1] = d3.event.y
+                  if(eventY - dataPoint01[1] >= elementMin){
+                    d[1] = eventY
+                    dataPoint10[1] = eventY
                   }
                   break
               }
@@ -400,8 +419,8 @@
               // d[0] = d3.event.x
               // d[1] = d3.event.y
               
-              cl(pageRootSvg.select('#' + lockElementId).datum())
-              drawLockElements(pageRootSvg, pageRootSvg.select('#' + lockElementId).datum().points)
+              // cl(pageRootSvg.select('#' + lockElementId).datum())
+              drawLockElements(pageRootSvg, lockElementData.points)
               drawElement(pageRootSvg, null, null, lockElementId.replace(elementIdPrefix, ''))
               // var square = calcSquareFromCenterPoint(d, dragPointWidth)
               // d3.select(this).attr('x', square.x)
