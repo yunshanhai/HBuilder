@@ -118,6 +118,18 @@ function calcShapePoints(element) {
       element.points.bl = [element.properties.cx - element.properties.r, element.properties.cy + element.properties.r]
       element.points.br = [element.properties.cx + element.properties.r, element.properties.cy + element.properties.r]
       break
+    case 'ellipse':
+      element.points.top = [element.properties.cx, element.properties.cy - element.properties.ry]
+      element.points.right = [element.properties.cx + element.properties.rx, element.properties.cy]
+      element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.ry]
+      element.points.left = [element.properties.cx - element.properties.rx, element.properties.cy]
+      element.points.center = [element.properties.cx, element.properties.cy]
+      
+      element.points.tl = [element.properties.cx - element.properties.rx, element.properties.cy - element.properties.ry]
+      element.points.tr = [element.properties.cx + element.properties.rx, element.properties.cy - element.properties.ry]
+      element.points.bl = [element.properties.cx - element.properties.rx, element.properties.cy + element.properties.ry]
+      element.points.br = [element.properties.cx + element.properties.rx, element.properties.cy + element.properties.ry]
+      break
     default:
   }
 }
@@ -145,6 +157,18 @@ function calcShapePointsAndPropertiesFromDragPoints(element){
       element.points.right = [element.properties.cx + element.properties.r, element.properties.cy]
       element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.r]
       element.points.left = [element.properties.cx - element.properties.r, element.properties.cy]
+      element.points.center = [element.properties.cx, element.properties.cy]
+      break
+    case 'ellipse':
+      element.properties.rx = (element.points.tr[0] - element.points.tl[0]) / 2
+      element.properties.ry = (element.points.bl[1] - element.points.tl[1]) / 2
+      element.properties.cx = element.points.tl[0] + element.properties.rx
+      element.properties.cy = element.points.tl[1] + element.properties.ry
+      
+      element.points.top = [element.properties.cx, element.properties.cy - element.properties.ry]
+      element.points.right = [element.properties.cx + element.properties.rx, element.properties.cy]
+      element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.ry]
+      element.points.left = [element.properties.cx - element.properties.rx, element.properties.cy]
       element.points.center = [element.properties.cx, element.properties.cy]
       break
     default:
