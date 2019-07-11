@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas基础 目录</title>
+    <link href="../js/highlight/monokai_sublime.min.css" rel="stylesheet" />
+    <script src="../js/highlight/highlight.min.js"></script>
+	</head>
+	<body>
+<textarea id="mkCode" style="display: none;">
+# canvas基础
+---
+- [canvas 菜鸟教程参考手册](https://www.runoob.com/tags/ref-canvas.html)
+
+# canvas相关网站
+- [canvas 菜鸟教程参考手册](https://www.runoob.com/tags/ref-canvas.html)
+- [学习Canvas这一篇文章就够了](https://blog.csdn.net/u012468376/article/details/73350998)
+---
+</textarea>
+
+    <!--markdown显示容器-->
+		<div id="mkShow"></div>
+    
+    <script src="../d3/js/d3.v3.js"></script>
+    <script src="../js/marked.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+      marked.setOptions({
+        renderer: marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: false,
+        pedantic: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false,
+        highlight: function(code) {
+          return hljs.highlightAuto(code).value;
+        }
+      });
+    
+      var html = marked(d3.select('#mkCode').text());
+      d3.select('#mkShow').html(html);
+    </script>
+	</body>
+</html>
