@@ -6,7 +6,7 @@
   </head>
   <body>
     <div id="divBook" style="margin: 0 auto; border: solid 1px black;"></div>
-    <script src="../d3/js/d3.v3.js"></script>
+    <script src="../js/d3.v3.js"></script>
     <script src="./js/unit.js"></script>
     <script src="../js/vue.js"></script>
     <script>
@@ -14,7 +14,7 @@
         maxheight: 800
       }
 
-      d3.json('/HBuilder/book/json/book.json', function(data) {
+      d3.json('./json/book.json', function(data) {
         cl(data)
         initBook(data)
       })
