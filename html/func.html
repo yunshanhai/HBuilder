@@ -38,6 +38,7 @@
       }
       .p_attr:after{
         content: attr(title);
+        width: attr(w);
       }
     </style>
     <link rel="stylesheet" href="../js/highlight/styles/default.css" />
@@ -67,10 +68,16 @@
 .test-calc {
   margin-left: calc(10px + 10px);
 }
+
+&lt;!-- attr貌似只能和content搭配使用，给其他属性赋值不起作用，例如width:attr(w) --&gt;
+.p_attr:after{
+  content: attr(title);
+  width: attr(w);
+}
       </code>
     </pre>
     <p class="test-var">color: var(--red)</p>
     <p class="test-calc">margin-left: calc(10px + 10px)</p>
-    <p class="p_attr" title="#ff0000">content: attr(title);</p>
+    <p class="p_attr" title="#ff0000" w="100px">content: attr(title);</p>
   </body>
 </html>
