@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title></title>
+    <style>
+      :root {
+        --blue: #007bff;
+        --indigo: #6610f2;
+        --purple: #6f42c1;
+        --pink: #e83e8c;
+        --red: #f56368;
+        --orange: #f0ad4e;
+        --yellow: #ffc107;
+        --green: #63c1a3;
+        --teal: #20c997;
+        --cyan: #17a2b8;
+        --white: #fff;
+        --gray: #6c757d;
+        --gray-dark: #343a40;
+        --primary: #f56368;
+        --secondary: #6c757d;
+        --success: #63c1a3;
+        --info: #17a2b8;
+        --warning: #ffc107;
+        --danger: #f04134;
+        --light: #f8f9fa;
+        --dark: #343a40;
+      }
+
+      .test-var {
+        color: var(--red);
+      }
+
+      .test-calc {
+        margin-left: calc(10px + 10px);
+      }
+      .p_attr:after{
+        content: attr(title);
+      }
+    </style>
+    <link rel="stylesheet" href="../js/highlight/styles/default.css" />
+    <script src="../js/highlight/highlight.pack.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  </head>
+  <body>
+    <p>参考文章：<a href="https://www.zhangxinxu.com/wordpress/2016/11/css-css3-variables-var/" target="_blank">小tips:了解CSS/CSS3原生变量var</a></p>
+    <p>参考文章：<a href="https://blog.csdn.net/qq_34206361/article/details/53690414" target="_blank">CSS中的变量使用，var()语法</a></p>
+    <pre>
+      <code class="css">
+&lt;style&gt;
+:root {
+  &lt;!-- css自定义变量“--*” --&gt;
+  --red: #f56368;
+}
+&lt;/style&gt;
+
+.test-var {
+  &lt;!-- 调用自定义变量“var(--*)” --&gt;
+  &lt;!-- 调用自定义变量“var(--*, 默认值)” --&gt;
+  color: var(--red);
+}
+
+.test-calc {
+  margin-left: calc(10px + 10px);
+}
+      </code>
+    </pre>
+    <p class="test-var">color: var(--red)</p>
+    <p class="test-calc">margin-left: calc(10px + 10px)</p>
+    <p class="p_attr" title="#ff0000">content: attr(title);</p>
+  </body>
+</html>

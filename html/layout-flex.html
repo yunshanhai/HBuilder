@@ -1,10 +1,235 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>flex布局</title>
-	</head>
-	<body>
-    
-	</body>
+  <head>
+    <meta charset="utf-8">
+    <title>flex布局</title>
+    <link rel="stylesheet" href="../js/highlight/styles/default.css" />
+    <script src="../js/highlight/highlight.pack.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+    <style>
+      .item-parent {
+        display: flex;
+        padding: 10px;
+        border: solid 1px steelblue;
+        margin: 10px;
+      }
+
+      .item {
+        background-color: steelblue;
+        /* border: solid 1px black; */
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+        text-align: center;
+        line-height: 50px;
+        color: white;
+        font-size: 2rem;
+      }
+      #demo1 {
+        display: flex;
+        padding: 10px;
+        border: solid 1px red;
+        height: 500px;
+        margin: 10px;
+      }
+      #demo2{
+        padding: 10px;
+        border: solid 1px red;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <!--    <pre>
+      <code class="css">
+
+      </code>
+      
+    </pre> -->
+    <div id="app">
+      <p>
+        flex-direction:
+        <select v-model="flexDirection" style="margin-bottom: 5px;">
+          <option>row</option>
+          <option>row-reverse</option>
+          <option>column</option>
+          <option>column-reverse</option>
+        </select>
+        flex-direction属性决定主轴的方向（即项目的排列方向）。flex-direction: row | row-reverse | column | column-reverse;
+      </p>
+      <p>
+        order:
+        数字1
+        <select v-model="order1" style="margin-bottom: 5px;">
+          <option>1</option>
+          <option>4</option>
+        </select>
+        数字2
+        <select v-model="order2" style="margin-bottom: 5px;">
+          <option>0</option>
+          <option>2</option>
+          <option>5</option>
+        </select>
+        数字3
+        <select v-model="order3" style="margin-bottom: 5px;">
+          <option>-1</option>
+          <option>3</option>
+          <option>6</option>
+        </select>
+        order属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。
+      </p>
+      <p>
+        flex-grow:
+        数字1
+        <select v-model="flexGrow1" style="margin-bottom: 5px;">
+          <option>0</option>
+          <option>1</option>
+        </select>
+        数字2
+        <select v-model="flexGrow2" style="margin-bottom: 5px;">
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+        </select>
+        数字3
+        <select v-model="flexGrow3" style="margin-bottom: 5px;">
+          <option>0</option>
+          <option>1</option>
+          <option>3</option>
+        </select>
+        flex-grow属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。
+      </p>
+      <p>flex-shrink属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。</p>
+      <p>flex-basis属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。</p>
+      <p>flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。</p>
+      <p>align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。</p>
+      <div class="item-parent" v-bind:style="{'flex-direction':flexDirection}">
+        <div class="item" v-bind:style="{'order':order1, 'flex-grow': flexGrow1}">1</div>
+        <div class="item" v-bind:style="{'order':order2, 'flex-grow': flexGrow2}">2</div>
+        <div class="item" v-bind:style="{'order':order3, 'flex-grow': flexGrow3}">3</div>
+      </div>
+      <p>flex-flow属性是flex-direction属性和flex-wrap属性的简写形式，默认值为row nowrap。flex-flow: &lt;flex-direction&gt; &lt;flex-wrap&gt;;</p>
+      <p>
+        flex-wrap:
+        <select v-model="flexWrap" style="margin-bottom: 5px;">
+          <option>nowrap</option>
+          <option>wrap</option>
+          <option>wrap-reverse</option>
+        </select>
+        默认情况下，项目都排在一条线（又称”轴线”）上。flex-wrap属性定义，如果一条轴线排不下，如何换行。flex-wrap: nowrap | wrap | wrap-reverse;
+      </p>
+      <p>
+        align-items:
+        <select v-model="alignItems" style="margin-bottom: 5px;">
+          <option>stretch</option>
+          <option>flex-start</option>
+          <option>center</option>
+          <option>flex-end</option>
+          <option>baseline</option>
+        </select>
+        align-items属性定义项目在交叉轴上如何对齐。align-items: flex-start | flex-end | center | baseline | stretch;
+      </p>
+      <p>
+        justify-content:
+        <select v-model="justifyContent" style="margin-bottom: 5px;">
+          <option>flex-start</option>
+          <option>center</option>
+          <option>flex-end</option>
+          <option>space-between</option>
+          <option>space-around</option>
+        </select>
+        justify-content属性定义了项目在主轴上的对齐方式。justify-content: flex-start | flex-end | center | space-between | space-around;
+      </p>
+      <p>
+        align-content:
+        <select v-model="alignContent" style="margin-bottom: 5px;">
+          <option>stretch</option>
+          <option>flex-start</option>
+          <option>center</option>
+          <option>flex-end</option>
+          <option>space-between</option>
+          <option>space-around</option>
+        </select>
+        align-content属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。align-content: flex-start | flex-end | center | space-between |
+        space-around | stretch;
+      </p>
+      <div id="demo1" v-bind:style="{'justify-content':justifyContent, 'flex-wrap':flexWrap, 'align-items': alignItems, 'align-content': alignContent}">
+        <div class="item-parent" style="flex-direction: row;">
+          <div class="item">1</div>
+          <div class="item">2</div>
+        </div>
+        <div class="item-parent" style="flex-direction: row-reverse;">
+          <div class="item">1</div>
+          <div class="item">2</div>
+          <div class="item">3</div>
+        </div>
+        <div class="item-parent" style="flex-direction: column;">
+          <div class="item">1</div>
+          <div class="item">2</div>
+          <div class="item">3</div>
+        </div>
+        <div class="item-parent" style="flex-direction: column-reverse;">
+          <div class="item">1</div>
+          <div class="item">2</div>
+        </div>
+        <div class="item-parent">
+          <div class="item">1</div>
+          <div class="item">2</div>
+          <div class="item">3</div>
+        </div>
+        <div class="item-parent">
+          <div class="item">1</div>
+          <div class="item">2</div>
+          <div class="item">3</div>
+        </div>
+        <div class="item-parent">
+          <div class="item">1</div>
+          <div class="item">2</div>
+          <div class="item">3</div>
+        </div>
+        <div class="item-parent">
+          <div class="item">1</div>
+          <div class="item">2</div>
+          <div class="item">3</div>
+        </div>
+        <div class="item-parent">
+          <div class="item">1</div>
+          <div class="item">2</div>
+          <div class="item">3</div>
+        </div>
+        <div class="item-parent">
+          <div class="item">1</div>
+          <div class="item">2</div>
+          <div class="item">3</div>
+        </div>
+        <div class="item-parent">
+          <div class="item">1</div>
+          <div class="item">2</div>
+          <div class="item">3</div>
+        </div>
+      </div>
+      
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+      var myvue = new Vue({
+        el: "#app",
+        data: {
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          flexWrap: 'nowrap',
+          alignItems: "stretch",
+          alignContent: "stretch",
+          order1: 1,
+          order2: 2,
+          order3: 3,
+          flexGrow1:0,
+          flexGrow2:0,
+          flexGrow3:0
+        }
+      })
+    </script>
+  </body>
 </html>
