@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #2f2f2c;
+}
+
+.menubar {
+  height: 30px;
+  display: relative;
+}
+
+.sidebar_left {
+  position: fixed;
+  top: 30px;
+  left: 0px;
+  width: 50px;
+  height: calc(100vh - 30px);
+}
+
+.sidebar_right {
+  position: fixed;
+  top: 30px;
+  right: 0px;
+  width: 175px;
+  height: calc(100vh - 30px);
+}
+
+.sidebar_bottom {
+  position: fixed;
+  bottom: 0px;
+  width: calc(100vw - 50px - 175px)
+}
+
+.workarea {
+  position: fixed;
+  top: 30px;
+  left: 50px;
+  right: 175px;
+  bottom: 40px;
+  background-color: #3f3f3c;
+
+}
+
+#divBook {
+  margin: 15px auto;
+  border: solid 1px black;
+  background-color: white;
+}
