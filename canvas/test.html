@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CANVAS touch测试</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-title" content="">
+    <style type="text/css">
+      * {
+        margin: 0px;
+        padding: 0px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        box-sizing: border-box;
+      }
+
+      html {
+        min-width: 320px;
+        max-width: 640px;
+        margin: 0 auto;
+      }
+
+      body {
+        font-family: "PingFangSC-Regular", "sans-serif", "STHeitiSC-Light", "微软雅黑", "Microsoft YaHei";
+        color: ;
+        font-size: 16px;
+        -webkit-user-select: none;
+        /* 禁用长触选择文字等功能 */
+        user-select: none;
+        -webkit-touch-callout: none;
+        /* 禁用长触弹出的下载图片菜单 */
+        touch-callout: none;
+      }
+
+      li {
+        list-style: none;
+      }
+
+      i {
+        font-style: normal;
+      }
+
+      a:link,
+      a:visited,
+      a:hover,
+      a:active {
+        text-decoration: none;
+        color: ;
+      }
+
+      .cle:after {
+        content: "";
+        display: block;
+        height: 0;
+        clear: both;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        outline: none;
+        border-radius: 0;
+        font-size: 16px;
+        font-family: "PingFangSC-Regular", "sans-serif", "STHeitiSC-Light", "微软雅黑", "Microsoft YaHei";
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+      }
+
+      img {
+        vertical-align: middle;
+      }
+
+      .f_right {
+        float: right;
+      }
+
+      html,
+      body {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      .page1,
+      .page2 {
+        width: 100%;
+        height: 100%;
+        line-height: 1rem;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .page1 {
+        padding-top: 2rem;
+      }
+
+      .page1>div {
+        margin-bottom: .5rem;
+      }
+
+      .page1_left,
+      .page1_right {
+        min-height: 1rem;
+        float: left;
+      }
+
+      .page1_left {
+        width: 30%;
+        padding-right: .3rem;
+        text-align: right;
+      }
+
+      .page1_right {
+        width: 70%;
+      }
+
+      input,
+      textarea {
+        width: 80%;
+        border: #e1e1e1 solid 1px;
+        background: none;
+        resize: none;
+      }
+
+      input {
+        height: 1rem;
+      }
+
+      textarea {
+        height: 2rem;
+        line-height: .6rem;
+      }
+
+      .show_img {
+        text-align: center;
+      }
+
+      .show_img img {
+        height: 2rem;
+      }
+
+      .filebtn {
+        display: block;
+        width: 4rem;
+        height: 1rem;
+        text-align: center;
+        border-radius: .2rem;
+        background-color: #ddd;
+        cursor: pointer;
+      }
+
+      .setbtn,
+      .resetbtn {
+        width: 5rem;
+        height: 1rem;
+        margin: 0 auto .5rem auto;
+        border-radius: 2px;
+        border: #e1e1e1 solid 1px;
+        background-color: #eee;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .page2 {}
+
+      canvas {
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+      }
+
+      .roat_img {
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        line-height: 2rem;
+        text-align: center;
+        border-radius: 50%;
+        background-color: #ddd;
+        cursor: pointer;
+        position: fixed;
+        right: .5rem;
+        top: 50%;
+      }
+
+      .show_end_img {
+        display: block;
+        width: 5rem;
+        height: 1rem;
+        border-radius: 2px;
+        border: #e1e1e1 solid 1px;
+        background-color: #eee;
+        text-align: center;
+        cursor: pointer;
+        position: fixed;
+        left: 50%;
+        margin-left: -2.5rem;
+        bottom: 2rem;
+      }
+
+      .page3 {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background-color: rgba(0, 0, 0, .6);
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
+
+      .page3 img {
+        display: inline-block;
+        width: 90%;
+      }
+
+      .page3:after {
+        content: "";
+        display: inline-block;
+        width: 0;
+        height: 100%;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <section class="page1">
+      <div class="cle">
+        <div class="page1_left">第一句话</div>
+        <div class="page1_right"><input type="text" id="uptitle" name="uptitle" value="" maxlength="10" /></div>
+      </div>
+      <div class="cle">
+        <div class="page1_left">第二句话</div>
+        <div class="page1_right"><textarea id="upcontent" name="upcontent"></textarea></div>
+      </div>
+      <div class="show_img hide"><img src="" /></div>
+      <div class="cle">
+        <div class="page1_left">上传照片</div>
+        <div class="page1_right"><span class="filebtn">选择图片</span><input class="hide" type="file" id="upfile" name="upfile"
+            value="" accept="image/*" /></div>
+      </div>
+      <div class="setbtn">生成预览</div>
+      <div class="resetbtn">重置</div>
+    </section>
+
+    <section class="page2 hide">
+      <canvas id="canvas_img"></canvas>
+      <span class="roat_img">旋转</span>
+      <span class="show_end_img">生成图片</span>
+    </section>
+
+    <section class="page3 hide"><img src="" /></section>
+
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+    <script type="text/javascript">
+      function initHtmlFontSize() {
+        var _width = document.body.clientWidth;
+        _width = _width > 640 ? 640 : _width;
+        var _fs = _width / 16;
+        document.getElementsByTagName("html")[0].style.fontSize = _fs + "px";
+      }
+      initHtmlFontSize();
+
+      function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic  
+          url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)  
+          url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome  
+          url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+      }
+      $(function() {
+        var img, imgurl;
+        var canvas_img = document.getElementById("canvas_img");
+        var ctx_2d = canvas_img.getContext("2d");
+        //上传图片  
+        $('.filebtn').on('click', function() {
+          $('#upfile').trigger('click');
+        });
+        $('#upfile').on('change', function() {
+          imgurl = getObjectURL(this.files[0]);
+          img = new Image();
+          img.src = imgurl;
+          img.onload = function() {
+            ctxmsg.imgoldw = img.width,
+              ctxmsg.imgoldh = img.height;
+          };
+          $(this).val('');
+          $('.show_img img').attr('src', imgurl);
+          $('.show_img').show();
+        });
+        //重置  
+        $('.resetbtn').on('click', function() {
+          $('#uptitle').val('');
+          $('#upcontent').val('');
+          $('#upfile').val('');
+          $('.show_img').hide();
+          $('.show_img img').attr('src', '');
+        });
+        //生成图片  
+        $('.show_end_img').on('click', function() {
+          var new_img_src = canvas_img.toDataURL("image/jpg");
+          $('.page3 img').attr('src', new_img_src);
+          $('.page3').show();
+        })
+        //旋转canvas中的图片  
+        var roate_num = 0;
+        var create_cvs = document.createElement('canvas');
+        var create_cvs_2d = create_cvs.getContext('2d');
+        var ifroate = false;
+        $('.roat_img').on('click', function() {
+          console.log('上次宽：' + ctxmsg.imgw + '   上次高：' + ctxmsg.imgh);
+          ifroate = true;
+          roate_num += 90;
+          roate_num = roate_num % 360;
+
+          var w = img.width;
+          var h = img.height;
+
+          var x = w / -2;
+          var y = h / -2;
+
+          if (roate_num % 180 != 0) {
+            create_cvs.width = h;
+            create_cvs.height = w;
+            if (w > h) {
+              console.log(1);
+              ctxmsg.imgw = ctxmsg.w;
+              ctxmsg.imgh = ctxmsg.w / h * w;
+            } else {
+              console.log(2);
+              ctxmsg.imgh = ctxmsg.h;
+              ctxmsg.imgw = ctxmsg.h / w * h;
+            }
+          } else {
+            create_cvs.width = w;
+            create_cvs.height = h;
+            if (w > h) {
+              console.log(3);
+              ctxmsg.imgh = ctxmsg.h;
+              ctxmsg.imgw = ctxmsg.h / h * w;
+            } else {
+              console.log(4);
+              ctxmsg.imgw = ctxmsg.w;
+              ctxmsg.imgh = ctxmsg.w / w * h;
+            }
+          }
+
+          create_cvs_2d.translate(create_cvs.width / 2, create_cvs.height / 2);
+          create_cvs_2d.rotate(roate_num * Math.PI / 180);
+          create_cvs_2d.drawImage(img, x, y);
+
+          //防止旋转图片后，指定画图区留白（图片小于画图区）
+          if (ctxmsg.imgw < ctxmsg.w) {
+            ctxmsg.imgh = ctxmsg.w / ctxmsg.imgw * ctxmsg.imgh;
+            ctxmsg.imgw = ctxmsg.w;
+          }
+          if (ctxmsg.imgh < ctxmsg.h) {
+            ctxmsg.imgw = ctxmsg.h / ctxmsg.imgh * ctxmsg.imgw;
+            ctxmsg.imgh = ctxmsg.h;
+          }
+
+          ctxmsg.imgx = ctxmsg.x;
+          ctxmsg.imgy = ctxmsg.y;
+          drawNewImg();
+          console.log('本次宽：' + ctxmsg.imgw + '   本次高：' + ctxmsg.imgh);
+        });
+        //预览（首次生成CANVAS图片）  
+        $('.setbtn').on('click', function() {
+          var title = $.trim($('#uptitle').val());
+          var content = $.trim($('#upcontent').val());
+          if (!$.trim(title)) {
+            alert('请填写你的表白对象哦');
+            return;
+          }
+          if (!$.trim(content)) {
+            alert('请填写你想说的话哦');
+            return;
+          }
+          if (!imgurl) {
+            alert('请上传图片');
+            return;
+          }
+          setcanvas(title, content, imgurl);
+        });
+
+        function setcanvas(title, content, imgurl) {
+          bgimg = new Image();
+          //底图图片  640  的宽度，所有距离长度 相对此宽度 设置的  
+          bgimg.src = "bg.jpg"; //跨域问题，只能相对路径的图片生成图片时不会出错  
+          bgimg.onload = function() {
+            var iw = bgimg.width;
+            var ih = bgimg.height;
+            canvas_img.width = iw;
+            canvas_img.height = ih;
+            ctx_2d.drawImage(bgimg, 0, 0, iw, ih, 0, 0, iw, ih);
+
+            drawNewImg();
+
+            ctx_2d.font =
+              'bold 24px "PingFangSC-Regular","sans-serif","STHeitiSC-Light","微软雅黑","Microsoft YaHei"';
+            ctx_2d.fillStyle = '#E86B59';
+            ctx_2d.textBaseline = "top";
+            ctx_2d.textAlign = "left";
+            ctx_2d.fillText(title, 182, 543);
+            ctx_2d.fillStyle = '#A14FB1';
+            writeTextOnCanvas(ctx_2d, 40, 24, content, 182, 615);
+
+            $('.page1').hide();
+            $('.page2').show();
+          }
+        }
+
+        var touchs = {
+          startx: 0,
+          starty: 0,
+          endx: 0,
+          endy: 0,
+          startx2: 0,
+          starty2: 0,
+          endx2: 0,
+          endy2: 0,
+        };
+        canvas_img.addEventListener("touchstart", canvasTouchStart, false);
+        canvas_img.addEventListener("touchmove", canvasTouchMove, false);
+        canvas_img.addEventListener("touchend", canvasTouchEnd, false);
+
+        function canvasTouchEnd(e) {
+
+        }
+
+        function canvasTouchStart(e) {
+          e.preventDefault();
+          touchs.startx = e.touches[0].pageX;
+          touchs.starty = e.touches[0].pageY;
+          if (e.touches.length == 1) {
+            ctxmsg.imgoldx = ctxmsg.imgx;
+            ctxmsg.imgoldy = ctxmsg.imgy;
+          } else if (e.touches.length == 2) {
+            touchs.startx2 = e.touches[1].pageX;
+            touchs.starty2 = e.touches[1].pageY;
+            ctxmsg.imgoldw = ctxmsg.imgw;
+            ctxmsg.imgoldh = ctxmsg.imgh;
+          }
+        }
+
+        function canvasTouchMove(e) {
+          e.preventDefault();
+          touchs.endx = e.touches[0].pageX;
+          touchs.endy = e.touches[0].pageY;
+          if (e.touches.length == 1) {
+            ctxmsg.imgx = ctxmsg.imgoldx + touchs.endx - touchs.startx;
+            ctxmsg.imgy = ctxmsg.imgoldy + touchs.endy - touchs.starty;
+          } else if (e.touches.length == 2) {
+            touchs.endx2 = e.touches[1].pageX;
+            touchs.endy2 = e.touches[1].pageY;
+
+            //var xdiff = x2 - x1;  
+            //var ydiff = y2 - y1;  
+            var xdiff1 = touchs.startx2 - touchs.startx;
+            var ydiff1 = touchs.starty2 - touchs.starty;
+            var line1 = Math.sqrt(Math.pow(xdiff1, 2) + Math.pow(ydiff1, 2));
+
+            var xdiff2 = touchs.endx2 - touchs.endx;
+            var ydiff2 = touchs.endy2 - touchs.endy;
+            var line2 = Math.sqrt(Math.pow(xdiff2, 2) + Math.pow(ydiff2, 2));
+
+            img_new_w = ctxmsg.imgw + (line2 - line1) / 20;
+            img_new_h = img_new_w / ctxmsg.imgw * ctxmsg.imgh;
+            //固定区域内缩放，画图区域不留白  
+            if (img_new_w <= ctxmsg.w || img_new_h <= ctxmsg.h) {
+              return;
+            }
+
+            ctxmsg.imgx -= img_new_w - ctxmsg.imgw;
+            ctxmsg.imgy -= img_new_h - ctxmsg.imgh;
+
+            ctxmsg.imgw = img_new_w;
+            ctxmsg.imgh = img_new_h;
+          }
+          //固定区域内移动，画图区域不留白  
+          if (ctxmsg.imgw <= ctxmsg.w || ctxmsg.imgx > ctxmsg.x) {
+            ctxmsg.imgx = ctxmsg.x;
+          } else if (ctxmsg.imgw > ctxmsg.w && ctxmsg.imgx <= ctxmsg.x - (ctxmsg.imgw - ctxmsg.w)) {
+            ctxmsg.imgx = ctxmsg.x - (ctxmsg.imgw - ctxmsg.w);
+          }
+          if (ctxmsg.imgh <= ctxmsg.h || ctxmsg.imgy > ctxmsg.y) {
+            ctxmsg.imgy = ctxmsg.y;
+          } else if (ctxmsg.imgh > ctxmsg.h && ctxmsg.imgy <= ctxmsg.y - (ctxmsg.imgh - ctxmsg.h)) {
+            ctxmsg.imgy = ctxmsg.y - (ctxmsg.imgh - ctxmsg.h);
+          }
+          drawNewImg();
+        }
+
+        var ctxmsg = {
+          x: 155,
+          y: 77,
+          w: 334,
+          h: 293,
+          imgx: 155,
+          imgy: 77,
+          imgw: 0,
+          imgh: 0,
+          imgoldx: 0,
+          imgoldy: 0,
+          imgoldw: 0,
+          imgoldh: 0
+        };
+
+        function drawNewImg(cvs) {
+          ctx_2d.clearRect(ctxmsg.x, ctxmsg.y, ctxmsg.w, ctxmsg.h);
+          ctx_2d.rect(ctxmsg.x, ctxmsg.y, ctxmsg.w, ctxmsg.h);
+          ctx_2d.save();
+          ctx_2d.clip();
+          //ctxmsg.imgoldw = img.width ,  
+          //ctxmsg.imgoldh = img.height;  
+          if (!ctxmsg.imgw) {
+            //设置画入画布内的图片宽、高（等比例铺满指定盒子，溢出被剪切掉）  
+            if (ctxmsg.imgoldw / ctxmsg.imgoldh > ctxmsg.w / ctxmsg.h) {
+              ctxmsg.imgh = ctxmsg.h;
+              ctxmsg.imgw = ctxmsg.h / ctxmsg.imgoldh * ctxmsg.imgoldw;
+            } else {
+              ctxmsg.imgw = ctxmsg.w;
+              ctxmsg.imgh = ctxmsg.w / ctxmsg.imgoldw * ctxmsg.imgoldh;
+            }
+          }
+          if (ifroate) {
+            ctx_2d.drawImage(create_cvs, ctxmsg.imgx, ctxmsg.imgy, ctxmsg.imgw, ctxmsg.imgh);
+          } else {
+            ctx_2d.drawImage(img, ctxmsg.imgx, ctxmsg.imgy, ctxmsg.imgw, ctxmsg.imgh);
+          }
+          ctx_2d.restore();
+        }
+
+        function writeTextOnCanvas(ctx_2d, lineheight, bytelength, text, startleft, starttop) {
+          function getTrueLength(str) { //获取字符串的真实长度（字节长度）    
+            var len = str.length,
+              truelen = 0;
+            for (var x = 0; x < len; x++) {
+              if (str.charCodeAt(x) > 128) {
+                truelen += 2;
+              } else {
+                truelen += 1;
+              }
+            }
+            return truelen;
+          }
+
+          function cutString(str, leng) { //按字节长度截取字符串，返回substr截取位置    
+            var len = str.length,
+              tlen = len,
+              nlen = 0;
+            for (var x = 0; x < len; x++) {
+              if (str.charCodeAt(x) > 128) {
+                if (nlen + 2 < leng) {
+                  nlen += 2;
+                } else {
+                  tlen = x;
+                  break;
+                }
+              } else {
+                if (nlen + 1 < leng) {
+                  nlen += 1;
+                } else {
+                  tlen = x;
+                  break;
+                }
+              }
+            }
+            return tlen;
+          }
+          for (var i = 1; getTrueLength(text) > 0; i++) {
+            var tl = cutString(text, bytelength);
+            ctx_2d.fillText(text.substr(0, tl).replace(/^\s+|\s+$/, ""), startleft, (i - 1) * lineheight + starttop);
+            text = text.substr(tl);
+          }
+        }
+
+      });
+    </script>
+  </body>
+</html>

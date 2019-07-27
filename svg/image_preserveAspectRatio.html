@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+    <style>
+      svg{
+        border: solid 1px gray;
+      }
+      rect{
+        stroke:red; stroke-width:1px; fill:none;
+      }
+    </style>
+	</head>
+	<body>
+    <p>preserveAspectRatio="alignment [meet|slice]" 默认：xMidYMid meet，如果只指定alignment，则默认meet，另外alignment必须同时写x和y，如果只写xM**或yM**是不起作用的</p>
+    <svg width="940" height="1560">
+      <!--默认 省略preserveAspectRatio和preserveAspectRatio="xMidYMid meet"是一样的-->
+      <image href="../images/500-750-girl.jpg" x="10" y="10" width="300" height="300"></image>
+      <rect x="10" y="10" width="300" height="300"></rect>
+      <text x="10" y="10" dy="1em" style="fill:red;">无preserveAspectRatio</text>
+      
+      <image href="../images/1920-1080.jpg"  x="320" y="10" width="300" height="300"></image>
+      <rect  x="320" y="10" width="300" height="300"></rect>
+      <text x="320" y="10" dy="1em" style="fill:red;">无preserveAspectRatio</text>
+      
+      <!--preserveAspectRatio="none"为不使用保持纵横比例模式，图片自己拉升适应高宽全部-->
+      <image href="../images/500-750-girl.jpg"  x="630" y="10" width="300" height="300" preserveAspectRatio="none"></image>
+      <rect  x="630" y="10" width="300" height="300"></rect>
+      <text x="630" y="10" dy="1em" style="fill:red;">preserveAspectRatio="none"</text>
+      
+      <!--让图片在左侧：xMin[YMid|YMin|YMax]，此图因为高大于宽，所以meet状态下，x轴可移动，Y轴填满，
+      所以Y轴设置随便设置min|mid|max，另外如果只写xMin而忽略YM**是不合法不起作用的-->
+      <image href="../images/500-750-girl.jpg" x="10" y="320" width="300" height="300" preserveAspectRatio="xMinYMid meet"></image>
+      <rect x="10" y="320" width="300" height="300"></rect>
+      <text x="10" y="320" dy="1em" style="fill:red;">xMinYM** meet</text>
+      
+      <!--默认 省略preserveAspectRatio和preserveAspectRatio="xMidYMid meet"是一样的-->
+      <image href="../images/500-750-girl.jpg"  x="320" y="320" width="300" height="300" preserveAspectRatio="xMidYMid meet"></image>
+      <rect  x="320" y="320" width="300" height="300"></rect>
+      <text x="320" y="320" dy="1em" style="fill:red;">xMidYM** meet</text>
+      
+      <!--让图片在右侧-->
+      <image href="../images/500-750-girl.jpg"  x="630" y="320" width="300" height="300" preserveAspectRatio="xMaxYMid meet"></image>
+      <rect  x="630" y="320" width="300" height="300"></rect>
+      <text x="630" y="320" dy="1em" style="fill:red;">xMaxYM** meet</text>
+      
+      <!--将默认meet修改为slice模式 在上部-->
+      <image href="../images/500-750-girl.jpg" x="10" y="630" width="300" height="300" preserveAspectRatio="xMidYMin slice"></image>
+      <rect x="10" y="630" width="300" height="300"></rect>
+      <text x="10" y="630" dy="1em" style="fill:red;">xM**YMin slice</text>
+      
+      <!--在中间-->
+      <image href="../images/500-750-girl.jpg"  x="320" y="630" width="300" height="300" preserveAspectRatio="xMidYMid slice"></image>
+      <rect  x="320" y="630" width="300" height="300"></rect>
+      <text x="320" y="630" dy="1em" style="fill:red;">xM**YMid slice</text>
+      
+      <!--在底部-->
+      <image href="../images/500-750-girl.jpg"  x="630" y="630" width="300" height="300" preserveAspectRatio="xMidYMax slice"></image>
+      <rect  x="630" y="630" width="300" height="300"></rect>
+      <text x="630" y="630" dy="1em" style="fill:red;">xM**YMax slice</text>
+      
+      <image href="../images/1920-1080.jpg" x="10" y="940" width="300" height="300" preserveAspectRatio="xMidYMin meet"></image>
+      <rect x="10" y="940" width="300" height="300"></rect>
+      <text x="10" y="940" dy="1em" style="fill:red;">xM**YMin meet</text>
+      
+      <!--默认 省略preserveAspectRatio和preserveAspectRatio="xMidYMid meet"是一样的-->
+      <image href="../images/1920-1080.jpg"  x="320" y="940" width="300" height="300" preserveAspectRatio="xMidYMid meet"></image>
+      <rect  x="320" y="940" width="300" height="300"></rect>
+      <text x="320" y="940" dy="1em" style="fill:red;">xM**YMid meet</text>
+      
+      <!--让图片在右侧-->
+      <image href="../images/1920-1080.jpg"  x="630" y="940" width="300" height="300" preserveAspectRatio="xMidYMax meet"></image>
+      <rect  x="630" y="940" width="300" height="300"></rect>
+      <text x="630" y="940" dy="1em" style="fill:red;">xM**YMax meet</text>
+      
+      <!--将默认meet修改为slice模式 在上部-->
+      <image href="../images/1920-1080.jpg" x="10" y="1250" width="300" height="300" preserveAspectRatio="xMinYMin slice"></image>
+      <rect x="10" y="1250" width="300" height="300"></rect>
+      <text x="10" y="1250" dy="1em" style="fill:red;">xMinYM** slice</text>
+      
+      <!--在中间-->
+      <image href="../images/1920-1080.jpg"  x="320" y="1250" width="300" height="300" preserveAspectRatio="xMidYMid slice"></image>
+      <rect  x="320" y="1250" width="300" height="300"></rect>
+      <text x="320" y="1250" dy="1em" style="fill:red;">xMidYM** slice</text>
+      
+      <!--在底部-->
+      <image href="../images/1920-1080.jpg"  x="630" y="1250" width="300" height="300" preserveAspectRatio="xMaxYMax slice"></image>
+      <rect  x="630" y="1250" width="300" height="300"></rect>
+      <text x="630" y="1250" dy="1em" style="fill:red;">xMaxYM** slice</text>
+    </svg>
+	</body>
+</html>
