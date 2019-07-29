@@ -10,7 +10,9 @@
       <div class="sidebar_left"></div>
       <div class="sidebar_right"></div>
       <div class="workarea">
-        <div id="divBook"></div>
+        <div id="divBook">
+          <svg id="svgConvas"></svg>
+        </div>
       </div>
     
     
@@ -90,16 +92,16 @@
 
         var pageContainer = getPageContainerSize()
 
-        var divBook = d3.select('#divBook')
-          .style('width', pageContainer.width + 'px')
-          .style('height', pageContainer.height + 'px')
+        var svgConvas = d3.select('#svgConvas')
+          // .style('width', pageContainer.width + 'px')
+          // .style('height', pageContainer.height + 'px')
 
-        var pageRootSvg = divBook.append('svg')
+        var pageRootSvg = svgConvas.append('svg')
           // .datum(book.pages[0])
           .attr('width', pageContainer.width)
           .attr('height', pageContainer.height)
           .attr('viewBox', '0 0 ' + book.width + ' ' + book.height)
-
+        
         initPage(pageRootSvg, book.pages[0])
         
         pageRootSvg.on('click', function(d){
@@ -118,6 +120,31 @@
       function initPage(pageRootSvg, pageData) {
 
         var defs = pageRootSvg.append('defs')
+        var grid = defs.append('pattern')
+          .attr('id', 'grid')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('width', 20)
+          .attr('height', 20)
+          .attr('patternUnits', 'userSpaceOnUse');
+        grid.append('rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('width', 20)
+          .attr('height', 20)
+          .style('stroke', 'black')
+          .style('stroke-width', 0.4)
+          .attr('fill', 'none');
+        
+        var rect_bg = pageRootSvg.append('rect').attr('id', 'rect_bg')
+        rect_bg.attr('width', book.width)
+          .attr('height', book.height)
+          .style('fill', 'white');
+        
+        var rect_grid = pageRootSvg.append('rect').attr('id', 'rect_grid')
+        rect_grid.attr('width', book.width)
+          .attr('height', book.height)
+          .style('fill', 'url(#grid)');
 
         //初始化padding框
         var points = [

@@ -50,7 +50,11 @@ body {
 }
 
 #divBook {
-  margin: 15px auto;
-  border: solid 1px black;
-  background-color: white;
+  /* margin: 15px auto; */
+/*  border: solid 1px black;
+  background-color: white; */
+}
+#svgConvas {
+  width: calc(100vw - 225px);
+  height: calc(100vh - 30px - 40px);
 }

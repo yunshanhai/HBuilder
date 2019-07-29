@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <svg width="200" height="200">
+      <g id="square">
+        <rect x="10" y="10" width="20" height="20" style="fill:none; stroke:black"></rect>
+      </g>
+      <use href="#square" transform="scale(3, 1.5)"></use>
+    </svg>
+    <svg width="200" height="200">
+      <line x1="0" y1="0" x2="100" y2="0" style="stroke:black;" />
+      <line x1="0" y1="0" x2="0" y2="100" style="stroke:black;" />
+      
+      <polygon points="40 40, 100 40, 70 70, 40 70" style="fill:gray; stroke: black;" />
+    </svg>
+    
+    <svg width="200" height="200">
+      <g transform="translate(0,100)">
+        <line x1="0" y1="0" x2="100" y2="0" style="stroke:black;" />
+        <line x1="0" y1="0" x2="0" y2="100" style="stroke:black;" />
+        
+        <polygon points="40 40, 100 40, 70 70, 40 70" style="fill:gray; stroke: black;" />
+      </g>
+    </svg>
+    
+    <svg width="200" height="200">
+      <g transform="translate(0,100) scale(1, -1)">
+        <line x1="0" y1="0" x2="100" y2="0" style="stroke:black;" />
+        <line x1="0" y1="0" x2="0" y2="100" style="stroke:black;" />
+        
+        <polygon points="40 40, 100 40, 70 70, 40 70" style="fill:gray; stroke: black;" />
+      </g>
+    </svg>
+    <svg width="300" height="500">
+      <defs>
+        <pattern id="grid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect x="0" y="0" width="20" height="20" style="stroke:gray;" />
+        </pattern>
+      </defs>
+      <rect x="0" y="0" width="300" height="500" style="fill:url(#grid)" />
+    </svg>
+    <svg>
+      <defs>
+        <clipPath id="clip">
+          <circle cx="120" cy="60" r="60" style="fill:none;" />
+          <!-- <rect id="rect1" x="15" y="15" width="40" height="45" style="stroke:gray; fill:none;"></rect> -->
+        </clipPath>
+      </defs>
+       <image href="../images/280-200.jpeg" width="280" height="200" style="clip-path:url(#clip)" />
+    </svg>
+	</body>
+</html>
