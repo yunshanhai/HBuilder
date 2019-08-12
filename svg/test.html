@@ -38,7 +38,9 @@
     <svg width="300" height="500">
       <defs>
         <pattern id="grid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-          <rect x="0" y="0" width="20" height="20" style="stroke:gray;" />
+          <!-- <rect x="0" y="0" width="20" height="20" style="stroke:gray;" /> -->
+          <line x1="0" y1="0" x2="20" y2="0" style="stroke:gray;" />
+          <line x1="0" y1="0" x2="0" y2="20" style="stroke:gray" />
         </pattern>
       </defs>
       <rect x="0" y="0" width="300" height="500" style="fill:url(#grid)" />

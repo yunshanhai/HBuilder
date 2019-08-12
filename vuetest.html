@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <div id="app">
+      <p v-for="(value,key,index) in obj">{{value}}-{{key}}-{{index}}</p>
+    </div>
+    <script src="js/vue.js"></script>
+    <script>
+      var data = {
+        obj: {}
+      }
+      
+      
+      var app = new Vue({
+        el: '#app',
+        data: data
+      })
+      
+      app.$set(app.obj, 'a', {name:'小王', age: 18});
+      app.$set(app.obj, 'b', {name:'小刘', age: 8});
+      
+      app.obj = Object.assign({}, app.obj, {
+        d: {name:'小王', age: 18},
+        f: {name:'小王', age: 18}
+      });
+      // var obj = {};
+      // obj.a = {name:'小王', age: 18};
+      // obj.b = {name:'小刘', age: 8};
+      // 
+      // Vue.set()
+    </script>
+	</body>
+</html>
