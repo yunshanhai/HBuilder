@@ -9,20 +9,18 @@ d3.json('./json/book.json', function(data) {
 var pages
 // var currentPage //当前页面,暂时未用到
 // var currentElement
-var elementIdPrefix = 'element'
 var shapePointIds = d3.set(['topPoint', 'rightPoint', 'bottomPoint', 'leftPoint'])
 var dragPointIds = d3.set(['dragPoint00', 'dragPoint01', 'dragPoint10', 'dragPoint11'])
 var dragPointWidth = 16
 var lockElementId = ''
 // var aa = '';
 var dragPointId = ''
-var elementMin = 40
 
 function getPageContainerSize() {
   var container = {
-    width: 600,
-    height: 600 * book.height / book.width,
-    scale: 600 / book.width
+    width: config.pageContainerWidth,
+    height: config.pageContainerWidth * book.height / book.width,
+    scale: config.pageContainerWidth / book.width
   }
   return container
 }
@@ -49,14 +47,14 @@ function initBook(data) {
     return d.id
   })
 
-  book.width = mm2px(book.init.width)
-  book.height = mm2px(book.init.height)
+  book.width = mm2px(book.init.width, config.dpi)
+  book.height = mm2px(book.init.height, config.dpi)
 
   //页面除去出血之后的上下左右
-  book.top = mm2px(book.init.bleed.top)
-  book.right = book.width - mm2px(book.init.bleed.right)
-  book.bottom = book.height - mm2px(book.init.bleed.bottom)
-  book.left = mm2px(book.init.bleed.left)
+  book.top = mm2px(book.init.bleed.top, config.dpi)
+  book.right = book.width - mm2px(book.init.bleed.right, config.dpi)
+  book.bottom = book.height - mm2px(book.init.bleed.bottom, config.dpi)
+  book.left = mm2px(book.init.bleed.left, config.dpi)
 
   cl(book)
 
@@ -157,11 +155,11 @@ function initPage(pageRootSvg, pageData) {
 
 function drawElement(pageRootSvg, defs, elementData, index) {
   var update = true
-  var shape = pageRootSvg.select('#' + elementIdPrefix + index)
+  var shape = pageRootSvg.select('#' + config.elementIdPrefix + index)
   if (shape.empty()) {
     update = false
     shape = pageRootSvg.append(elementData.shape)
-      .attr('id', elementIdPrefix + index)
+      .attr('id', config.elementIdPrefix + index)
       .datum(elementData)
 
     //元素样式赋值
@@ -276,7 +274,7 @@ function drawLockElements(pageRootSvg, points) {
         calcShapePointsAndPropertiesFromCenterPoints(lockElementData)
 
         drawLockElements(pageRootSvg, lockElementData.points)
-        drawElement(pageRootSvg, null, null, lockElementId.replace(elementIdPrefix, ''))
+        drawElement(pageRootSvg, null, null, lockElementId.replace(config.elementIdPrefix, ''))
       })
     dragLevel.call(drag)
   }
@@ -415,11 +413,11 @@ function drawDragPoint(pageRootSvg, point, id) {
           case 'dragPoint00':
             var dataPoint01 = d3.select('#dragPoint01').datum()
             var dataPoint10 = d3.select('#dragPoint10').datum()
-            if (dataPoint01[0] - eventX >= elementMin) {
+            if (dataPoint01[0] - eventX >= config.elementMin) {
               d[0] = eventX
               dataPoint10[0] = eventX
             }
-            if (dataPoint10[1] - eventY >= elementMin) {
+            if (dataPoint10[1] - eventY >= config.elementMin) {
               d[1] = eventY
               dataPoint01[1] = eventY
             }
@@ -427,11 +425,11 @@ function drawDragPoint(pageRootSvg, point, id) {
           case 'dragPoint01':
             var dataPoint00 = pageRootSvg.select('#dragPoint00').datum()
             var dataPoint11 = pageRootSvg.select('#dragPoint11').datum()
-            if (eventX - dataPoint00[0] >= elementMin) {
+            if (eventX - dataPoint00[0] >= config.elementMin) {
               d[0] = eventX
               dataPoint11[0] = eventX
             }
-            if (dataPoint11[1] - eventY >= elementMin) {
+            if (dataPoint11[1] - eventY >= config.elementMin) {
               d[1] = eventY
               dataPoint00[1] = eventY
             }
@@ -439,11 +437,11 @@ function drawDragPoint(pageRootSvg, point, id) {
           case 'dragPoint10':
             var dataPoint00 = pageRootSvg.select('#dragPoint00').datum()
             var dataPoint11 = pageRootSvg.select('#dragPoint11').datum()
-            if (dataPoint11[0] - eventX >= elementMin) {
+            if (dataPoint11[0] - eventX >= config.elementMin) {
               d[0] = eventX
               dataPoint00[0] = eventX
             }
-            if (eventY - dataPoint00[1] >= elementMin) {
+            if (eventY - dataPoint00[1] >= config.elementMin) {
               d[1] = eventY
               dataPoint11[1] = eventY
             }
@@ -451,11 +449,11 @@ function drawDragPoint(pageRootSvg, point, id) {
           case 'dragPoint11':
             var dataPoint01 = pageRootSvg.select('#dragPoint01').datum()
             var dataPoint10 = pageRootSvg.select('#dragPoint10').datum()
-            if (eventX - dataPoint10[0] >= elementMin) {
+            if (eventX - dataPoint10[0] >= config.elementMin) {
               d[0] = eventX
               dataPoint01[0] = eventX
             }
-            if (eventY - dataPoint01[1] >= elementMin) {
+            if (eventY - dataPoint01[1] >= config.elementMin) {
               d[1] = eventY
               dataPoint10[1] = eventY
             }
@@ -467,7 +465,7 @@ function drawDragPoint(pageRootSvg, point, id) {
 
         // cl(pageRootSvg.select('#' + lockElementId).datum())
         drawLockElements(pageRootSvg, lockElementData.points)
-        drawElement(pageRootSvg, null, null, lockElementId.replace(elementIdPrefix, ''))
+        drawElement(pageRootSvg, null, null, lockElementId.replace(config.elementIdPrefix, ''))
         // var square = calcSquareFromCenterPoint(d, dragPointWidth)
         // d3.select(this).attr('x', square.x)
         //   .attr('y', square.y)
