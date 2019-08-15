@@ -31,28 +31,28 @@
       },
       "elements":[
         {
-          "x": 100,
-          "y": 100,
-          "width": 600,
-          "height": 400,
+          "x": 300,
+          "y": 300,
+          "width": 1800,
+          "height": 1200,
           "display": true,
           "fixed": false,
           "shape": "rect",
           "properties": {
             "stroke-width": 0,
             "stroke": "steelblue",
-            "stroke-dasharray": "20,1",
+            "stroke-dasharray": "60,10",
             "rect": {
-              "rx": 10,
-              "ry": 10
+              "rx": 30,
+              "ry": 30
             }
           },
           "type": "image",
           "image": {
-            "x": 100,
-            "y": 100,
-            "width": 600,
-            "height": 400,
+            "x": 300,
+            "y": 300,
+            "width": 1800,
+            "height": 1200,
             "url": "/HBuilder/book/images/p1_h_4352_2720.jpg",
             "info": {
               "width": 4352,
@@ -62,22 +62,22 @@
           }
         },
         {
-          "x": 100,
-          "y": 600,
-          "width": 200,
-          "height": 200,
+          "x": 300,
+          "y": 1800,
+          "width": 600,
+          "height": 600,
           "display": true,
           "fixed": false,
           "shape": "circle",
           "properties": {
-            "stroke-width": 10,
+            "stroke-width": 30,
             "stroke": "steelblue",
-            "stroke-dasharray": "20,1"
+            "stroke-dasharray": "60,3"
           },
           "type": "image",
           "image": {
-            "x": 200,
-            "y": 600,
+            "x": 300,
+            "y": 1800,
             "width": 400,
             "height": 400,
             "url": "/HBuilder/book/images/p2_v_1760_2816.jpg",
@@ -89,24 +89,24 @@
           }
         },
         {
-          "x": 200,
-          "y": 650,
-          "width": 400,
-          "height": 300,
+          "x": 600,
+          "y": 1950,
+          "width": 1200,
+          "height": 900,
           "display": true,
           "fixed": false,
           "shape": "ellipse",
           "properties":{
-            "stroke-width": 10,
+            "stroke-width": 30,
             "stroke": "steelblue",
-            "stroke-dasharray": "20,1"
+            "stroke-dasharray": "60,3"
           },
           "type": "image",
           "image": {
-            "x": 200,
-            "y": 650,
-            "width": 400,
-            "height": 300,
+            "x": 600,
+            "y": 1950,
+            "width": 1200,
+            "height": 900,
             "url": "/HBuilder/book/images/p2_v_1760_2816.jpg",
             "info": {
               "width": 1760,

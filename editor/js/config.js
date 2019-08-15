@@ -1,7 +1,7 @@
 var config = {
-  dpi: 96,
-  dragPointSize: 16,
-  gridSize: 10,
+  dpi: 300,
+  dragPointSize: 48,
+  gridSize: 48,
   viewport: {
     width: 600,
     height: 800

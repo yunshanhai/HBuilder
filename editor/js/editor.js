@@ -1,3 +1,18 @@
+var editor = {
+  width: document.getElementById('canvas_editor').clientWidth,
+  height: document.getElementById('canvas_editor').clientHeight
+};
+var resizeFlag = null;
+window.addEventListener('resize', function(){
+  if(resizeFlag){
+    clearTimeout(resizeFlag);
+  }
+  resizeFlag = setTimeout(()=>{
+    editor.width = document.getElementById('canvas_editor').clientWidth;
+    editor.height = document.getElementById('canvas_editor').clientHeight;
+  },300);
+});
+
 var data;
 var app;
 
@@ -15,8 +30,9 @@ d3.json('./json/book.json', function(book) {
     menu: {
       showList: false,
       currentList: 0,
-      viewGrid: false
-    }
+      viewGrid: true
+    },
+    editor: editor
   };
   
   app = new Vue({
@@ -73,7 +89,19 @@ d3.json('./json/book.json', function(book) {
       },
       dragObj: function(){
         let obj = {
-          panel: { x: 0, y: 0, width: 0, height: 0 },
+          panel: { 
+            x: 0, 
+            y: 0, 
+            width: 0, 
+            height: 0,
+            tl: { x: 0, y: 0 },
+            tr: { x:0, y: 0 },
+            bl: { x:0, y:0 },
+            br: { x:0, y:0 },
+            center: {x: 0, y: 0}
+          },
+          line: { x1: 0, y1: 0, x2: 0, y2: 0},
+          circle:{ cx:0, cy: 0},
           t: { x: 0, y: 0 },
           tr: { x: 0, y: 0 },
           r: { x: 0, y: 0 },
@@ -86,23 +114,41 @@ d3.json('./json/book.json', function(book) {
         if(this.currentSelectElementIndex>-1){
           let element = this.currentSelectedElement;
           let halfDragPointSize = this.config.dragPointSize / 2;
-          
+
           obj.panel.x = element.x;
           obj.panel.y = element.y;
           obj.panel.width = element.width;
           obj.panel.height = element.height;
+          obj.panel.tl.x = element.x;
+          obj.panel.tl.y = element.y;
+          obj.panel.tr.x = element.x + element.width;
+          obj.panel.tr.y = element.y;
+          obj.panel.bl.x = element.x;
+          obj.panel.bl.y = element.y + element.height;
+          obj.panel.br.x = obj.panel.tr.x;
+          obj.panel.br.y = obj.panel.bl.y;
+          obj.panel.center.x = element.x + element.width / 2;
+          obj.panel.center.y = element.y + element.height / 2;
+          
+          obj.line.x1 = obj.panel.center.x;
+          obj.line.y1 = element.y - this.config.dragPointSize * 3;
+          obj.line.x2 = obj.line.x1;
+          obj.line.y2 = element.y;
+          
+          obj.circle.cx = obj.line.x1;
+          obj.circle.cy = obj.line.y1;
           
           obj.tl.x = element.x - halfDragPointSize;
           obj.tl.y = element.y - halfDragPointSize;
           
-          obj.t.x = element.x + element.width / 2 - halfDragPointSize;
+          obj.t.x = obj.panel.center.x - halfDragPointSize;
           obj.t.y = obj.tl.y;
           
           obj.tr.x = element.x + element.width - halfDragPointSize;
           obj.tr.y = obj.t.y;
           
           obj.r.x = obj.tr.x;
-          obj.r.y = obj.tr.y + element.height / 2;
+          obj.r.y = obj.panel.center.y - halfDragPointSize;
           
           obj.br.x = obj.tr.x;
           obj.br.y = obj.tr.y + element.height;
@@ -120,22 +166,23 @@ d3.json('./json/book.json', function(book) {
       },
       //视窗
       viewport: function(){
+        let height = this.currentPageSize.height;
+        let width = this.editor.width / this.editor.height * this.currentPageSize.height;
+        
         return {
-          // width: config.viewport.width,
-          // height: config.viewport.width * this.currentPageSize.height / this.currentPageSize.width,
-          // scale: config.viewport.width / this.currentPageSize.width
-          width: config.viewport.height / this.currentPageSize.height * this.currentPageSize.width,
-          height: config.viewport.height,
-          scale: config.viewport.height / this.currentPageSize.height
+          width: width,
+          height: height,
+          // scale: scale,
+          viewbox: '0 0 ' + width + ' ' + height
         }
       },
       //出血线路径
       bleedPath: function(){
         var points = [
-          [this.currentPageSize.left * this.viewport.scale, this.currentPageSize.top * this.viewport.scale],
-          [this.currentPageSize.right * this.viewport.scale, this.currentPageSize.top * this.viewport.scale],
-          [this.currentPageSize.right * this.viewport.scale, this.currentPageSize.bottom * this.viewport.scale],
-          [this.currentPageSize.left * this.viewport.scale, this.currentPageSize.bottom * this.viewport.scale]
+          [this.currentPageSize.left, this.currentPageSize.top],
+          [this.currentPageSize.right, this.currentPageSize.top],
+          [this.currentPageSize.right, this.currentPageSize.bottom],
+          [this.currentPageSize.left, this.currentPageSize.bottom]
         ]
         var line = d3.svg.line()
           .x(function(d) {
@@ -154,9 +201,7 @@ d3.json('./json/book.json', function(book) {
     created: function () {
       // console.log('---created');
     },
-    mounted: function(){
-      // console.log('---mounted');
-    },
+    mounted: mounted,
     beforeUpdate: function(){
       // console.log('---beforeUpdate');
     },
@@ -196,7 +241,12 @@ d3.json('./json/book.json', function(book) {
       },
       //点击选中当前元素
       selectElement: function(index){
+        event.stopPropagation();
         this.currentSelectElementIndex = index;
+      },
+      canvasClick: function(){
+        event.stopPropagation();
+        this.currentSelectElementIndex = -1;
       }
     },
     filters: {

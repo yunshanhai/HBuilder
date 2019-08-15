@@ -85,163 +85,44 @@ function px2px(px, fromDpi = 300, toDpi = 96) {
 }
 
 /**
- * 计算元素图形的关键点坐标，放到element.points属性
- * center top right bottom left tl tr bl br
- * @param {Object} element 要计算的元素图形
+ * 计算一个点相对于中心点顺时针方向的角度0°-360°，12点方向为0°
+ * @param {Object} centerX 中心坐标x
+ * @param {Object} centerY 中心坐标y
+ * @param {Object} moveX 要计算的点x坐标
+ * @param {Object} moveY 要计算的点y坐标
  */
-function calcShapePoints(element) {
-  if (!element.hasOwnProperty('points')) {
-    element.points = {}
-  }
-  switch (element.shape) {
-    case 'rect':
-      element.points.top = [element.properties.x + element.properties.width / 2, element.properties.y]
-      element.points.right = [element.properties.x + element.properties.width, element.properties.y + element.properties.height / 2]
-      element.points.bottom = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height]
-      element.points.left = [element.properties.x, element.properties.y + element.properties.height / 2]
-      element.points.center = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height / 2]
-      
-      element.points.tl = [element.properties.x, element.properties.y]
-      element.points.tr = [element.properties.x + element.properties.width, element.properties.y]
-      element.points.bl = [element.properties.x, element.properties.y + element.properties.height]
-      element.points.br = [element.properties.x + element.properties.width, element.properties.y + element.properties.height]
-      break
-    case 'circle':
-      element.points.top = [element.properties.cx, element.properties.cy - element.properties.r]
-      element.points.right = [element.properties.cx + element.properties.r, element.properties.cy]
-      element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.r]
-      element.points.left = [element.properties.cx - element.properties.r, element.properties.cy]
-      element.points.center = [element.properties.cx, element.properties.cy]
-      
-      element.points.tl = [element.properties.cx - element.properties.r, element.properties.cy - element.properties.r]
-      element.points.tr = [element.properties.cx + element.properties.r, element.properties.cy - element.properties.r]
-      element.points.bl = [element.properties.cx - element.properties.r, element.properties.cy + element.properties.r]
-      element.points.br = [element.properties.cx + element.properties.r, element.properties.cy + element.properties.r]
-      break
-    case 'ellipse':
-      element.points.top = [element.properties.cx, element.properties.cy - element.properties.ry]
-      element.points.right = [element.properties.cx + element.properties.rx, element.properties.cy]
-      element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.ry]
-      element.points.left = [element.properties.cx - element.properties.rx, element.properties.cy]
-      element.points.center = [element.properties.cx, element.properties.cy]
-      
-      element.points.tl = [element.properties.cx - element.properties.rx, element.properties.cy - element.properties.ry]
-      element.points.tr = [element.properties.cx + element.properties.rx, element.properties.cy - element.properties.ry]
-      element.points.bl = [element.properties.cx - element.properties.rx, element.properties.cy + element.properties.ry]
-      element.points.br = [element.properties.cx + element.properties.rx, element.properties.cy + element.properties.ry]
-      break
-    default:
-  }
-}
+function getAngle(centerX, centerY, moveX, moveY) {
+  
+  var x = Math.abs(centerX - moveX);
+  var y = Math.abs(centerY - moveY);
+  var z = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+  var cos = y / z;
+  var radina = Math.acos(cos); //用反三角函数求弧度
+  var angle = Math.floor(180 / (Math.PI / radina)); //将弧度转换成角度
 
-function calcShapePointsAndPropertiesFromDragPoints(element){
-  switch (element.shape) {
-    case 'rect':
-      element.properties.x = element.points.tl[0]
-      element.properties.y = element.points.tl[1]
-      element.properties.width = element.points.tr[0] - element.points.tl[0]
-      element.properties.height = element.points.bl[1] - element.points.tl[1]
-      
-      element.points.top = [element.properties.x + element.properties.width / 2, element.properties.y]
-      element.points.right = [element.properties.x + element.properties.width, element.properties.y + element.properties.height / 2]
-      element.points.bottom = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height]
-      element.points.left = [element.properties.x, element.properties.y + element.properties.height / 2]
-      element.points.center = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height / 2]
-      break
-    case 'circle':
-      element.properties.r = (element.points.tr[0] - element.points.tl[0]) / 2
-      element.properties.cx = element.points.tl[0] + element.properties.r
-      element.properties.cy = element.points.tl[1] + element.properties.r
-      
-      element.points.top = [element.properties.cx, element.properties.cy - element.properties.r]
-      element.points.right = [element.properties.cx + element.properties.r, element.properties.cy]
-      element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.r]
-      element.points.left = [element.properties.cx - element.properties.r, element.properties.cy]
-      element.points.center = [element.properties.cx, element.properties.cy]
-      break
-    case 'ellipse':
-      element.properties.rx = (element.points.tr[0] - element.points.tl[0]) / 2
-      element.properties.ry = (element.points.bl[1] - element.points.tl[1]) / 2
-      element.properties.cx = element.points.tl[0] + element.properties.rx
-      element.properties.cy = element.points.tl[1] + element.properties.ry
-      
-      element.points.top = [element.properties.cx, element.properties.cy - element.properties.ry]
-      element.points.right = [element.properties.cx + element.properties.rx, element.properties.cy]
-      element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.ry]
-      element.points.left = [element.properties.cx - element.properties.rx, element.properties.cy]
-      element.points.center = [element.properties.cx, element.properties.cy]
-      break
-    default:
+  if (moveX > centerX && moveY > centerY) { //鼠标在第四象限
+    angle = 180 - angle;
   }
-}
 
-function calcShapePointsAndPropertiesFromCenterPoints(element){
-  switch (element.shape) {
-    case 'rect':
-      element.properties.x = element.points.center[0] - element.properties.width / 2
-      element.properties.y = element.points.center[1] - element.properties.height / 2
-      // element.properties.width = element.points.tr[0] - element.points.tl[0]
-      // element.properties.height = element.points.bl[1] - element.points.tl[1]
-      
-      element.points.top = [element.properties.x + element.properties.width / 2, element.properties.y]
-      element.points.right = [element.properties.x + element.properties.width, element.properties.y + element.properties.height / 2]
-      element.points.bottom = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height]
-      element.points.left = [element.properties.x, element.properties.y + element.properties.height / 2]
-      // element.points.center = [element.properties.x + element.properties.width / 2, element.properties.y + element.properties.height / 2]
-      
-      element.points.tl = [element.properties.x, element.properties.y]
-      element.points.tr = [element.properties.x + element.properties.width, element.properties.y]
-      element.points.bl = [element.properties.x, element.properties.y + element.properties.height]
-      element.points.br = [element.properties.x + element.properties.width, element.properties.y + element.properties.height]
-      break
-    case 'circle':
-      // element.properties.r = (element.points.tr[0] - element.points.tl[0]) / 2
-      element.properties.cx = element.points.center[0]
-      element.properties.cy = element.points.center[1]
-      
-      element.points.top = [element.properties.cx, element.properties.cy - element.properties.r]
-      element.points.right = [element.properties.cx + element.properties.r, element.properties.cy]
-      element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.r]
-      element.points.left = [element.properties.cx - element.properties.r, element.properties.cy]
-      // element.points.center = [element.properties.cx, element.properties.cy]
-      
-      element.points.tl = [element.properties.cx - element.properties.r, element.properties.cy - element.properties.r]
-      element.points.tr = [element.properties.cx + element.properties.r, element.properties.cy - element.properties.r]
-      element.points.bl = [element.properties.cx - element.properties.r, element.properties.cy + element.properties.r]
-      element.points.br = [element.properties.cx + element.properties.r, element.properties.cy + element.properties.r]
-      break
-    case 'ellipse':
-      // element.properties.rx = (element.points.tr[0] - element.points.tl[0]) / 2
-      // element.properties.ry = (element.points.bl[1] - element.points.tl[1]) / 2
-      element.properties.cx = element.points.center[0]
-      element.properties.cy = element.points.center[1]
-      
-      element.points.top = [element.properties.cx, element.properties.cy - element.properties.ry]
-      element.points.right = [element.properties.cx + element.properties.rx, element.properties.cy]
-      element.points.bottom = [element.properties.cx, element.properties.cy + element.properties.ry]
-      element.points.left = [element.properties.cx - element.properties.rx, element.properties.cy]
-      // element.points.center = [element.properties.cx, element.properties.cy]
-      
-      element.points.tl = [element.properties.cx - element.properties.rx, element.properties.cy - element.properties.ry]
-      element.points.tr = [element.properties.cx + element.properties.rx, element.properties.cy - element.properties.ry]
-      element.points.bl = [element.properties.cx - element.properties.rx, element.properties.cy + element.properties.ry]
-      element.points.br = [element.properties.cx + element.properties.rx, element.properties.cy + element.properties.ry]
-      break
-    default:
+  if (moveX == centerX && moveY > centerY) { //鼠标在y轴负方向上
+    angle = 180;
   }
-}
 
-/**
- * 计算以一个坐标点为中心的正方形起始坐标
- * @param {Object} point 正放形中心点坐标
- * @param {Object} width 正放形边长
- */
-function calcSquareFromCenterPoint(point, width){
-  return {
-    x: point[0] - width / 2,
-    y: point[1] - width / 2,
-    width: width,
-    height: width
+  if (moveX > centerX && moveY == centerY) { //鼠标在x轴正方向上
+    angle = 90;
   }
-}
 
+  if (moveX < centerX && moveY > centerY) { //鼠标在第三象限
+    angle = 180 + angle;
+  }
+
+  if (moveX < centerX && moveY == centerY) { //鼠标在x轴负方向
+    angle = 270;
+  }
+
+  if (moveX < centerX && moveY < centerY) { //鼠标在第二象限
+    angle = 360 - angle;
+  }
+
+  return angle;
+}
