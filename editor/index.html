@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Book Editor</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <style>
+      .elementPanel {
+        fill: white;
+        fill-opacity: 0;
+        cursor: pointer;
+      }
+      
+      #dragPanel {
+        stroke: red;
+        fill: white;
+        fill-opacity: 0;
+        cursor: move;
+      }
+
+      .dragPoint {
+        stroke: red;
+        fill: white;
+        cursor: nw-resize;
+      }
+      
+      
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="menubar">
+        <a class="menu">
+          <div class="menu_title" v-bind:class="{'menu_title_click': menu.showList && menu.currentList==0}" id="logo"
+            v-on:click="showMenuList(0, true)" v-on:mouseover="showMenuList(0)">
+            <svg viewBox="0 0 27 27" xmlns="http://www.w3.org/2000/svg" width="15" height="15" xmlns:xlink="http://www.w3.org/1999/xlink"
+              class="svg_icon">
+              <svg viewBox="0 0 16 16" version="1.1">
+                <path id="svg_7" d="m-0.0965,16.1043l16.10001,-16.06917l-0.00001,16.06917l-16.1,0z" stroke-linecap="null"
+                  stroke-linejoin="null" stroke-dasharray="null" stroke-width="1.5" fill="#cccccc"></path>
+                <path id="svg_6" d="m0.0035,16.10449l0,-15.99999l16,15.99999l-16,0z" stroke-linecap="null"
+                  stroke-linejoin="null" stroke-dasharray="null" stroke-width="1.5" fill="#666666"></path>
+              </svg>
+            </svg>
+          </div>
+          <div class="menu_list" v-show="menu.showList && menu.currentList==0">
+            <div class="menu_item">编辑器说明...</div>
+            <div class="separator"></div>
+            <div class="menu_item">快捷键...</div>
+          </div>
+        </a>
+
+        <div class="menu">
+          <div class="menu_title" v-bind:class="{'menu_title_click': menu.showList && menu.currentList==1}" v-on:click="showMenuList(1, true)"
+            v-on:mouseover="showMenuList(1)">视图</div>
+          <div class="menu_list" id="view_menu" v-show="menu.showList && menu.currentList==1">
+            <div class="menu_item push_button_pressed" id="tool_rulers">显示刻度尺</div>
+            <div class="menu_item" id="tool_wireframe">显示 Wireframe</div>
+            <div id="view_grid" title="View Grid" class="menu_item" v-bind:class="{'menu_item_selected':menu.viewGrid}"
+              v-on:click="viewGrid()">View Grid</div>
+            <div class="menu_item" id="tool_snap">网格对齐</div>
+            <div class="separator"></div>
+            <div class="menu_item" id="tool_source">源代码... <span class="shortcut">Ctrl+U</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar_left"></div>
+      <div class="sidebar_right"></div>
+      <div class="workarea">
+        <div id="canvas_container">
+          <svg id="canvas_editor">
+            <defs>
+              <pattern id="grid" x="0" y="0" v-bind:width="config.gridSize" v-bind:height="config.gridSize"
+                patternUnits="userSpaceOnUse" style="stroke: lightgray;">
+                <polyline v-bind:points="config.gridSize+',0 0,0 0,'+config.gridSize" style="fill:none;" />
+              </pattern>
+              <rect id="rect_page" v-bind:width="viewport.width" v-bind:height="viewport.height" />
+            </defs>
+            <!--白色背景-->
+            <use href="#rect_page" style="fill: white;" />
+            <!--网格-->
+            <use href="#rect_page" style="fill: url('#grid')" v-if="menu.viewGrid" />
+            <!--出血线-->
+            <path v-bind:d="bleedPath" style="stroke: red; stroke-width:1; stroke-dasharray: 5,5; fill: none;"></path>
+            <svg v-bind:width="viewport.width" v-bind:height="viewport.height" v-bind:view-box.camel="'0 0 ' + currentPageSize.width + ' ' + currentPageSize.height">
+              <g v-for="(element, index) in currentPage.elements" v-show="element.display">
+                <!--裁切路径-->
+                <clipPath v-if="element.shape!=='rect'" v-bind:id="'clip'+index">
+                  <circle v-if="element.shape==='circle'" v-bind:cx="elementCircle(element).cx" v-bind:cy="elementCircle(element).cy"
+                    v-bind:r="elementCircle(element).r" />
+                  <ellipse v-if="element.shape==='ellipse'" v-bind:cx="elementEllipse(element).cx" v-bind:cy="elementEllipse(element).cy"
+                    v-bind:rx="elementEllipse(element).rx" v-bind:ry="elementEllipse(element).ry" />
+                </clipPath>
+                <!--图片-->
+                <image v-if="element.type==='image'" v-bind:x="element.image.x" v-bind:y="element.image.y" v-bind:width="element.image.width"
+                  v-bind:height="element.image.height" v-bind:href="element.image.url" v-bind:clip-path="element.shape!=='rect' ? 'url(#clip'+index+')' : ''"
+                  preserveAspectRatio="xMidYMid slice" />
+                <!--边框-->
+                <rect v-if="element.shape==='rect'" v-bind:x="element.x" v-bind:y="element.y" v-bind:width="element.width"
+                  v-bind:height="element.height" v-bind:stroke="element.properties.stroke" v-bind:stroke-width="element.properties['stroke-width']"
+                  v-bind:stroke-dasharray="element.properties['stroke-dasharray']" v-bind:rx="element.properties.rect.rx"
+                  v-bind:ry="element.properties.rect.ry" fill="none" />
+                <circle v-if="element.shape==='circle'" v-bind:cx="elementCircle(element).cx" v-bind:cy="elementCircle(element).cy"
+                  v-bind:r="elementCircle(element).r" v-bind:stroke="element.properties.stroke" v-bind:stroke-width="element.properties['stroke-width']"
+                  v-bind:stroke-dasharray="element.properties['stroke-dasharray']" fill="none" />
+                <ellipse v-if="element.shape==='ellipse'" v-bind:cx="elementEllipse(element).cx" v-bind:cy="elementEllipse(element).cy"
+                  v-bind:rx="elementEllipse(element).rx" v-bind:ry="elementEllipse(element).ry" v-bind:stroke="element.properties.stroke"
+                  v-bind:stroke-width="element.properties['stroke-width']" v-bind:stroke-dasharray="element.properties['stroke-dasharray']"
+                  fill="none" />
+                <!--面板-->
+                <rect class="elementPanel" v-bind:id="'panel'+index" v-bind:x="element.x" v-bind:y="element.y" v-bind:width="element.width"
+                  v-bind:height="element.height" v-on:click="selectElement(index)" />
+              </g>
+            </svg>
+            <g v-show="currentSelectElementIndex>-1">
+              <rect id="dragPanel" v-bind:x="dragObj.panel.x" v-bind:y="dragObj.panel.y" v-bind:width="dragObj.panel.width" v-bind:height="dragObj.panel.height"></rect>
+              <rect id="dragPointT" v-bind:x="dragObj.t.x" v-bind:y="dragObj.t.y" v-bind:width="config.dragPointSize" v-bind:height="config.dragPointSize" class="dragPoint"></rect>
+              <rect id="dragPointTR" v-bind:x="dragObj.tr.x" v-bind:y="dragObj.tr.y" v-bind:width="config.dragPointSize" v-bind:height="config.dragPointSize" class="dragPoint"></rect>
+              <rect id="dragPointR" v-bind:x="dragObj.r.x" v-bind:y="dragObj.r.y" v-bind:width="config.dragPointSize" v-bind:height="config.dragPointSize" class="dragPoint"></rect>
+              <rect id="dragPointBR" v-bind:x="dragObj.br.x" v-bind:y="dragObj.br.y" v-bind:width="config.dragPointSize" v-bind:height="config.dragPointSize" class="dragPoint"></rect>
+              <rect id="dragPointB" v-bind:x="dragObj.b.x" v-bind:y="dragObj.b.y" v-bind:width="config.dragPointSize" v-bind:height="config.dragPointSize" class="dragPoint"></rect>
+              <rect id="dragPointBL" v-bind:x="dragObj.bl.x" v-bind:y="dragObj.bl.y" v-bind:width="config.dragPointSize" v-bind:height="config.dragPointSize" class="dragPoint"></rect>
+              <rect id="dragPointL" v-bind:x="dragObj.l.x" v-bind:y="dragObj.l.y" v-bind:width="config.dragPointSize" v-bind:height="config.dragPointSize" class="dragPoint"></rect>
+              <rect id="dragPointTL" v-bind:x="dragObj.tl.x" v-bind:y="dragObj.tl.y" v-bind:width="config.dragPointSize" v-bind:height="config.dragPointSize" class="dragPoint"></rect>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/d3.v3.js"></script>
+    <script src="../js/vue.js"></script>
+    <script src="./js/unit.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/editor.js"></script>
+  </body>
+</html>

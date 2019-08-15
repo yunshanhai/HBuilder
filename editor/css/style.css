@@ -1,0 +1,133 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #2f2f2c;
+}
+
+.menubar {
+  height: 30px;
+  position: relative;
+  padding: 0 0 0 50px;
+  z-index: 2;
+  font-size: 13px;
+}
+.menubar .menu {
+    position: relative;
+    z-index: 5;
+    color: #333;
+    display: inline-block;
+}
+.menubar .menu_title {
+    cursor: pointer;
+    line-height: 16px;
+    display: inline-block;
+    padding: 7px 10px;
+    z-index: 10;
+    position: relative;
+    vertical-align: top;
+    color: white;
+    /* background: white; */
+    /* color: #333; */
+}
+#logo{
+ line-height: 13px; 
+}
+.menubar .menu_title:hover{
+  background-color: #444442;
+}
+.menubar .menu_title_click{
+  background-color: white;
+  color: #333;
+}
+.menubar .menu_title_click:hover{
+  background-color: white;
+}
+.menubar .menu_list{
+      /* display: none; */
+      position: absolute;
+      top: 30px;
+      left: 0;
+      white-space: nowrap;
+      background: white;
+      padding: 7px 0;
+      border-radius: 0 3px 3px 3px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.8);
+}
+.menubar .menu_list .menu_item {
+    position: relative;
+    overflow: hidden;
+    line-height: 22px;
+    padding: 5px 69px 5px 25px;
+    cursor: default;
+    color: #333;
+}
+.menubar .menu_list .menu_item:hover {
+  background: rgba(0,0,0,0.1);
+    color: #000;
+}
+
+.menubar .menu_list .menu_item_selected:before{
+  content: '✔';
+  position: absolute;
+  display: block;
+  left: 7px;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+}
+
+.menubar .menu_list .separator {
+    margin: 5px 0;
+    border-top: solid #ddd 1px;
+}
+
+
+.sidebar_left {
+  position: fixed;
+  top: 30px;
+  left: 0px;
+  width: 50px;
+  height: calc(100vh - 30px);
+}
+
+.sidebar_right {
+  position: fixed;
+  top: 30px;
+  right: 0px;
+  width: 175px;
+  height: calc(100vh - 30px);
+}
+
+.sidebar_bottom {
+  position: fixed;
+  bottom: 0px;
+  width: calc(100vw - 50px - 175px)
+}
+
+.workarea {
+  position: fixed;
+  top: 30px;
+  left: 50px;
+  right: 175px;
+  bottom: 40px;
+  background-color: #3f3f3c;
+}
+
+#divBook {
+  /* margin: 15px auto; */
+/*  border: solid 1px black;
+  background-color: white; */
+}
+#canvas_editor {
+  width: calc(100vw - 225px);
+  height: calc(100vh - 30px - 40px);
+}

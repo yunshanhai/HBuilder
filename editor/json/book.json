@@ -1,0 +1,122 @@
+{
+  "id":1,
+  "name": "初恋的感觉",
+  "author": "污云",
+  "size": "A4",
+  "page": 0,
+  "showPage": true,
+  "theme":0,
+  "pageCatalog":{
+    "cover": {
+      "begin": 0,
+      "end": 0
+    },
+    "page": {
+      "begin": -1,
+      "end": -1
+    }
+  },
+  "pages":[
+    {
+      "type": "cover",
+      "paper": {
+        "width": 211.7,
+        "height": 282.2,
+        "bleed": {
+          "top": 10,
+          "right": 10,
+          "bottom": 10,
+          "left": 10
+        }
+      },
+      "elements":[
+        {
+          "x": 100,
+          "y": 100,
+          "width": 600,
+          "height": 400,
+          "display": true,
+          "fixed": false,
+          "shape": "rect",
+          "properties": {
+            "stroke-width": 0,
+            "stroke": "steelblue",
+            "stroke-dasharray": "20,1",
+            "rect": {
+              "rx": 10,
+              "ry": 10
+            }
+          },
+          "type": "image",
+          "image": {
+            "x": 100,
+            "y": 100,
+            "width": 600,
+            "height": 400,
+            "url": "/HBuilder/book/images/p1_h_4352_2720.jpg",
+            "info": {
+              "width": 4352,
+              "height": 2720,
+              "flag": 1
+            }
+          }
+        },
+        {
+          "x": 100,
+          "y": 600,
+          "width": 200,
+          "height": 200,
+          "display": true,
+          "fixed": false,
+          "shape": "circle",
+          "properties": {
+            "stroke-width": 10,
+            "stroke": "steelblue",
+            "stroke-dasharray": "20,1"
+          },
+          "type": "image",
+          "image": {
+            "x": 200,
+            "y": 600,
+            "width": 400,
+            "height": 400,
+            "url": "/HBuilder/book/images/p2_v_1760_2816.jpg",
+            "info": {
+              "width": 1760,
+              "height": 2816,
+              "flag": 0
+            }
+          }
+        },
+        {
+          "x": 200,
+          "y": 650,
+          "width": 400,
+          "height": 300,
+          "display": true,
+          "fixed": false,
+          "shape": "ellipse",
+          "properties":{
+            "stroke-width": 10,
+            "stroke": "steelblue",
+            "stroke-dasharray": "20,1"
+          },
+          "type": "image",
+          "image": {
+            "x": 200,
+            "y": 650,
+            "width": 400,
+            "height": 300,
+            "url": "/HBuilder/book/images/p2_v_1760_2816.jpg",
+            "info": {
+              "width": 1760,
+              "height": 2816,
+              "flag": "v"
+            }
+          }
+        }
+      ]
+    }
+  ]
+  
+}
