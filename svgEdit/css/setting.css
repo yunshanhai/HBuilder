@@ -1,0 +1,14 @@
+.setting-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.detail-container {
+    flex: 1;
+}
+
+.setting-bar {
+    width: 3px;
+    background: black;
+    cursor: ew-resize;
+}

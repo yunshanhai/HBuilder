@@ -1,0 +1,26 @@
+.explore-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tree-container {
+    flex: 1;
+}
+
+.explore-bar {
+    width: 3px;
+    background: black;
+    cursor: ew-resize;
+}
+
+.tree-container ul {
+    list-style: none;
+    padding: 0;
+    margin-left: 1em;
+}
+.tree-container li {
+    padding: 3px 0.5em;
+}
+.tree-container li > span {
+    float: right;
+}

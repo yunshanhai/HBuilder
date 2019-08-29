@@ -1,0 +1,11 @@
+.menu-container {
+    height: 80px;
+}
+
+.edit-container {
+    flex: 1;
+}
+
+.tip-container {
+    height: 150px;
+}

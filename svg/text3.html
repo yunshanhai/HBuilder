@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <svg width="3000" height="1200" viewBox="0 0 3000 1200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30,65 L800,65" stroke="grey" />
+      <circle cx="60" cy="65" r="3" fill="red" />
+
+      <text id="textUp" alignment-baseline="text-after-edge" x="60" y="65">A text-after-edge</text>
+      <!--alignment-baseline的默认值是baseline-->
+      <text id="textOn" alignment-baseline="baseline" x="200" y="65">A baseline</text>
+      <text id="textDown" alignment-baseline="text-before-edge" x="285" y="65">A text-before-edge</text>
+      <text id="textChange" alignment-baseline="text-before-edge" x="450" y="65">改变alignment-baseline属性，XML变化了，但是图形上Chrome[版本
+        70.0.3538.77(正式版本)(32 位)]肉眼没看到变化，Qt5.3.2x86OpenGL-WebKit有变化</text>
+      <!--
+    font-weight="bold" 
+    text-after-edge        ZC: 位于baseline的上面
+    baseline
+    text-before-edge    ZC: 位于baseline的下面
+    -->
+
+      <rect id="rectUp" x="0" y="0" width="0" height="0" fill="none" stroke-width="1" stroke="red" />
+      <rect id="rectOn" x="0" y="0" width="0" height="0" fill="none" stroke-width="1" stroke="yellow" />
+      <rect id="rectDown" x="0" y="0" width="0" height="0" fill="none" stroke-width="1" stroke="blue" />
+      <rect id="rectChange" x="0" y="0" width="0" height="0" fill="none" stroke-width="1" stroke="green" />
+
+<!--      <script type="text/javascript">
+        < ![CDATA[
+        ]] >
+      </script> -->
+      <text x="100" y="500" font-family="楷体" font-size="24" font-weight="bold">字体</text>
+      <text x="100" y="100" id="textHidden" style="visibility: hidden;"></text>
+      <rect x="200" y="200" width="200" height="200" stroke="red" fill="none"></rect>
+    </svg>
+    <script src="../js/d3.v3.js"></script>
+    <script>
+      
+      
+      function b(){
+        var str = "这是段落，段落不支持缩放，文字宽高固定位字体大小，多用户段落文本。对数组的引用。请注意，数组在原数组上进行排序，不生成副本。\n\n这个 sort() 方法，如果看上面的例子会非常痛苦。\nsort() 方法，有一个可选参数，必须是函数，供它调用。那么就是个回调函数咯！\n回调函数的参数要有两个：第一个参数的元素肯定在第二个参数的元素前面!!!";
+        var strArray = str.split('\n');
+        
+        var rect = {
+          x: 200,
+          y: 200,
+          width: 200,
+          height: 200,
+          font_size: 16
+        };
+        
+        var strArray2 = [];
+        for(let i in strArray){
+          let str = strArray[i];
+          c(str, rect.width);
+          let box = txt.getBBox();//{x: 100, y: 83, width: 992, height: 21}
+          // let bound = txt.getBoundingClientRect();//{x: 108, y: 91, width: 992, height: 21, top: 91, left,bottom,right...}
+          // let computed = txt.getComputedTextLength();//getBBox()的width值
+        }
+        console.log(strArray);
+      }
+      
+      
+      function splitStr(str, limitWidth, fontSize){
+        let result = [];
+        if(str == null || str == ''){
+          return result;
+        }
+        
+        //当次测试字符串
+        let testStr = str;
+        //剩余字符串
+        let restStr = "";
+        
+        let next = true;
+        while (next){
+          
+          let width = testWidth(testStr);
+          
+          if(width === limitWidth){
+            result.push({
+              content: str,
+              stretch: false
+            });
+            
+          } else if(width < limitWidth){
+            
+          }
+          
+          if(restStr.length === 0){
+            next = false;
+          }
+          
+        }
+        
+        if(box.width < rect.width){
+          //字符串长度小于限定长度,一个字以内则拉伸,超出一个字则不拉伸
+          strArray2.push({
+            content: str,
+            stretch: !(rect.width - box.width < rect.font_size)
+          })
+        }else if(box.width - rect.width < rect.font_size){
+          //字符串长度大于限定长度但不足一个字,拉伸
+          strArray2.push({
+            content: str,
+            stretch: true
+          })
+        }else{
+          //字符串长度大于限定长度且超出字体一个字以上,继续切割
+          
+        }
+        
+      }
+      
+      var textHidden = document.getElementById('textHidden');
+      function testWidth(str){
+        textHidden.textContent = str;
+        return textHidden.getBBox().width;
+      }
+      
+      
+      
+      
+      window.onload = function() {
+        // a();
+        b();
+      };
+      
+      function a(){
+        var rectUp = document.getElementById("rectUp");
+            var rectOn = document.getElementById("rectOn");
+            var rectDown = document.getElementById("rectDown");
+        
+            var textUp = document.getElementById("textUp");
+            var textOn = document.getElementById("textOn");
+            var textDown = document.getElementById("textDown");
+        
+            var rtUp = textUp.getBBox();
+            var rtOn = textOn.getBBox();
+            var rtDown = textDown.getBBox();
+        
+            rectUp.setAttribute("x", "" + rtUp.x);
+            rectUp.setAttribute("y", "" + rtUp.y);
+            rectUp.setAttribute("width", "" + rtUp.width);
+            rectUp.setAttribute("height", "" + rtUp.height);
+        
+            rectOn.setAttribute("x", "" + rtOn.x);
+            rectOn.setAttribute("y", "" + rtOn.y);
+            rectOn.setAttribute("width", "" + rtOn.width);
+            rectOn.setAttribute("height", "" + rtOn.height);
+        
+            rectDown.setAttribute("x", "" + rtDown.x);
+            rectDown.setAttribute("y", "" + rtDown.y);
+            rectDown.setAttribute("width", "" + rtDown.width);
+            rectDown.setAttribute("height", "" + rtDown.height);
+        
+            // ***
+            var textChange = document.getElementById("textChange");
+            textChange.removeAttribute("alignment-baseline");
+        
+            // ***
+            textChange.setAttribute("alignment-baseline", "text-before-edge");
+            var rtChange = textChange.getBBox();
+        
+            // *** font-size不设置，默认值是 "16px" (Chrome和Qt532都是)
+            var strPrint = "";
+            for (var i = 1; i <= 200; i++) {
+              textChange.setAttribute("font-size", i + "px");
+              rtChange = textChange.getBBox();
+              //console.log("font-size:["+i+"px] --> rtChange.height : "+rtChange.height);
+        
+              strPrint += rtChange.height + ", ";
+              if (i % 8 == 0)
+                strPrint += "\n";
+              else {
+                if (i % 4 == 0)
+                  strPrint += "  ";
+              }
+            }
+            console.log(strPrint);
+        
+            var rectChange = document.getElementById("rectChange");
+            rectChange.setAttribute("x", "" + rtChange.x);
+            rectChange.setAttribute("y", "" + rtChange.y);
+            rectChange.setAttribute("width", "" + rtChange.width);
+            rectChange.setAttribute("height", "" + rtChange.height);
+            /*
+            for (z in textChange)
+                console.log(z+" : "+textChange[z]);
+            
+            console.log("");
+            console.log("");
+            console.log("");
+            
+            var cs = window.getComputedStyle(textChange);
+            for (var i=0; i<cs.length; i++)
+            {
+                var name = cs[i];
+                var value = cs.getPropertyValue(name);
+                console.log(name +" --> "+value);
+                if (name.toLowerCase() == "alignment-baseline")
+                    console.log("*****************************************************************************************************************************");
+            }
+        //*/
+      }
+    </script>
+  </body>
+</html>

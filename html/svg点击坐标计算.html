@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <div style="padding-top: 1000px; padding-left: 100px;">
+     <svg id="svg" width="10cm" height="10cm" viewBox="-200 -200 7000 7000" style="background: steelblue;">
+        <rect id="rect" x="100" y="100" width="1000" height="1000" fill="green" />
+      </svg>
+<!--      <svg id="svg" width="300" height="300" style="background: steelblue;">
+        <rect x="100" y="100" width="100" height="100" fill="green" />
+      </svg> -->
+    </div>
+    
+    <script src="../d3/js/common.js"></script>
+    <script src="../d3/js/d3.v3.js"></script>
+    <script>
+      let drag = d3.behavior.drag()
+        .on('dragstart', function(){
+          cl(d3.event);
+          // cl('drag:' + d3.event.x + ',' + d3.event.y);
+        }).on('drag', function(){
+          cl(d3.event);
+          cl('drag:' + d3.event.x + ',' + d3.event.y);
+        });
+      d3.select('#rect').call(drag);
+      
+      let ee;
+      let target;
+      d3.select('#svg').on('click', function(){
+        ee = event;
+        if(event.target.tagName!='svg'){
+          target = event.target.ownerSVGElement;
+        }else{
+          target = event.target;
+        }
+        let x = event.offsetX;
+        let y = event.offsetY;
+        let width = target.width.baseVal.value;
+        let height = target.height.baseVal.value;
+        let wS = 1;
+        if(target.viewBox.baseVal.width !== 0){
+          x = x * target.viewBox.baseVal.width / width + target.viewBox.baseVal.x;
+        }
+        if(target.viewBox.baseVal.height !== 0){
+          y = y * target.viewBox.baseVal.height / height + target.viewBox.baseVal.y;
+        }
+        
+        cl(x + ',' + y);
+      });
+    </script>
+	</body>
+</html>

@@ -1,0 +1,39 @@
+.tip-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.group-container {
+    flex: 1;
+}
+
+.group-container > a {
+    display: inline-block;
+    border: 1px solid #c9e1f4;
+    background: #c9e1f4;
+    padding: 0.25em 0.5em 0.25em 0.25em;
+    border-radius: 0 0.25em 0.25em 0;
+    margin: 0.5em;
+    position: relative;
+    max-width: 14em;
+    cursor: pointer;
+}
+
+.group-container > a:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 1em solid transparent;
+    border-right-width: 0.5em;
+    border-right-color: #c9e1f4;
+    left: -1.5em;
+    top: 0;
+}
+
+.tip-bar {
+    height: 3px;
+    background: black;
+    cursor: ns-resize;
+}

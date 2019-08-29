@@ -44,6 +44,7 @@ d3.json('./json/book.json', function(book) {
         if(this.book.pages.length===0){
           let page = {
             type: "cover",
+            flag: 2, //左页0，右页1，双页2
             paper: {
               width: config.pager[book.size].width,
               height: config.pager[book.size].height,
@@ -109,7 +110,9 @@ d3.json('./json/book.json', function(book) {
           b: { x: 0, y: 0 },
           bl: { x: 0, y: 0 },
           l: { x: 0, y: 0 },
-          tl: { x: 0, y: 0 }
+          tl: { x: 0, y: 0 },
+          //
+          transform: ''
         };
         if(this.currentSelectElementIndex>-1){
           let element = this.currentSelectedElement;
@@ -161,6 +164,10 @@ d3.json('./json/book.json', function(book) {
           
           obj.l.x = obj.tl.x;
           obj.l.y = obj.r.y;
+          
+          if(element.properties.angle !== 0){
+            obj.transform += "rotate({0}, {1} {2})".format(element.properties.angle, obj.panel.center.x, obj.panel.center.y);
+          }
         }
         return obj;
       },
@@ -178,13 +185,13 @@ d3.json('./json/book.json', function(book) {
       },
       //出血线路径
       bleedPath: function(){
-        var points = [
+        let points = [
           [this.currentPageSize.left, this.currentPageSize.top],
           [this.currentPageSize.right, this.currentPageSize.top],
           [this.currentPageSize.right, this.currentPageSize.bottom],
           [this.currentPageSize.left, this.currentPageSize.bottom]
         ]
-        var line = d3.svg.line()
+        let line = d3.svg.line()
           .x(function(d) {
             return d[0]
           })
@@ -192,6 +199,22 @@ d3.json('./json/book.json', function(book) {
             return d[1]
           })
           .interpolate('linear-closed');
+        return line(points);
+      },
+      //中线
+      midPath: function(){
+        let points = [
+          [this.currentPageSize.width / 2, this.currentPageSize.top],
+          [this.currentPageSize.width / 2, this.currentPageSize.bottom]
+        ];
+        let line = d3.svg.line()
+          .x(function(d) {
+            return d[0]
+          })
+          .y(function(d) {
+            return d[1]
+          })
+          // .interpolate('linear-closed');
         return line(points);
       }
     },
@@ -239,11 +262,20 @@ d3.json('./json/book.json', function(book) {
           ry: element.height / 2
         };
       },
+      elementTransform: function(element){
+        if(element.properties.angle !== 0){
+          let cx = element.x + element.width / 2;
+          let cy = element.y + element.height / 2;
+          return "rotate({0}, {1} {2})".format(element.properties.angle, cx, cy);
+        }
+        return "";
+      },
       //点击选中当前元素
       selectElement: function(index){
         event.stopPropagation();
-        this.currentSelectElementIndex = index;
+          this.currentSelectElementIndex = index;
       },
+      //画布点击
       canvasClick: function(){
         event.stopPropagation();
         this.currentSelectElementIndex = -1;

@@ -62,9 +62,36 @@
         </div>
       </div>
       <div class="sidebar_left"></div>
-      <div class="sidebar_right"></div>
+      <div class="sidebar_right">
+        <div v-if="currentSelectedElement">
+          <p>位置和大小</p>
+          <div>
+            X:<input type="number" v-model.number="currentSelectedElement.x" />
+            Y:<input type="number" v-model.number="currentSelectedElement.y" />
+            宽:<input type="number" v-model.number="currentSelectedElement.width" />
+            高:<input type="number" v-model.number="currentSelectedElement.height" />
+          </div>
+          <p>形状和旋转</p>
+          <div>
+            形状:<select v-model="currentSelectedElement.shape">
+              <option value="rect">矩形</option>
+              <option value="circle">圆形</option>
+              <option value="ellipse">椭圆</option>
+            </select>
+            角度:<input type="number" v-model.number="currentSelectedElement.properties.angle" />
+          </div>
+          <p>边框</p>
+          <div>
+            宽度:<input type="number" v-model.number="currentSelectedElement.properties['stroke-width']" />
+            颜色:<input type="text" v-model.lazy="currentSelectedElement.properties.stroke" />
+            虚线:<input type="text" v-model.lazy="currentSelectedElement.properties['stroke-dasharray']" />
+          </div>
+          <p>图片</p>
+        </div>
+      </div>
       <div class="workarea">
         <div id="canvas_container">
+          <!--画布-->
           <svg id="canvas_editor" v-bind:view-box.camel="viewport.viewbox" v-on:click="canvasClick()">
             <defs>
               <pattern id="grid" x="0" y="0" v-bind:width="config.gridSize" v-bind:height="config.gridSize"
@@ -79,8 +106,12 @@
             <use href="#rect_page" style="fill: url('#grid')" v-if="menu.viewGrid" />
             <!--出血线-->
             <path v-bind:d="bleedPath" style="stroke: red; stroke-width:3; stroke-dasharray: 30,5,30; fill: none;"></path>
+            <!--双页分割线-->
+            <path v-if="currentPage.flag===2" v-bind:d="midPath" style="stroke: red; stroke-width:3; stroke-dasharray: 30,5,30; fill: none;"></path>
+            <!--页面-->
             <svg x="0" y="0" v-bind:width="currentPageSize.width" v-bind:height="currentPageSize.height">
-              <g v-for="(element, index) in currentPage.elements" v-show="element.display">
+              <image v-bind:href="currentPage.background.image" v-bind:width="currentPageSize.width" v-bind:height="currentPageSize.height" />
+              <g v-for="(element, index) in currentPage.elements" v-show="element.display==1" v-bind:transform="elementTransform(element)">
                 <!--裁切路径-->
                 <clipPath v-if="element.shape!=='rect'" v-bind:id="'clip'+index">
                   <circle v-if="element.shape==='circle'" v-bind:cx="elementCircle(element).cx" v-bind:cy="elementCircle(element).cy"
@@ -109,15 +140,17 @@
                   v-bind:width="element.width" v-bind:height="element.height" v-on:click="selectElement(index)" />
               </g>
             </svg>
-            <g v-show="currentSelectElementIndex > -1">
+            <!--拖动组-->
+            <g v-show="currentSelectElementIndex > -1" v-bind:transform="dragObj.transform">
+              <!--拖动层-->
               <rect id="dragPanel" v-bind:x="dragObj.panel.x" v-bind:y="dragObj.panel.y" v-bind:width="dragObj.panel.width"
                 v-bind:height="dragObj.panel.height"></rect>
-              
+              <!--旋转圆圈-->
               <line v-bind:x1="dragObj.line.x1" v-bind:y1="dragObj.line.y1" v-bind:x2="dragObj.line.x2" v-bind:y2="dragObj.line.y2"
                 class="dragPoint" />
               <circle id="dragCircle" v-bind:cx="dragObj.circle.cx" v-bind:cy="dragObj.circle.cy" v-bind:r="config.dragPointSize/2"
                 class="dragPoint" style="cursor: url(./images/rotate.png) 12 12, auto;"></circle>
-              
+              <!--拖拽控制点-->
               <rect id="dragPointTL" v-bind:x="dragObj.tl.x" v-bind:y="dragObj.tl.y" v-bind:width="config.dragPointSize"
                 v-bind:height="config.dragPointSize" class="dragPoint" style="cursor: nw-resize;"></rect>
               <rect id="dragPointT" v-bind:x="dragObj.t.x" v-bind:y="dragObj.t.y" v-bind:width="config.dragPointSize"

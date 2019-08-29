@@ -1,0 +1,16 @@
+.menu-container {
+    border-bottom: 1px solid gray;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+    align-items: center;
+}
+
+.menu-container > button {
+    display: block;
+    height: 60px;
+    width: 60px;
+    margin: 0 10px;
+    box-sizing: border-box;
+}

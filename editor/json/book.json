@@ -19,8 +19,9 @@
   "pages":[
     {
       "type": "cover",
+      "flag": 2,
       "paper": {
-        "width": 211.7,
+        "width": 423,
         "height": 282.2,
         "bleed": {
           "top": 10,
@@ -29,30 +30,34 @@
           "left": 10
         }
       },
+      "background": {
+        "image": "/HBuilder/images/background/1_l.png"
+      },
       "elements":[
         {
-          "x": 300,
-          "y": 300,
-          "width": 1800,
-          "height": 1200,
-          "display": true,
-          "fixed": false,
+          "x": 2727,
+          "y": 308,
+          "width": 1930,
+          "height": 1244,
           "shape": "rect",
+          "type": "image",
+          "display": 1,
+          "fixed": 0,
           "properties": {
-            "stroke-width": 0,
-            "stroke": "steelblue",
-            "stroke-dasharray": "60,10",
+            "stroke-width": 100,
+            "stroke": "white",
+            "stroke-dasharray": "100",
+            "angle": 0,
             "rect": {
               "rx": 30,
               "ry": 30
             }
           },
-          "type": "image",
           "image": {
-            "x": 300,
-            "y": 300,
-            "width": 1800,
-            "height": 1200,
+            "x": 2727,
+            "y": 308,
+            "width": 1930,
+            "height": 1244,
             "url": "/HBuilder/book/images/p1_h_4352_2720.jpg",
             "info": {
               "width": 4352,
@@ -62,51 +67,62 @@
           }
         },
         {
-          "x": 300,
-          "y": 1800,
-          "width": 600,
-          "height": 600,
-          "display": true,
-          "fixed": false,
+          "x": 304,
+          "y": 1749,
+          "width": 1859,
+          "height": 1361,
           "shape": "circle",
-          "properties": {
-            "stroke-width": 30,
-            "stroke": "steelblue",
-            "stroke-dasharray": "60,3"
-          },
           "type": "image",
+          "display": 1,
+          "fixed": 0,
+          "properties": {
+            "stroke-width": 18,
+            "stroke": "lightsteelblue",
+            "stroke-dasharray": "0",
+            "angle": 0,
+            "rect": {
+              "rx": 30,
+              "ry": 30
+            }
+          },
+          
           "image": {
-            "x": 300,
-            "y": 1800,
-            "width": 400,
-            "height": 400,
-            "url": "/HBuilder/book/images/p2_v_1760_2816.jpg",
+            "x": 304,
+            "y": 1749,
+            "width": 1859,
+            "height": 1361,
+            "url": "/HBuilder/images/renwu3.jpg",
             "info": {
-              "width": 1760,
-              "height": 2816,
+              "width": 2752,
+              "height": 2064,
               "flag": 0
             }
           }
         },
         {
-          "x": 600,
-          "y": 1950,
-          "width": 1200,
-          "height": 900,
-          "display": true,
-          "fixed": false,
+          "x": 320,
+          "y": 273,
+          "width": 1919,
+          "height": 1332,
           "shape": "ellipse",
-          "properties":{
-            "stroke-width": 30,
-            "stroke": "steelblue",
-            "stroke-dasharray": "60,3"
-          },
           "type": "image",
+          "display": 1,
+          "fixed": 1,
+          "properties":{
+            "stroke-width": 100,
+            "stroke": "white",
+            "stroke-dasharray": "30",
+            "angle": 0,
+            "rect": {
+              "rx": 30,
+              "ry": 30
+            }
+          },
           "image": {
-            "x": 600,
-            "y": 1950,
-            "width": 1200,
-            "height": 900,
+            "x": 320,
+            "y": 273,
+            "width": 1919,
+            "height": 1332,
             "url": "/HBuilder/book/images/p2_v_1760_2816.jpg",
             "info": {
               "width": 1760,

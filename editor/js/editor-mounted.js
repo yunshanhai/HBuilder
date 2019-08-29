@@ -22,11 +22,57 @@ let mounted = function() {
     });
   // let dragPanelElement = d3.select('#dragPanel');
   d3.select('#dragPanel')
-  .on('click',function() {
-    event.stopPropagation();
-  })
-  .call(dragPanel);
+    .on('click',function() {
+      event.stopPropagation();
+    })
+    .call(dragPanel);
   
+
+  //角度控制点
+  let rotateFlag = null;
+  let dragCount = 0;
+  let dragCircle = d3.behavior.drag()
+    // .origin(function(d) {
+    //   return {x: that.dragObj.circle.cx, y: that.dragObj.circle.cy };
+    // })
+    .on("dragstart",function(){
+      
+    })
+    .on("drag", function(d) {
+      
+      if(dragCount > 0){
+        let element = that.currentSelectedElement;
+        
+        let angle = getAngle(that.dragObj.panel.center.x, that.dragObj.panel.center.y, d3.event.x, d3.event.y);
+        cl(d3.event);
+        cl("中心点:{0},{1};移动点：{2},{3};角度：{4};偏移：{5},{6}".format(
+          that.dragObj.panel.center.x,
+          that.dragObj.panel.center.y,
+          d3.event.x,
+          d3.event.y,
+          angle,
+          d3.event.x,
+          d3.event.y)
+        );
+        
+        if(rotateFlag){
+          clearTimeout(rotateFlag);
+        }
+        rotateFlag = setTimeout(()=>{
+          element.properties.angle = angle;
+        },10);
+      }
+      
+      dragCount++;
+    })
+    .on('dragend', function(){
+      dragCount = 0;
+    });
+  d3.select('#dragCircle')
+    .on('click',function() {
+      event.stopPropagation();
+    })
+    .call(dragCircle);
 
   //左上拖动点
   let dragTL = d3.behavior.drag()
@@ -51,10 +97,10 @@ let mounted = function() {
       }
     });
   d3.select('#dragPointTL')
-  .on('click',function() {
-    event.stopPropagation();
-  })
-  .call(dragTL);
+    .on('click',function() {
+      event.stopPropagation();
+    })
+    .call(dragTL);
   
   //上拖动点
   let dragT = d3.behavior.drag()
@@ -74,10 +120,10 @@ let mounted = function() {
       }
     });
   d3.select('#dragPointT')
-  .on('click',function() {
-    event.stopPropagation();
-  })
-  .call(dragT);
+    .on('click',function() {
+      event.stopPropagation();
+    })
+    .call(dragT);
   
   //右上拖动点
   let dragTR = d3.behavior.drag()
@@ -100,10 +146,10 @@ let mounted = function() {
       }
     });
   d3.select('#dragPointTR')
-  .on('click',function() {
-    event.stopPropagation();
-  })
-  .call(dragTR);
+    .on('click',function() {
+      event.stopPropagation();
+    })
+    .call(dragTR);
   
   //右拖动点
   let dragR = d3.behavior.drag()
@@ -121,10 +167,10 @@ let mounted = function() {
       }
     });
   d3.select('#dragPointR')
-  .on('click',function() {
-    event.stopPropagation();
-  })
-  .call(dragR);
+    .on('click',function() {
+      event.stopPropagation();
+    })
+    .call(dragR);
   
   //右下拖动点
   let dragBR = d3.behavior.drag()
@@ -145,10 +191,10 @@ let mounted = function() {
       }
     });
   d3.select('#dragPointBR')
-  .on('click',function() {
-    event.stopPropagation();
-  })
-  .call(dragBR);
+    .on('click',function() {
+      event.stopPropagation();
+    })
+    .call(dragBR);
   
   //下拖动点
   let dragB = d3.behavior.drag()
@@ -166,10 +212,10 @@ let mounted = function() {
       }
     });
   d3.select('#dragPointB')
-  .on('click',function() {
-    event.stopPropagation();
-  })
-  .call(dragB);
+    .on('click',function() {
+      event.stopPropagation();
+    })
+    .call(dragB);
   
   //左下拖动点
   let dragBL = d3.behavior.drag()
@@ -192,10 +238,10 @@ let mounted = function() {
       }
     });
   d3.select('#dragPointBL')
-  .on('click',function() {
-    event.stopPropagation();
-  })
-  .call(dragBL);
+    .on('click',function() {
+      event.stopPropagation();
+    })
+    .call(dragBL);
   
   //左拖动点
   let dragL = d3.behavior.drag()
@@ -215,8 +261,8 @@ let mounted = function() {
       }
     });
   d3.select('#dragPointL')
-  .on('click',function() {
-    event.stopPropagation();
-  })
-  .call(dragL);
+    .on('click',function() {
+      event.stopPropagation();
+    })
+    .call(dragL);
 }

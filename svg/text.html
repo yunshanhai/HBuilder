@@ -3,6 +3,11 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <style>
+      svg {
+        background: steelblue;
+      }
+    </style>
   </head>
   <body>
     <p>x 文字位置的x坐标</p>
@@ -13,6 +18,9 @@
     <p>rotate 旋转角度，transform="rotate(angle x y)" angle是旋转的角度，正为顺时针，负为逆时针，x和y是基坐标</p>
     <p>font-size有效值从1开始到无限大</p>
     <p>text-anchor: start 文字第一个字位于起始位置的左侧 middle 文字的中心位于其实位置上 end 文字的最后一个字符靠近起始位置</p>
+    <p>字符间距：letter-spacing: 3; </p>
+    <p>单词间距：word-spacing: 5;</p>
+    <p>基线，xy代表基线位置，默认文字是在基线上显示，alignment-baseline:baseline（默认基线上），text-after-edge（基线之上）text-before-edge（基线之下）</p>
     <svg width="100%" height="500">
 
       <text x="10" y="55" fill="red" font-size="45">I love SVG</text>
@@ -43,7 +51,7 @@
         <text x="10" y="100" fill="blue">链接到w3schools</text>
       </a>
     </svg>
-    <svg width="100%" height="100%" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg width="100%" height="100%" viewBox="0 0 1000 300">
       <defs>
         <path id="MyPath" d="M 100 200 
              C 200 100 300   0 400 100
@@ -62,7 +70,7 @@
       <!-- Show outline of the viewport using 'rect' element -->
       <rect x="1" y="1" width="998" height="298" fill="none" stroke="black" stroke-width="2" />
     </svg>
-    <svg width="100%" height="100%" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg width="100%" height="100%" viewBox="0 0 1000 300">
       <defs>
         <text id="ReferencedText">
           Referenced character data
@@ -78,7 +86,23 @@
       </text>
 
       <!-- Show outline of canvas using 'rect' element -->
-      <rect x="1" y="1" width="998" height="298" fill="none" stroke-width="2" />
+      <rect x="1" y="1" width="998" height="298" fill="none" stroke="black" stroke-width="2" />
     </svg>
+    <svg width="100%" height="300">
+      <switch>
+        <foreignObject x="20" y="0" width="180" height="200" style="outline: 1px solid blue; font-size: 24px;">
+          <p>你俩是单联开关可抵扣临塑，料袋劳动力workd啊</p>
+        </foreignObject>
+      </switch>
+    </svg>
+    <svg width="660" height="220" style="outline: 1px solid red; font-size: 2em; overflow: visible;">
+      <defs> <text id="referenced">SVG 1</text> </defs> <text>
+        <tspan x="280" y="80">
+          <tref xlink:href="#referenced" />
+        </tspan>
+        <tspan x="280" dy="36" fill="red">SVG 2</tspan>
+      </text>
+    </svg>
+
   </body>
 </html>

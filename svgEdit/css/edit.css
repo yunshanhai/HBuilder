@@ -1,0 +1,13 @@
+.edit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: lightgray;
+    overflow: hidden;
+}
+
+.edit-container > canvas {
+    background: white;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
