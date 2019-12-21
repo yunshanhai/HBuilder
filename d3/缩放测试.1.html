@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+		<title></title>
+    <style>
+        
+        .zoom-layer {
+          fill: #EEE;
+          fill-opacity: 0.25;
+        }
+        
+        </style>
+	</head>
+	<body>
+    <svg width="300" height="300">
+        <g>
+          <circle cx=150 cy=150 r=20 style="fill:#F22"></circle>
+        </g>
+        <rect x=0 y=0 width=300 height=300 class="zoom-layer"></rect>
+      </svg>
+    <script data-require="d3@4.0.0" data-semver="4.0.0" src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+      var zoom = d3.zoom()
+        .scaleExtent([1, 100])
+        .translateExtent([[-150,-150],[450, 450]])
+        .on('zoom', zoomFn);
+      
+        d3.select('svg')
+        .select('g')
+        .style("transform-origin", "50% 50% 0");
+      
+      function zoomFn() {
+         var t = d3.event.transform;
+        d3.select('svg').select('g')
+          .style('transform', 'translate('+t.x+"px,"+t.y + 'px)scale(' + t.k + ')');
+      
+        console.log(t.x,t.y)
+      
+      }
+      
+      d3.select('svg')
+        .select('rect')
+        .call(zoom);
+    </script>
+	</body>
+</html>

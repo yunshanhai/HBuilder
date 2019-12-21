@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+    <style>
+      .box {
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        width: 50px;
+        height: 50px;
+        background-color: steelblue;
+      }
+       .box-right {
+         -webkit-transform: translateX(45px);
+         transform: translateX(45px);
+         -webkit-transition: 0.3s;
+           transition: 0.3s;
+         animation-fill-mode:forwards;
+         -webkit-animation-fill-mode:forwards;
+       }
+       .box-left {
+         -webkit-transform: translateX(45px);
+         transform: translateX(-45px);
+         -webkit-transition: 0.3s;
+           transition: 0.3s;
+         animation-fill-mode:forwards;
+         -webkit-animation-fill-mode:forwards;
+         animation-iteration-count: 1;
+         -webkit-animation-iteration-count: 1;
+       }
+    </style>
+	</head>
+	<body>
+    <div id="app">
+      <!--上一页-->
+      <div v-if="currentIndex > 0" class="box" v-bind:style="{'background-color': layers[currentIndex-1].color}">
+      </div>
+      <!--下一页-->
+      <div v-if="currentIndex < layers.length - 1" class="box" v-bind:style="{'background-color': layers[currentIndex+1].color}">
+      </div>
+      <!--当前页-->
+      <div class="box" v-bind:style="{'background-color': layers[currentIndex].color}" @click="test()">
+      </div>
+    </div>
+    
+    <script src="../js/vue.js"></script>
+    <script>
+    var data = {
+        layers: [
+          { id: 1, color: 'steelblue' },
+          { id: 2, color: 'green' },
+          { id: 3, color: 'red' },
+          { id: 4, color: 'blue' },
+          { id: 5, color: 'gray' },
+          { id: 6, color: 'lightgray' },
+          { id: 7, color: 'yellow' },
+        ],
+        currentIndex: 0
+      }
+    var app = new Vue({
+      el: '#app',
+      data: data,
+      methods: {
+        test () {
+          
+        }
+      }
+    })
+    </script>
+	</body>
+</html>

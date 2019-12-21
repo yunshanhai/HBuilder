@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <title></title>
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+      }
+      .layer {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+      }
+      .grid {
+        fill: steelblue;
+      }
+      .grid-cur {
+        fill: none;
+        stroke: gray;
+        stroke-width: 1;
+        stroke-dasharray: 5 2;
+      }
+      .grid-drag {
+        fill: steelblue;
+        fill-opacity: 0.8;
+      }
+      .text {
+        font-size: 16; 
+        text-anchor: "middle";
+        alignment-baseline: "text-before-edge"
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="layer">
+        <svg :width="width" :height="height" :view-box.camel="viewbox">
+          <template v-for="(obj, index) in objs">
+            <rect :x="calcX(index)" :y="calcY(index)" :width="grid.width" :height="grid.height" v-bind:class="{'grid' : index != cur, 'grid-cur' : index == cur}"/>
+            <text :x="calcX(index) + grid.width / 2" :y="calcY(index) + grid.height / 2" class="text">{{obj}}</text>
+          </template>
+          <template v-if="cur > -1">
+            <rect :x="calcDragGridX()" :y="calcDragGridY()" :width="grid.width" :height="grid.height" class="grid-drag"/>
+            <text :x="calcDragGridX() + grid.width / 2" :y="calcDragGridY() + grid.height / 2" class="text" fill-opacity="0.5">{{objs[cur]}}</text>
+          </template>
+          <rect id="panel" x="0" y="0" :width="width" :height="canvas_height" fill="white" fill-opacity="0" />
+        </svg>
+      </div>
+    </div>
+
+    <script src="js/d3.v5.js"></script>
+    <script src="../js/vue.js"></script>
+    <script>
+    var data = {
+        width: 0,
+        height: 0,
+        objs: [],
+        column: 4,
+        gap: 10,
+        grid: {
+          width: 0,
+          height: 0
+        },
+        // 鼠标的xy
+        dragX: 0,
+        dragY: 0,
+        // 展示拖动的grid相对于鼠标点的xy位移
+        dragGridX: 0,
+        dragGridY: 0,
+        top: 0,
+        cur: -1
+      }
+    var app = new Vue({
+      el: '#app',
+      data: data,
+      created () {
+        this.width = document.getElementsByClassName('layer')[0].clientWidth
+        this.height = document.getElementsByClassName('layer')[0].clientHeight
+        
+        this.grid.width = this.grid.height = (this.width - this.gap * (this.column + 1)) / this.column
+        // this.grid.width = this.grid.height = this.width / this.column
+        
+        for(let i = 1; i <= 100; i++) {
+          this.objs.push(i)
+        }
+      },
+      computed: {
+        row: function () {
+          return Math.ceil(objs.length / column) 
+        },
+        viewbox: function () {
+          return `0 ${this.top} ${this.width} ${this.height}`
+        },
+        canvas_height: function () {
+          let result = Math.ceil(this.objs.length / this.column) * (this.grid.height + this.gap) + this.gap
+          if (result < this.height) {
+            result = this.height
+          }
+          return result
+        }
+      },
+      methods : {
+        calcX (index) {
+          return index % this.column * (this.grid.width + this.gap) + this.gap
+        },
+        calcY (index) {
+          return Math.floor(index / this.column) * (this.grid.height + this.gap) + this.gap
+        },
+        calcDragGridX () {
+          return this.dragX + this.dragGridX
+        },
+        calcDragGridY () {
+          return this.dragY + this.dragGridY
+        },
+        // 计算传入的坐标是否在某个grid之内
+        calcCur (eventX, eventY) {
+          let x = eventX % (this.gap + this.grid.width)
+          let y = eventY % (this.gap + this.grid.height)
+          if (x > this.gap && x < this.gap + this.grid.width && y > this.gap && y < this.gap + this.grid.height) {
+            let column = Math.floor(d3.event.x / (this.gap + this.grid.width))
+            let row = Math.floor(d3.event.y / (this.gap + this.grid.height))
+            return column + row * this.column
+          } else {
+            return -1
+          }
+        }
+      },
+      mounted () {
+        let that = this
+        var drag = d3.drag()
+          .on('start', function(){
+            console.log('拖拽开始')
+            that.dragX = d3.event.x
+            that.dragY = d3.event.y
+            
+            let cur = that.calcCur(d3.event.x, d3.event.y)
+            
+            let x = that.calcX(cur)
+            let y = that.calcY(cur)
+            
+            that.dragGridX = x - that.dragX
+            that.dragGridY = y - that.dragY
+            
+            that.cur = cur
+          })
+          .on('drag', function(){
+            console.log('拖拽中');
+            that.dragX = d3.event.x
+            that.dragY = d3.event.y
+          })
+          .on('end', function(){
+            console.log('拖拽结束');
+            that.cur = -1
+          });
+        
+        d3.select('#panel').call(drag);
+      }
+    })
+    </script>
+  </body>
+</html>

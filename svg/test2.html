@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="200">
+      <defs>
+        <mask id="image-mask">
+          白色为显示区域
+          <circle id="outer" cx="50" cy="50" r="50" fill="white" />
+          不填充或黑色为不显示区域
+          <circle id="inner" cx="50" cy="50" r="25" fill="black" />
+          其他颜色值为不同程度透明显示
+          <circle id="inner" cx="50" cy="50" r="10" fill="red" />
+        </mask>
+      </defs>
+      <image width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xlink:href="../images/1920-1080.jpg" mask="url(#image-mask)"></image>
+    </svg>
+
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"  width="200" height="200">
+        <defs>
+            <mask id="SVGMask" mask-type="luminance" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox">
+                <style>
+                #rect {
+                    mask-image: url(#SVGMask);
+                    mask-mode: luminance;
+                }
+                </style>
+                <radialGradient id="radialFill">
+                    <stop stop-color="white" offset="0"/>
+                    <stop stop-color="black" offset="1"/>
+                </radialGradient>
+                <circle fill="url(#radialFill)" cx="0.5" cy="0.5" r="0.5"/>
+            </mask>
+        </defs>
+        <rect id="rect" width="100" height="100" fill="green"/>
+    </svg> -->
+    <style>
+      #masked {
+        width: 200px;
+        -webkit-mask-image: url(../images/ebb.xpng);
+        mask-image: url(../images/ebb.xpng);
+        -webkit-mask-size: 100%;
+        mask-size: 100%;
+        -webkit-mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+      }
+
+      #masked2 {
+        width: 200px;
+        -webkit-mask-image: url(../images/yybk.png);
+        -webkit-mask-size: 100%;
+        -webkit-mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-type: alpha;
+      }
+    </style>
+    <img id="masked" src="../images/500-750-girl.jpg" />
+    <img id="masked2" src="../images/500-750-girl.jpg" />
+    <br><br>
+    <svg width="600" height="600">
+      <mask id="myMask2">
+        <image xlink:href="../images/yybk_alpha.png" x="0" y="0" maskUnits="objectBoundingBox"
+          width="300" height="169" preserveAspectRatio="" />
+          <!-- userSpaceOnUse|objectBoundingBox -->
+          <!-- maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox" -->
+      </mask>
+      <image xlink:href="../images/1920-1080.jpg" width="600" height="338" x="-100" y="-100" mask="url(#myMask2)" />
+      <rect x="0" y="0" width="300" height="169" fill="none" stroke="red" />
+      <image xlink:href="../images/yybk.png" width="300" height="169" preserveAspectRatio=""/>
+
+      <mask id="myMask3" mask-type="alpha">
+        <image xlink:href="../images/x6.xpng" width="300" height="450" x="10" y="210" />
+      </mask>
+      <image xlink:href="../images/500-750-girl.jpg" width="300" height="450" x="10" y="210" mask="url(#myMask3)" />
+      <!--     <mask id="myMask3">
+        <image xlink:href="../images/x66.png" width="157.3" height="147.3" x="10" y="10" />
+        <circle cx="80" cy="80"  r="50" fill="#fff"/>
+      </mask>
+      <image xlink:href="../images/500-750-girl.jpg" width="100" height="100" x="30" y="30" mask="url(#myMask3)" preserveAspectRatio="xMidYMid slice"/>
+      <rect width="95" height="95" x="35" y="35" mask="url(#myMask3)" fill="red"/> -->
+      <!-- <rect width="300" height="169" x="10" y="300" mask="url(#myMask3)" fill="red" /> -->
+      <foreignObject x="300" y="300" width="300" height="300">
+        <style>
+          .masked3 {
+            width: 300px;
+            height: 300px;
+            -webkit-mask-image: url(../images/x6.xpng);
+            -webkit-mask-size: 100%;
+            -webkit-mask-position: center;
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-origin: border-box;
+            -webkit-mask-box-image: url(../images/a9.png) 0 round;
+            mask-border-width: 0px;
+            mask-origin: stroke-box;
+            background-color: gray;
+            margin: 0;
+            padding: 0;
+            border: none;
+          }
+        </style>
+        <div class="masked3">
+          <img src="../images/500-750-girl.jpg" style="width:300px; position: absolute; top: -10px; border: 10px gray;" />
+        </div>
+
+      </foreignObject>
+      <!-- <image xlink:href="../images/yybk.png" width="300" height="169" /> -->
+    </svg>
+  </body>
+</html>

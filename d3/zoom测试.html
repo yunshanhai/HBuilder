@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <style>
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      background-color: steelblue;
+    }
+
+    svg {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background-color: white;
+    }
+
+    rect {
+      fill: white;
+    }
+    .button1 {
+      position: fixed;
+      z-index: 100;
+      right: 1rem;
+      bottom: 1rem;
+    }
+    
+    .button2 {
+      position: fixed;
+      z-index: 100;
+      right: 4rem;
+      bottom: 1rem;
+    }
+    
+    .button3 {
+      position: fixed;
+      z-index: 100;
+      right: 7rem;
+      bottom: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="./js/d3.v5.min.js"></script>
+  <button class="button1" onclick="btnClick()">点我</button>
+  <button class="button2" onclick="btnClick2()">点我</button>
+  <button class="button3" onclick="btnClick3()">点我</button>
+  <script>
+    var width = self.frameElement ? 960 : innerWidth - 20,
+      height = self.frameElement ? 500 : innerHeight - 20;
+
+    var data = d3.range(100).map(function() {
+      return [Math.random() * width, Math.random() * height, Math.random() * 60];
+    });
+    // var data2 = d3.range(50).map(function() { return [Math.random() * width, Math.random() * height, Math.random() * 100]; });
+
+    // var color = d3.scale.category10();
+    var color = d3.scaleOrdinal(d3.schemeCategory10)
+
+    var zoom = d3.zoom()
+      .on("zoom", function() {
+        console.log(d3.event)
+        // v3,v4?
+        // view.attr("transform", `translate(${d3.event.translate}) scale(${d3.event.scale})`);
+        // v5,v4?
+        view.attr("transform",
+          `translate(${d3.event.transform.x},${d3.event.transform.y}) scale(${d3.event.transform.k})`);
+      });
+
+    var svg = d3.select("body")
+      // .on("touchstart", nozoom)
+      // .on("touchmove", nozoom)
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", `${-width/2}, ${-height/2} , ${width*2}, ${height*2}`)
+      
+
+    var g = svg.append("g");
+
+    g.append("rect")
+      .attr("width", width)
+      .attr("height", height)
+      .on("click", clicked)
+
+    var view = g.append("g").attr("class", "view");
+
+    view.selectAll("circle")
+      .data(data)
+      .enter().append("circle")
+      // .attr("transform", function(d) { return "translate(" + d + ")"; })
+      .attr("transform", function(d) {
+        return `translate(${width/2},${height/2})`;
+      })
+      .attr("r", function(d) {
+        return 30
+      })
+      .attr("fill", "none")
+      .transition().delay(function(d, i) { return i * 50; }).duration(1000)
+      .attr("transform", function(d) {
+        return `translate(${d[0]},${d[1]})`;
+      })
+      // .transition().duration(1000)
+      .attr("r", function(d) {
+        return d[2]
+      })
+      .attr('fill-opacity', function(d, i) {
+        // let opa = Math.random()
+        // if (opa < 0.5) {
+        //   opa = Math.random()
+        // }
+        // return opa.toFixed(2)
+
+        return opa(i)
+      })
+      .style("fill", function(d, i) {
+        return color(i);
+      });
+
+    function opa(index) {
+      let [x, y, r] = data[index]
+      x += r
+      y += r
+
+      for (let i = 0; i < index; i++) {
+        let [x1, y1, r1] = data[i]
+        x1 += r1
+        y1 += r1
+        let yes = false
+        if (x1 < x && (x1 + r1 > x - r)) {
+          yes = true
+        } else if (x1 > x && (x + r > x1 - r1)) {
+          yes = true
+        } else if (y1 < y && (y1 + r1 > y - r)) {
+          yes = true
+        } else if (y1 > y && (y + r > y1 - r)) {
+          yes = true
+        } else if (x1 > x && x1 < x + r * 2) {
+          yes = true
+        } else if (y1 > y && y1 < y + r * 2) {
+          yes = true
+        }
+
+        if (yes) {
+          let opa = Math.random()
+          if (opa < 0.5) {
+            opa = Math.random()
+          }
+          return opa.toFixed(2)
+        }
+
+        return 1.1
+      }
+    }
+
+    g.call(zoom)
+
+    function clicked(d, i) {
+      if (d3.event.defaultPrevented) return; // zoomed
+
+      d3.select(this).transition()
+        .style("fill", "black")
+        .transition()
+        .style("fill", "white");
+    }
+
+    // function nozoom() {
+    //   d3.event.preventDefault();
+    // }
+    
+    function btnClick() {
+      data.forEach(item => {
+        // item = [Math.random() * width, Math.random() * height, Math.random() * 60]
+        item[0] = Math.random() * width
+        item[1] = Math.random() * height
+        item[2] = Math.random() * 60
+      })
+      view.selectAll("circle")
+        // .data(data)
+        .transition().delay(function(d, i) { return i * 50; }).duration(1000)
+        .attr("transform", function(d) {
+          return `translate(${d[0]},${d[1]})`;
+        })
+        .transition().delay(function(d, i) { return i * 50 + 1000; }).duration(1000)
+        .attr("r", function(d) {
+          return d[2]
+        })
+        .attr('fill-opacity', function(d, i) {
+          return opa(i)
+        })
+        .style("fill", function(d, i) {
+          return color(i);
+        });
+    }
+    
+    function btnClick2() {
+      data.forEach(item => {
+        // item = [Math.random() * width, Math.random() * height, Math.random() * 60]
+        item[0] = Math.random() * width
+        item[1] = Math.random() * height
+        item[2] = Math.random() * 60
+      })
+      view.selectAll("circle")
+        // .data(data)
+        .transition().delay(function(d, i) { return i * 100; }).duration(100)
+        .attr("transform", function(d) {
+          return `translate(${d[0]},${d[1]})`;
+        })
+        .transition().delay(function(d, i) { return 100; }).duration(1000)
+        .attr("r", function(d) {
+          return d[2]
+        })
+        .attr('fill-opacity', function(d, i) {
+          return opa(i)
+        })
+        .style("fill", function(d, i) {
+          return color(i);
+        });
+    }
+    function btnClick3() {
+      data.forEach(item => {
+        // item = [Math.random() * width, Math.random() * height, Math.random() * 60]
+        item[0] = Math.random() * width
+        item[1] = Math.random() * height
+        item[2] = Math.random() * 60
+      })
+      view.selectAll("circle")
+        // .data(data)
+        .transition().duration(1000)
+        .attr("transform", function(d) {
+          return `translate(${width/2},${height/2})`;
+        })
+        .attr("r", function(d) {
+          return 30
+        });
+    }
+  </script>
+</body>
+</html>

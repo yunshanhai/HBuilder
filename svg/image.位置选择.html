@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="full-screen" content="yes">
+
+    <title></title>
+    <style type="text/css">
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      svg {
+        background-color: steelblue;
+      }
+      
+      #app {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <svg :width="width" :height="height" :view-box.camel="viewbox">
+        <rect :width="photo.width" :height="photo.height" fill="#000"/>
+        <image xlink:href="../images/500-750-girl.jpg" :width="photo.width" :height="photo.height"/>
+        <rect id="dragBox" :x="dragBox.x" :y="dragBox.y" :width="dragBox.width" :height="dragBox.height" fill="#fff"
+          fill-opacity="0.2" stroke="white" stroke-dasharray="5 2" stroke-width="1" />
+<!--        <rect id="dragPointTL" :x="dragPoints.tl.x" :y="dragPoints.tl.y" :width="dragPointSize" :height="dragPointSize" fill="#fff" fill-opacity="0.5" stroke="#fff" stroke-width="1" />
+        <rect id="dragPointTR" :x="dragPoints.tr.x" :y="dragPoints.tr.y" :width="dragPointSize" :height="dragPointSize" fill="#fff" fill-opacity="0.5" stroke="#fff" stroke-width="1" />
+        <rect id="dragPointBL" :x="dragPoints.bl.x" :y="dragPoints.bl.y" :width="dragPointSize" :height="dragPointSize" fill="#fff" fill-opacity="0.5" stroke="#fff" stroke-width="1" /> -->
+        <rect id="dragPointBR" :x="dragPoints.br.x" :y="dragPoints.br.y" :width="dragPointSize" :height="dragPointSize" fill="#fff" fill-opacity="0.5" stroke="#fff" stroke-width="1" />
+      </svg>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script src="../js/d3.v3.js"></script>
+    <script>
+      
+      var photo = {
+        width: 500,
+        height: 750
+      }
+      var box = {
+        width: 1200,
+        height: 800
+      }
+      var app = new Vue({
+        el: '#app',
+        data: {
+          cWidth: document.documentElement.clientWidth,
+          cHeight: document.documentElement.clientHeight,
+          photo: photo,
+          box: box,
+          dragPointSize: 32,
+          dragBox: {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
+          }
+        },
+        mounted() {
+          
+          if (photo.width / (box.width / box.height) <= photo.height) {
+            // 选择框宽度同照片宽度,高度自计算
+            this.dragBox.width = photo.width
+            this.dragBox.height = photo.width / (box.width / box.height)
+            this.dragBox.y = (photo.height - this.dragBox.height) / 2
+          } else {
+            // 选择框高度同照片宽度,宽度自计算
+            this.dragBox.height = photo.height
+            this.dragBox.width = photo.height / (box.height / box.width)
+            this.dragBox.x = (photo.width - this.dragBox.width) / 2
+          }
+          
+          let that = this;
+          //拖动层
+          let dragBox = d3.behavior.drag()
+            .origin(function(d) {
+              return {x: that.dragBox.x, y: that.dragBox.y}
+            })
+            .on("drag", function(d) {
+              let dx = Math.round(d3.event.dx);
+              let dy = Math.round(d3.event.dy);
+              
+              if(that.dragBox.x + dx < 0) {
+                that.dragBox.x = 0
+                
+              } else if ( that.dragBox.x + dx > photo.width - that.dragBox.width) {
+                that.dragBox.x = photo.width - that.dragBox.width
+              } else {
+                that.dragBox.x += dx
+              }
+              
+              if(that.dragBox.y + dy < 0) {
+                that.dragBox.y = 0
+              } else if ( that.dragBox.y + dy > photo.height - that.dragBox.height) {
+                that.dragBox.y = photo.height - that.dragBox.height
+              } else {
+                that.dragBox.y += dy
+              }
+            });
+          d3.select('#dragBox').call(dragBox);
+          
+          //右下拖动点
+          let dragBR = d3.behavior.drag()
+            .origin(function(d) {
+              return {
+                x: that.dragPoints.br.cx,
+                y: that.dragPoints.br.cy
+              };
+            })
+            .on("drag", function(d) {
+              let dx = Math.round(d3.event.dx);
+              let dy = Math.round(d3.event.dy);
+              
+              if(Math.abs(dx) > 0) {
+                if(that.dragPoints.br.cx + dx < that.dragPointSize){
+                  that.dragBox.width = that.dragPointSize
+                } else if (that.dragPoints.br.cx + dx > photo.width) {
+                  that.dragBox.width = photo.width - that.dragPoints.tl.cx
+                } else {
+                  that.dragBox.width += dx
+                }
+                that.dragBox.height = that.dragBox.width / (box.width / box.height)
+              } else if (Math.abs(dy) > 0) {
+                if(that.dragPoints.br.cy + dy < that.dragPointSize){
+                  that.dragBox.height = that.dragPointSize
+                } else if (that.dragPoints.br.cy + dy > photo.height) {
+                  that.dragBox.height = photo.height - that.dragPoints.tl.cy
+                } else {
+                  that.dragBox.height += dy
+                }
+                that.dragBox.width = that.dragBox.height / (box.height / box.width)
+              }
+            });
+          d3.select('#dragPointBR')
+            .on('click',function() {
+              event.stopPropagation();
+            })
+            .call(dragBR);
+        },
+        computed: {
+          width() {
+            return this.cWidth
+          },
+          height() {
+            return this.cWidth / (photo.width / photo.height)
+          },
+          viewbox() {
+            // return `0 0 ${photo.width} ${photo.height}`
+            let x = 0 - this.dragPointSize;
+            let y = 0 - this.dragPointSize;
+            let width = photo.width + this.dragPointSize * 2
+            let height = photo.height + this.dragPointSize * 2
+            return `${x} ${y} ${width} ${height}`
+          },
+          dragPoints() {
+            return {
+              tl: {
+                x: this.dragBox.x - this.dragPointSize / 2,
+                y: this.dragBox.y - this.dragPointSize / 2,
+                cx: this.dragBox.x,
+                cy: this.dragBox.y
+              },
+              tr: {
+                x: this.dragBox.x + this.dragBox.width - this.dragPointSize / 2,
+                y: this.dragBox.y - this.dragPointSize / 2,
+                cx: this.dragBox.x + this.dragBox.width,
+                cy: this.dragBox.y
+              },
+              bl: {
+                x: this.dragBox.x - this.dragPointSize / 2,
+                y: this.dragBox.y + this.dragBox.height - this.dragPointSize / 2,
+                cx: this.dragBox.x,
+                cy: this.dragBox.y + this.dragBox.height
+              },
+              br: {
+                x: this.dragBox.x + this.dragBox.width - this.dragPointSize / 2,
+                y: this.dragBox.y + this.dragBox.height - this.dragPointSize / 2,
+                cx: this.dragBox.x + this.dragBox.width,
+                cy: this.dragBox.y + this.dragBox.height
+              },
+            }
+          }
+        },
+        methods: {
+          
+        }
+      })
+    </script>
+  </body>
+</html>

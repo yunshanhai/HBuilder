@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <title></title>
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+      }
+      .layer {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        background-color: steelblue;
+        padding: 5px;
+      }
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .grid {
+        padding: 5px;
+      }
+      .content {
+        width: 100%;
+        height: 100%;
+        background-color: #5C2699;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="layer">
+        <!-- <svg wi> </svg> -->
+        <div class="container" v-on:mouseover="move">
+          <div v-for="(obj,index) in objs" class="grid" :style="{width: grid.width + 'px', height: grid.height + 'px'}" v-on:mouseenter="move" v-on:touchenter="move">
+            <div class="content">
+              {{obj}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/d3.v3.js"></script>
+    <script src="../js/vue.js"></script>
+    <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        width: 0,
+        height: 0,
+        objs: [],
+        column: 4,
+        gap: 5,
+        grid: {
+          width: 0,
+          height: 0
+        }
+      },
+      created () {
+        this.width = document.getElementsByClassName('container')[0].clientWidth
+        this.height = document.getElementsByClassName('container')[0].clientHeight
+        console.log(document.getElementsByClassName('container')[0].clientWidth)
+        console.log(document.getElementsByClassName('container')[0].clientHeight)
+        
+        // this.grid.width = this.grid.height = (this.width - this.gap * (this.column + 1)) / this.column
+        this.grid.width = this.grid.height = this.width / this.column
+        
+        for(let i = 1; i <= 100; i++) {
+          this.objs.push(i)
+        }
+      },
+      computed: {
+        row: function () {
+          return Math.ceil(objs.length / column) 
+        }
+      },
+      mounted () {
+        
+      },
+      methods : {
+        move () {
+          // var container = document.getElementsByClassName('container')[0]
+          console.log(event)
+        }
+      }
+    })
+    </script>
+  </body>
+</html>
