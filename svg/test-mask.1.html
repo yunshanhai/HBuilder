@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <svg width="600" height="600">
+      <foreignObject x="0" y="0" width="300" height="300">
+        <style>
+          .masked3 {
+            width: 300px;
+            height: 300px;
+            -webkit-mask-image: url(../images/x6.xpng);
+            -webkit-mask-size: 100%;
+            -webkit-mask-position: center;
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-origin: border-box;
+            /* -webkit-mask-box-image: url(../images/a9.png) 0 round; */
+            mask-border-width: 0px;
+            mask-origin: stroke-box;
+            background-color: gray;
+            margin: 0;
+            padding: 0;
+            border: none;
+/*            filter: invert(100%);
+            -webkit-filter: invert(100%) */
+          }
+        </style>
+        <div class="masked3">
+          <img src="../images/500-750-girl.jpg" style="width:300px; position: absolute; top: -10px; border: 10px gray;" />
+        </div>
+
+      </foreignObject>
+      <!-- <image xlink:href="../images/yybk.png" width="300" height="169" /> -->
+    </svg>
+  </body>
+</html>

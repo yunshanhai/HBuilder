@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <style>
+      .inverted {
+        filter: invert(100%);
+        -webkit-filter: invert(100%)
+      }
+    </style>
+    <svg id="mask-img" width="300" height="300" viewBox="0 0 300 300">
+      <defs>
+        <filter id="invert2">
+          <feComponentTransfer>
+            <feFuncR type="table" tableValues="1 0" />
+            <feFuncG type="table" tableValues="1 0" />
+            <feFuncB type="table" tableValues="1 0" />
+          </feComponentTransfer>
+        </filter>
+      </defs>
+      <rect width="300" height="300" x="0" y="0" fill="black" />
+      <image xlink:href="../images/x6.xpng" width="300" height="300" x="0" y="0" filter="url(#invert2)" />
+    </svg>
+    <svg width="600" height="600">
+      <defs>
+        <mask id="mask3" maskUnits="objectBoundingBox">
+          <image xlink:href="#mask-img" width="300" height="300" x="0" y="0"/>
+        </mask>
+      </defs>
+    
+      <image xlink:href="../images/500-750-girl.jpg" width="300" height="300" x="0" y="0" mask="url(#mask3)"
+        preserveAspectRatio="xMidYMid slice" />
+    </svg>
+    <svg width="600" height="600">
+      <!-- <filter id="justAlphaAndWhite"> -->
+      <!-- <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 1
+                                                              0 1 0 0 0 
+                                                              0 0 1 0 0 
+                                                              0 0 0 1 0" /> -->
+      <!-- <feColorMatrix in="SourceGraphic" type="matrix" values="-1 0 0 1 0
+                                                               0 -1 0 1 0 
+                                                               0 0 -1 1 0
+                                                               0 0  0 1 0"/> -->
+      <!-- <feColorMatrix in="SourceGraphic" type="matrix" values="-1 0 0 0 1 
+                                                                0 -1 0 0 1 
+                                                                0 0 -1 0 1
+                                                                0 0  0 1 0"/> -->
+      <!-- <feColorMatrix in="BackgroundAlpha" type="matrix" values="1 0 0 0 0
+                                                              0 1 0 0 0 
+                                                              0 0 1 0 0 
+                                                              0 0 0 1 0" /> -->
+      <!-- <feComponentTransfer>
+          <feFuncR type="table" tableValues="[amount] (1 - [amount])"/>
+          <feFuncG type="table" tableValues="[amount] (1 - [amount])"/>
+          <feFuncB type="table" tableValues="[amount] (1 - [amount])"/>
+        </feComponentTransfer> -->
+      <!-- <feColorMatrix in="SourceAlpha" type="matrix" values="1 0 0 1 1  0 1 0 0 1  0 0 1 0 0  0 0 0 1 0" /> -->
+      <!-- <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0   0 1 0 0  0 0 1 0 0  0 0 0 1 1" /> -->
+      <!-- </filter> -->
+      <defs>
+        <filter id="invert">
+          <feComponentTransfer>
+            <feFuncR type="table" tableValues="1 0" />
+            <feFuncG type="table" tableValues="1 0" />
+            <feFuncB type="table" tableValues="1 0" />
+          </feComponentTransfer>
+        </filter>
+        <mask id="mask1">
+          <rect width="300" height="300" x="0" y="0" fill="black" />
+          <image xlink:href="../images/x6.xpng" width="300" height="300" x="0" y="0" filter="url(#invert)" />
+        </mask>
+      </defs>
+
+      <image xlink:href="../images/500-750-girl.jpg" width="300" height="300" x="0" y="0" mask="url(#mask1)"
+        preserveAspectRatio="xMidYMid slice" />
+      <rect width="300" height="300" x="300" y="0" fill="black" />
+      <image xlink:href="../images/x6.xpng" width="300" height="300" x="300" y="0" filter="url(#invert)" />
+      <!-- <image xlink:href="../images/500-750-girl.jpg" width="300" height="300" x="300" y="0"
+        preserveAspectRatio="xMidYMid slice" filter="url(#invert)"/> -->
+    </svg>
+    <!-- <img src="../images/500-750-girl.jpg" class="inverted" /> -->
+  </body>
+</html>
